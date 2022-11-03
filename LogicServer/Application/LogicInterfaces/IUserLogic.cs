@@ -1,6 +1,6 @@
 namespace Application.LogicInterfaces;
 
-public interface IUser
+public interface IUserLogic
 {
     
 }
