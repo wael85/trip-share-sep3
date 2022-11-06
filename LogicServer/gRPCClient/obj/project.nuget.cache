@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "HEszYOosaJN3OT6iVoG+wr0zMtVScqPtD2fGCGnQY3Df7sao3DVdcdFsNpaF43kkVmksffqcSOObghLkHTFH9A==",
+  "dgSpecHash": "YijjE5YkbjTclUzRMty6X8LbneSQdBN/I3CVuiQnhJukMnKYIx1wVx6aVuPgXMGtE2hXab7uO+bEzPHaCEeAkA==",
   "success": true,
   "projectFilePath": "C:\\Users\\drwae\\Desktop\\via\\Semester_3\\SEP3\\Trip share\\trip-share-sep3\\LogicServer\\gRPCClient\\gRPCClient.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\drwae\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",
+    "C:\\Users\\drwae\\.nuget\\packages\\grpc.core.api\\2.50.0-pre1\\grpc.core.api.2.50.0-pre1.nupkg.sha512",
+    "C:\\Users\\drwae\\.nuget\\packages\\grpc.net.client\\2.50.0-pre1\\grpc.net.client.2.50.0-pre1.nupkg.sha512",
+    "C:\\Users\\drwae\\.nuget\\packages\\grpc.net.common\\2.50.0-pre1\\grpc.net.common.2.50.0-pre1.nupkg.sha512",
+    "C:\\Users\\drwae\\.nuget\\packages\\grpc.tools\\2.50.0\\grpc.tools.2.50.0.nupkg.sha512",
+    "C:\\Users\\drwae\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.0.3\\microsoft.extensions.logging.abstractions.3.0.3.nupkg.sha512",
+    "C:\\Users\\drwae\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
   "logs": []
 }

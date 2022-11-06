@@ -120,13 +120,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return via.sep3.grpcserver.protobuf.user.UserOuterClass.internal_static_RequestUserInfo_descriptor;
+    return via.sep3.grpcserver.protobuf.user.User.internal_static_RequestUserInfo_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return via.sep3.grpcserver.protobuf.user.UserOuterClass.internal_static_RequestUserInfo_fieldAccessorTable
+    return via.sep3.grpcserver.protobuf.user.User.internal_static_RequestUserInfo_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             via.sep3.grpcserver.protobuf.user.RequestUserInfo.class, via.sep3.grpcserver.protobuf.user.RequestUserInfo.Builder.class);
   }
@@ -620,13 +620,13 @@ private static final long serialVersionUID = 0L;
       via.sep3.grpcserver.protobuf.user.RequestUserInfoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return via.sep3.grpcserver.protobuf.user.UserOuterClass.internal_static_RequestUserInfo_descriptor;
+      return via.sep3.grpcserver.protobuf.user.User.internal_static_RequestUserInfo_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return via.sep3.grpcserver.protobuf.user.UserOuterClass.internal_static_RequestUserInfo_fieldAccessorTable
+      return via.sep3.grpcserver.protobuf.user.User.internal_static_RequestUserInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               via.sep3.grpcserver.protobuf.user.RequestUserInfo.class, via.sep3.grpcserver.protobuf.user.RequestUserInfo.Builder.class);
     }
@@ -669,7 +669,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return via.sep3.grpcserver.protobuf.user.UserOuterClass.internal_static_RequestUserInfo_descriptor;
+      return via.sep3.grpcserver.protobuf.user.User.internal_static_RequestUserInfo_descriptor;
     }
 
     @java.lang.Override
