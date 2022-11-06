@@ -7,118 +7,116 @@
 
 using grpc = global::Grpc.Core;
 
-namespace gRPCClient.Proto {
-  public static partial class UserService
+public static partial class UserServices
+{
+  static readonly string __ServiceName = "UserServices";
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
   {
-    static readonly string __ServiceName = "protobuf.UserService";
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
+    #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+    if (message is global::Google.Protobuf.IBufferMessage)
     {
-      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-      if (message is global::Google.Protobuf.IBufferMessage)
-      {
-        context.SetPayloadLength(message.CalculateSize());
-        global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
-        context.Complete();
-        return;
-      }
-      #endif
-      context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
+      context.SetPayloadLength(message.CalculateSize());
+      global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
+      context.Complete();
+      return;
     }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static class __Helper_MessageCache<T>
-    {
-      public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
-    {
-      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-      if (__Helper_MessageCache<T>.IsBufferMessage)
-      {
-        return parser.ParseFrom(context.PayloadAsReadOnlySequence());
-      }
-      #endif
-      return parser.ParseFrom(context.PayloadAsNewBuffer());
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::gRPCClient.Proto.RequestUserInfo> __Marshaller_protobuf_RequestUserInfo = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::gRPCClient.Proto.RequestUserInfo.Parser));
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::gRPCClient.Proto.ResponseUserInfo> __Marshaller_protobuf_ResponseUserInfo = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::gRPCClient.Proto.ResponseUserInfo.Parser));
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::gRPCClient.Proto.RequestUserInfo, global::gRPCClient.Proto.ResponseUserInfo> __Method_CreateUser = new grpc::Method<global::gRPCClient.Proto.RequestUserInfo, global::gRPCClient.Proto.ResponseUserInfo>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "CreateUser",
-        __Marshaller_protobuf_RequestUserInfo,
-        __Marshaller_protobuf_ResponseUserInfo);
-
-    /// <summary>Service descriptor</summary>
-    public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
-    {
-      get { return global::gRPCClient.Proto.UserReflection.Descriptor.Services[0]; }
-    }
-
-    /// <summary>Client for UserService</summary>
-    public partial class UserServiceClient : grpc::ClientBase<UserServiceClient>
-    {
-      /// <summary>Creates a new client for UserService</summary>
-      /// <param name="channel">The channel to use to make remote calls.</param>
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public UserServiceClient(grpc::ChannelBase channel) : base(channel)
-      {
-      }
-      /// <summary>Creates a new client for UserService that uses a custom <c>CallInvoker</c>.</summary>
-      /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public UserServiceClient(grpc::CallInvoker callInvoker) : base(callInvoker)
-      {
-      }
-      /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected UserServiceClient() : base()
-      {
-      }
-      /// <summary>Protected constructor to allow creation of configured clients.</summary>
-      /// <param name="configuration">The client configuration.</param>
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected UserServiceClient(ClientBaseConfiguration configuration) : base(configuration)
-      {
-      }
-
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::gRPCClient.Proto.ResponseUserInfo CreateUser(global::gRPCClient.Proto.RequestUserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return CreateUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::gRPCClient.Proto.ResponseUserInfo CreateUser(global::gRPCClient.Proto.RequestUserInfo request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_CreateUser, null, options, request);
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::gRPCClient.Proto.ResponseUserInfo> CreateUserAsync(global::gRPCClient.Proto.RequestUserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return CreateUserAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::gRPCClient.Proto.ResponseUserInfo> CreateUserAsync(global::gRPCClient.Proto.RequestUserInfo request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_CreateUser, null, options, request);
-      }
-      /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected override UserServiceClient NewInstance(ClientBaseConfiguration configuration)
-      {
-        return new UserServiceClient(configuration);
-      }
-    }
-
+    #endif
+    context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
   }
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static class __Helper_MessageCache<T>
+  {
+    public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
+  }
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
+  {
+    #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+    if (__Helper_MessageCache<T>.IsBufferMessage)
+    {
+      return parser.ParseFrom(context.PayloadAsReadOnlySequence());
+    }
+    #endif
+    return parser.ParseFrom(context.PayloadAsNewBuffer());
+  }
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Marshaller<global::RequestUserInfo> __Marshaller_RequestUserInfo = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::RequestUserInfo.Parser));
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Marshaller<global::ResponseUserInfo> __Marshaller_ResponseUserInfo = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::ResponseUserInfo.Parser));
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Method<global::RequestUserInfo, global::ResponseUserInfo> __Method_createUser = new grpc::Method<global::RequestUserInfo, global::ResponseUserInfo>(
+      grpc::MethodType.Unary,
+      __ServiceName,
+      "createUser",
+      __Marshaller_RequestUserInfo,
+      __Marshaller_ResponseUserInfo);
+
+  /// <summary>Service descriptor</summary>
+  public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
+  {
+    get { return global::UserReflection.Descriptor.Services[0]; }
+  }
+
+  /// <summary>Client for UserServices</summary>
+  public partial class UserServicesClient : grpc::ClientBase<UserServicesClient>
+  {
+    /// <summary>Creates a new client for UserServices</summary>
+    /// <param name="channel">The channel to use to make remote calls.</param>
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public UserServicesClient(grpc::ChannelBase channel) : base(channel)
+    {
+    }
+    /// <summary>Creates a new client for UserServices that uses a custom <c>CallInvoker</c>.</summary>
+    /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public UserServicesClient(grpc::CallInvoker callInvoker) : base(callInvoker)
+    {
+    }
+    /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    protected UserServicesClient() : base()
+    {
+    }
+    /// <summary>Protected constructor to allow creation of configured clients.</summary>
+    /// <param name="configuration">The client configuration.</param>
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    protected UserServicesClient(ClientBaseConfiguration configuration) : base(configuration)
+    {
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::ResponseUserInfo createUser(global::RequestUserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return createUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::ResponseUserInfo createUser(global::RequestUserInfo request, grpc::CallOptions options)
+    {
+      return CallInvoker.BlockingUnaryCall(__Method_createUser, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::ResponseUserInfo> createUserAsync(global::RequestUserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return createUserAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::ResponseUserInfo> createUserAsync(global::RequestUserInfo request, grpc::CallOptions options)
+    {
+      return CallInvoker.AsyncUnaryCall(__Method_createUser, null, options, request);
+    }
+    /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    protected override UserServicesClient NewInstance(ClientBaseConfiguration configuration)
+    {
+      return new UserServicesClient(configuration);
+    }
+  }
+
 }
 #endregion

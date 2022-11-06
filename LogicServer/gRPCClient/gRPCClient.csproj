@@ -21,7 +21,8 @@
 
     <ItemGroup>
       <None Remove="Proto\user.proto" />
-      <Protobuf Include="Proto\user.proto" GrpcServices = "Client"  />
+      <Protobuf Include="Proto\user.proto" GrpcServices="Client" />
     </ItemGroup>
+    
 
 </Project>
