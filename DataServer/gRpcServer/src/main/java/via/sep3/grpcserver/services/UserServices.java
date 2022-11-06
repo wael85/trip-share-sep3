@@ -17,7 +17,6 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
 
     @Override
     public void createUser(RequestUserInfo userInfo, StreamObserver<ResponseUserInfo> responseUserInfo) {
-        System.out.println("getCalled");
         User u = new User();
         u.setAddress(userInfo.getAddress());
         u.setDriveLicence(userInfo.getDriveLicense());
@@ -26,16 +25,22 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
         u.setLastName(userInfo.getLastName());
         u.setEmail(userInfo.getEmail());
         u.setPhone(userInfo.getPhone());
-        User resultUser = userRepository.save(u);
-        ResponseUserInfo result = ResponseUserInfo.newBuilder()
-                .setAddress(resultUser.getAddress())
-                .setEmail(resultUser.getEmail())
-                .setFirstName(resultUser.getFirstName())
-                .setLastName(resultUser.getLastName())
-                .setPhone(resultUser.getPhone())
-                .build();
-        responseUserInfo.onNext(result);
-        responseUserInfo.onCompleted();
+        User existed = userRepository.getReferenceById(u.getEmail());
+        if (existed != null){
+            responseUserInfo.onNext(ResponseUserInfo.newBuilder().build());
+            responseUserInfo.onCompleted();
+        }else {
+            User resultUser = userRepository.save(u);
+            ResponseUserInfo result = ResponseUserInfo.newBuilder()
+                    .setAddress(resultUser.getAddress())
+                    .setEmail(resultUser.getEmail())
+                    .setFirstName(resultUser.getFirstName())
+                    .setLastName(resultUser.getLastName())
+                    .setPhone(resultUser.getPhone())
+                    .build();
+            responseUserInfo.onNext(result);
+            responseUserInfo.onCompleted();
+        }
+        }
 
-    }
 }
