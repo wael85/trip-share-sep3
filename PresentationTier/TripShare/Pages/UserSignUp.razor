@@ -1,0 +1,95 @@
+@page "/UserSignUp"
+@using Domain.Model
+@using HttpClient.ClientImplementation
+
+@inject IUserClient UserClient;
+<h3>UserSignUp</h3>
+<div class="card">
+    <h3>Create User</h3>
+    <div class="input"></div>
+    <label> Email :</label>
+    <input type="text" @bind="Email" @bind:event ="oninput"/>
+    @if (!string.IsNullOrEmpty(Email))
+    {
+        <label style="color: @Color">@Msg</label>
+    }
+     <label> Password :</label>
+        <input type="text" @bind="Password" @bind:event ="oninput"/>
+        @if (!string.IsNullOrEmpty(Password))
+        {
+            <label style="color: @Color">@Msg</label>
+        }
+     <label> Email :</label>
+        <input type="text" @bind="Firstname" @bind:event ="oninput"/>
+        @if (!string.IsNullOrEmpty(Firstname))
+        {
+            <label style="color: @Color">@Msg</label>
+        }
+     <label> Email :</label>
+        <input type="text" @bind="Lastname" @bind:event ="oninput"/>
+        @if (!string.IsNullOrEmpty(Lastname))
+        {
+            <label style="color: @Color">@Msg</label>
+        }
+     <label> Email :</label>
+        <input type="text" @bind="PhoneNumber" @bind:event ="oninput"/>
+        @if (!string.IsNullOrEmpty(PhoneNumber))
+        {
+            <label style="color: @Color">@Msg</label>
+        }
+     <label> Email :</label>
+        <input type="text" @bind="Address" @bind:event ="oninput"/>
+        @if (!string.IsNullOrEmpty(Address))
+        {
+            <label style="color: @Color">@Msg</label>
+        }
+     <label> Email :</label>
+        <input type="text" @bind="DriveLicense" @bind:event ="oninput"/>
+    @if (!string.IsNullOrEmpty(DriveLicense))
+    {
+        DriveLicense = null;
+    }
+    <div class="button-row">
+            <button @onclick="CreateAsync" disabled="@(string.IsNullOrEmpty(Email))" class="acceptbtn">Create</button>
+        </div>
+
+</div>
+
+@code {
+    private string Email = "";
+    private string Password = "";
+    private string Firstname = "";
+    private string Lastname = "";
+    private string PhoneNumber = "";
+    private string Address = "";
+    private string DriveLicense = "";
+    private string Color = "";
+    private string Msg = "";
+
+    private async Task CreateAsync()
+    {
+        Msg = "";
+        try
+        {
+            await UserClient.CreateAsync(new User(Email, Password, Firstname, Lastname, PhoneNumber, Address, DriveLicense));
+            
+    Email = "";
+     Password = "";
+     Firstname = "";
+            Lastname = "";
+     PhoneNumber = "";
+     Address = "";
+     DriveLicense = "";
+     Color = "green";
+     Msg = "your Account has been add successfully";
+    
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Msg = e.Message;
+            Color = "red";
+        }
+    }
+
+}
