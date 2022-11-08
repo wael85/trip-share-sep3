@@ -22,16 +22,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drwae/Desktop/via/Semester_3/SEP3/Trip share/trip-share-sep3/PresentationTier/TripShare/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/drwae/Desktop/via/Semester_3/SEP3/Trip share/trip-share-sep3/PresentationTier/TripShare/Pages/FetchData.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/drwae/Desktop/via/Semester_3/SEP3/Trip share/trip-share-sep3/PresentationTier/TripShare/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/drwae/Desktop/via/Semester_3/SEP3/Trip share/trip-share-sep3/PresentationTier/TripShare/Pages/UserSignUp.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclNpZ25VcC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/drwae/Desktop/via/Semester_3/SEP3/Trip share/trip-share-sep3/PresentationTier/TripShare/Shared/SurveyPrompt.razor]

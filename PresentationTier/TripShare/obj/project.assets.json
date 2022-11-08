@@ -498,6 +498,29 @@
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
         }
+      },
+      "Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.dll": {}
+        }
+      },
+      "HttpClient/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/HttpClient.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HttpClient.dll": {}
+        }
       }
     },
     "net6.0/browser-wasm": {
@@ -990,6 +1013,29 @@
         },
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
+        }
+      },
+      "Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.dll": {}
+        }
+      },
+      "HttpClient/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/HttpClient.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HttpClient.dll": {}
         }
       }
     }
@@ -1753,10 +1799,21 @@
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Domain/1.0.0": {
+      "type": "project",
+      "path": "../../LogicServer/Domain/Domain.csproj",
+      "msbuildProject": "../../LogicServer/Domain/Domain.csproj"
+    },
+    "HttpClient/1.0.0": {
+      "type": "project",
+      "path": "../HttpClient/HttpClient.csproj",
+      "msbuildProject": "../HttpClient/HttpClient.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "HttpClient >= 1.0.0",
       "Microsoft.AspNetCore.Components.WebAssembly >= 6.0.8",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 6.0.8"
     ]
@@ -1785,7 +1842,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\drwae\\Desktop\\via\\Semester_3\\SEP3\\Trip share\\trip-share-sep3\\PresentationTier\\HttpClient\\HttpClient.csproj": {
+              "projectPath": "C:\\Users\\drwae\\Desktop\\via\\Semester_3\\SEP3\\Trip share\\trip-share-sep3\\PresentationTier\\HttpClient\\HttpClient.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
