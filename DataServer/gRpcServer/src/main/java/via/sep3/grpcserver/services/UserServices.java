@@ -10,13 +10,15 @@ import via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo;
 import via.sep3.grpcserver.protobuf.userservices.UserServicesGrpc;
 import via.sep3.grpcserver.repositorys.UserRepository;
 
+import java.util.Optional;
+
 @GRpcService
 public class UserServices extends UserServicesGrpc.UserServicesImplBase {
     @Autowired
     UserRepository userRepository;
 
     @Override
-    public void createUser(RequestUserInfo userInfo, StreamObserver<ResponseUserInfo> responseUserInfo) {
+    public void  createUser(RequestUserInfo userInfo, StreamObserver<ResponseUserInfo> responseUserInfo) {
         User u = new User();
         u.setAddress(userInfo.getAddress());
         u.setDriveLicence(userInfo.getDriveLicense());
@@ -25,8 +27,8 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
         u.setLastName(userInfo.getLastName());
         u.setEmail(userInfo.getEmail());
         u.setPhone(userInfo.getPhone());
-        User existed = userRepository.getReferenceById(u.getEmail());
-        if (existed != null){
+        Optional<User> existed = userRepository.findByEmail(u.getEmail());
+        if (existed.isPresent()){
             responseUserInfo.onNext(ResponseUserInfo.newBuilder().build());
             responseUserInfo.onCompleted();
         }else {
