@@ -9,9 +9,9 @@ public class User
     public string LastName { get; set; }
     public string Phone { get; set; }
     public string Address { get; set; }
-    public string DriveLicense { get; set; }
+    public string? DriveLicense { get; set; }
 
-    public User(string email, string password, string firstName, string lastName, string phone, string address, string driveLicense)
+    public User(string email, string password, string firstName, string lastName, string phone, string address, string? driveLicense)
     {
         Email = email;
         Password = password;

@@ -23,11 +23,14 @@ public class UserGrpcImp : IUserService
             FirstName = user.FirstName,
             LastName = user.LastName,
             Phone = user.Phone,
-            Address = user.Address,
-            DriveLicense = user.DriveLicense
+            Address = user.Address
         };
-        try
+        
+        if (user.DriveLicense != null)
         {
+            requestedInfo.DriveLicense = user.DriveLicense;
+        }
+       
             ResponseUserInfo replay = await client.createUserAsync(requestedInfo);
             var dto = new ReturnedUserDTO()
             {
@@ -38,12 +41,7 @@ public class UserGrpcImp : IUserService
                 Address = replay.Address
             };
             return await Task.FromResult(dto);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("some thing went wrong: " + e.Message);
-        }
+      
 
     }
 }

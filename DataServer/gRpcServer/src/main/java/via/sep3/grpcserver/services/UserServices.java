@@ -1,16 +1,19 @@
 package via.sep3.grpcserver.services;
 
+
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import via.sep3.grpcserver.Entities.User;
-
 import via.sep3.grpcserver.protobuf.userservices.RequestUserInfo;
 import via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo;
 import via.sep3.grpcserver.protobuf.userservices.UserServicesGrpc;
 import via.sep3.grpcserver.repositorys.UserRepository;
 
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+>>>>>>> origin/main
 
 @GRpcService
 public class UserServices extends UserServicesGrpc.UserServicesImplBase {
@@ -27,8 +30,15 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
         u.setLastName(userInfo.getLastName());
         u.setEmail(userInfo.getEmail());
         u.setPhone(userInfo.getPhone());
+<<<<<<< HEAD
         Optional<User> existed = userRepository.findByEmail(u.getEmail());
         if (existed.isPresent()){
+=======
+        User existed = userRepository.getReferenceById(u.getEmail());
+
+        if (existed.getEmail().equals("")){
+
+>>>>>>> origin/main
             responseUserInfo.onNext(ResponseUserInfo.newBuilder().build());
             responseUserInfo.onCompleted();
         }else {
@@ -42,7 +52,9 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
                     .build();
             responseUserInfo.onNext(result);
             responseUserInfo.onCompleted();
+            System.out.println(resultUser);
         }
-        }
+
+    }
 
 }

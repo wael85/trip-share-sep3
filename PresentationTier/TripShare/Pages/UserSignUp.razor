@@ -8,50 +8,34 @@
     <h3>Create User</h3>
     <div class="input"></div>
     <label> Email :</label>
-    <input type="text" @bind="Email" @bind:event ="oninput"/>
-    @if (!string.IsNullOrEmpty(Email))
-    {
-        <label style="color: @Color">@Msg</label>
-    }
-     <label> Password :</label>
-        <input type="text" @bind="Password" @bind:event ="oninput"/>
-        @if (!string.IsNullOrEmpty(Password))
-        {
-            <label style="color: @Color">@Msg</label>
-        }
-     <label> Email :</label>
-        <input type="text" @bind="Firstname" @bind:event ="oninput"/>
-        @if (!string.IsNullOrEmpty(Firstname))
-        {
-            <label style="color: @Color">@Msg</label>
-        }
-     <label> Email :</label>
-        <input type="text" @bind="Lastname" @bind:event ="oninput"/>
-        @if (!string.IsNullOrEmpty(Lastname))
-        {
-            <label style="color: @Color">@Msg</label>
-        }
-     <label> Email :</label>
-        <input type="text" @bind="PhoneNumber" @bind:event ="oninput"/>
-        @if (!string.IsNullOrEmpty(PhoneNumber))
-        {
-            <label style="color: @Color">@Msg</label>
-        }
-     <label> Email :</label>
-        <input type="text" @bind="Address" @bind:event ="oninput"/>
-        @if (!string.IsNullOrEmpty(Address))
-        {
-            <label style="color: @Color">@Msg</label>
-        }
-     <label> Email :</label>
-        <input type="text" @bind="DriveLicense" @bind:event ="oninput"/>
-    @if (!string.IsNullOrEmpty(DriveLicense))
+    <input type="text" @bind="Email" @bind:event="oninput"/>
+  
+    <label> Password :</label>
+    <input type="password" @bind="Password" @bind:event="oninput"/>
+ 
+    <label> First Name :</label>
+    <input type="text" @bind="Firstname" @bind:event="oninput"/>
+ 
+    <label> Last Name :</label>
+    <input type="text" @bind="Lastname" @bind:event="oninput"/>
+ 
+    <label> Phone Number :</label>
+    <input type="text" @bind="PhoneNumber" @bind:event="oninput"/>
+   
+    <label> Address :</label>
+    <input type="text" @bind="Address" @bind:event="oninput"/>
+  
+    <label> Driving License Number :</label>
+    <input type="text" @bind="DriveLicense" @bind:event="oninput"/>
+    @if (string.IsNullOrEmpty(DriveLicense))
     {
         DriveLicense = null;
     }
     <div class="button-row">
-            <button @onclick="CreateAsync" disabled="@(string.IsNullOrEmpty(Email))" class="acceptbtn">Create</button>
-        </div>
+        <button @onclick="CreateAsync" disabled="@(string.IsNullOrEmpty(Email))" class="acceptbtn">Create</button>
+        <label style="color: @Color">@Msg</label>
+        
+    </div>
 
 </div>
 
@@ -62,9 +46,10 @@
     private string Lastname = "";
     private string PhoneNumber = "";
     private string Address = "";
-    private string DriveLicense = "";
+    private string? DriveLicense = "";
     private string Color = "";
     private string Msg = "";
+    private string SuccessMsg = "";
 
     private async Task CreateAsync()
     {
@@ -72,17 +57,16 @@
         try
         {
             await UserClient.CreateAsync(new User(Email, Password, Firstname, Lastname, PhoneNumber, Address, DriveLicense));
-            
-    Email = "";
-     Password = "";
-     Firstname = "";
+
+            Email = "";
+            Password = "";
+            Firstname = "";
             Lastname = "";
-     PhoneNumber = "";
-     Address = "";
-     DriveLicense = "";
-     Color = "green";
-     Msg = "your Account has been add successfully";
-    
+            PhoneNumber = "";
+            Address = "";
+            DriveLicense = "";
+            Color = "green";
+            Msg = "your Account has been add successfully";
         }
         catch (Exception e)
         {
