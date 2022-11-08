@@ -1,6 +1,9 @@
 
+using Application.Logic;
+using Application.LogicInterfaces;
 using Grpc.Net.Client;
 using gRPCClient.gRPC_Imp;
+using gRPCClient.GrpcInterfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<UserGrpcImp>();
+builder.Services.AddScoped<IUserService,UserGrpcImp>();
+builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddGrpc();
 builder.Services.AddSingleton(new UserServices.UserServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 

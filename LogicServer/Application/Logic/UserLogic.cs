@@ -32,15 +32,15 @@ public class UserLogic:IUserLogic
             throw new Exception("Email cannot bee less than 3 characters");
         }
 
-        if (!user.Email.Contains("@"))
+        if (!user.Email.Contains('@'))
         {
             throw new Exception("Please enter a valid email missing (@)");
 
         }
 
-        if (user.Email.Contains("."))
+        if (!user.Email.Contains('.'))
         {
-            throw new Exception("Email must have a domain ");
+            throw new Exception("Email must have a domain "+user.Email);
         }
 
         if (user.Phone.Length<8)
@@ -54,7 +54,8 @@ public class UserLogic:IUserLogic
 
         }
 
-        if (!Regex.Match(user.Phone, @"^(\+[0-9])$").Success)
+        int i = 12345678;
+        if (!int.TryParse(user.Phone,out i))
         {
             throw new Exception("please enter a valid phone number");
 

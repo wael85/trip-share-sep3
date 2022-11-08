@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 [ApiController]
-[Route("[controller")]
+[Route("[controller]")]
 
 public class UserController :ControllerBase
 {
@@ -17,7 +17,7 @@ public class UserController :ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ReturnedUserDTO>> CreateAsync(User user)
+    public async Task<ActionResult<ReturnedUserDTO>> CreateAsync([FromBody]User user)
     {
         try
         {

@@ -13,7 +13,7 @@ message RequestUserInfo{
   string last_name = 4;
   string phone = 5;
   string address = 6;
-  string drive_license = 7;
+  optional string drive_license = 7;
 }
 message ResponseUserInfo{
   string first_name = 1;
