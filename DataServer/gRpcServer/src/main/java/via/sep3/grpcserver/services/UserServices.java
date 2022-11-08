@@ -10,10 +10,8 @@ import via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo;
 import via.sep3.grpcserver.protobuf.userservices.UserServicesGrpc;
 import via.sep3.grpcserver.repositorys.UserRepository;
 
-<<<<<<< HEAD
 import java.util.Optional;
-=======
->>>>>>> origin/main
+
 
 @GRpcService
 public class UserServices extends UserServicesGrpc.UserServicesImplBase {
@@ -30,15 +28,8 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
         u.setLastName(userInfo.getLastName());
         u.setEmail(userInfo.getEmail());
         u.setPhone(userInfo.getPhone());
-<<<<<<< HEAD
         Optional<User> existed = userRepository.findByEmail(u.getEmail());
         if (existed.isPresent()){
-=======
-        User existed = userRepository.getReferenceById(u.getEmail());
-
-        if (existed.getEmail().equals("")){
-
->>>>>>> origin/main
             responseUserInfo.onNext(ResponseUserInfo.newBuilder().build());
             responseUserInfo.onCompleted();
         }else {
