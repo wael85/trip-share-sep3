@@ -22,19 +22,20 @@ public static partial class UserReflection {
   static UserReflection() {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
-          "ChBQcm90by91c2VyLnByb3RvIpABCg9SZXF1ZXN0VXNlckluZm8SDQoFZW1h",
+          "ChBQcm90by91c2VyLnByb3RvIqcBCg9SZXF1ZXN0VXNlckluZm8SDQoFZW1h",
           "aWwYASABKAkSEAoIcGFzc3dvcmQYAiABKAkSEgoKZmlyc3RfbmFtZRgDIAEo",
           "CRIRCglsYXN0X25hbWUYBCABKAkSDQoFcGhvbmUYBSABKAkSDwoHYWRkcmVz",
-          "cxgGIAEoCRIVCg1kcml2ZV9saWNlbnNlGAcgASgJImgKEFJlc3BvbnNlVXNl",
-          "ckluZm8SEgoKZmlyc3RfbmFtZRgBIAEoCRIRCglsYXN0X25hbWUYAiABKAkS",
-          "DQoFcGhvbmUYAyABKAkSDwoHYWRkcmVzcxgEIAEoCRINCgVlbWFpbBgFIAEo",
-          "CTJBCgxVc2VyU2VydmljZXMSMQoKY3JlYXRlVXNlchIQLlJlcXVlc3RVc2Vy",
-          "SW5mbxoRLlJlc3BvbnNlVXNlckluZm9CJQohdmlhLnNlcDMuZ3JwY3NlcnZl",
-          "ci5wcm90b2J1Zi51c2VyUAFiBnByb3RvMw=="));
+          "cxgGIAEoCRIaCg1kcml2ZV9saWNlbnNlGAcgASgJSACIAQFCEAoOX2RyaXZl",
+          "X2xpY2Vuc2UiaAoQUmVzcG9uc2VVc2VySW5mbxISCgpmaXJzdF9uYW1lGAEg",
+          "ASgJEhEKCWxhc3RfbmFtZRgCIAEoCRINCgVwaG9uZRgDIAEoCRIPCgdhZGRy",
+          "ZXNzGAQgASgJEg0KBWVtYWlsGAUgASgJMkEKDFVzZXJTZXJ2aWNlcxIxCgpj",
+          "cmVhdGVVc2VyEhAuUmVxdWVzdFVzZXJJbmZvGhEuUmVzcG9uc2VVc2VySW5m",
+          "b0IlCiF2aWEuc2VwMy5ncnBjc2VydmVyLnByb3RvYnVmLnVzZXJQAWIGcHJv",
+          "dG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-          new pbr::GeneratedClrTypeInfo(typeof(global::RequestUserInfo), global::RequestUserInfo.Parser, new[]{ "Email", "Password", "FirstName", "LastName", "Phone", "Address", "DriveLicense" }, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::RequestUserInfo), global::RequestUserInfo.Parser, new[]{ "Email", "Password", "FirstName", "LastName", "Phone", "Address", "DriveLicense" }, new[]{ "DriveLicense" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ResponseUserInfo), global::ResponseUserInfo.Parser, new[]{ "FirstName", "LastName", "Phone", "Address", "Email" }, null, null, null, null)
         }));
   }
@@ -166,14 +167,26 @@ public sealed partial class RequestUserInfo : pb::IMessage<RequestUserInfo>
 
   /// <summary>Field number for the "drive_license" field.</summary>
   public const int DriveLicenseFieldNumber = 7;
-  private string driveLicense_ = "";
+  private string driveLicense_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public string DriveLicense {
-    get { return driveLicense_; }
+    get { return driveLicense_ ?? ""; }
     set {
       driveLicense_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
     }
+  }
+  /// <summary>Gets whether the "drive_license" field is set</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public bool HasDriveLicense {
+    get { return driveLicense_ != null; }
+  }
+  /// <summary>Clears the value of the "drive_license" field</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public void ClearDriveLicense() {
+    driveLicense_ = null;
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -211,7 +224,7 @@ public sealed partial class RequestUserInfo : pb::IMessage<RequestUserInfo>
     if (LastName.Length != 0) hash ^= LastName.GetHashCode();
     if (Phone.Length != 0) hash ^= Phone.GetHashCode();
     if (Address.Length != 0) hash ^= Address.GetHashCode();
-    if (DriveLicense.Length != 0) hash ^= DriveLicense.GetHashCode();
+    if (HasDriveLicense) hash ^= DriveLicense.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -254,7 +267,7 @@ public sealed partial class RequestUserInfo : pb::IMessage<RequestUserInfo>
       output.WriteRawTag(50);
       output.WriteString(Address);
     }
-    if (DriveLicense.Length != 0) {
+    if (HasDriveLicense) {
       output.WriteRawTag(58);
       output.WriteString(DriveLicense);
     }
@@ -292,7 +305,7 @@ public sealed partial class RequestUserInfo : pb::IMessage<RequestUserInfo>
       output.WriteRawTag(50);
       output.WriteString(Address);
     }
-    if (DriveLicense.Length != 0) {
+    if (HasDriveLicense) {
       output.WriteRawTag(58);
       output.WriteString(DriveLicense);
     }
@@ -324,7 +337,7 @@ public sealed partial class RequestUserInfo : pb::IMessage<RequestUserInfo>
     if (Address.Length != 0) {
       size += 1 + pb::CodedOutputStream.ComputeStringSize(Address);
     }
-    if (DriveLicense.Length != 0) {
+    if (HasDriveLicense) {
       size += 1 + pb::CodedOutputStream.ComputeStringSize(DriveLicense);
     }
     if (_unknownFields != null) {
@@ -357,7 +370,7 @@ public sealed partial class RequestUserInfo : pb::IMessage<RequestUserInfo>
     if (other.Address.Length != 0) {
       Address = other.Address;
     }
-    if (other.DriveLicense.Length != 0) {
+    if (other.HasDriveLicense) {
       DriveLicense = other.DriveLicense;
     }
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
