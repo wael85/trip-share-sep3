@@ -80,12 +80,17 @@ public interface RequestUserInfoOrBuilder extends
       getAddressBytes();
 
   /**
-   * <code>string drive_license = 7;</code>
+   * <code>optional string drive_license = 7;</code>
+   * @return Whether the driveLicense field is set.
+   */
+  boolean hasDriveLicense();
+  /**
+   * <code>optional string drive_license = 7;</code>
    * @return The driveLicense.
    */
   java.lang.String getDriveLicense();
   /**
-   * <code>string drive_license = 7;</code>
+   * <code>optional string drive_license = 7;</code>
    * @return The bytes for driveLicense.
    */
   com.google.protobuf.ByteString

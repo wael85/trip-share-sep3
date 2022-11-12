@@ -17,7 +17,7 @@ public class User {
     private String phone;
     @Column(nullable = false)
     private String address;
-    @Column(name = "drive_license")
+    @Column(name = "drive_license" ,unique = true)
     private String driveLicense;
 
     public String getEmail() {

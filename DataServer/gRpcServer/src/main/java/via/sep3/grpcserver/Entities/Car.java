@@ -11,6 +11,10 @@ public class Car {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false,unique = true)
+    private String plateNumber;
+
+
     @OneToOne
     @JoinColumn(name = "fk_drive_license",unique = true,nullable = false,referencedColumnName = "drive_license")
     private User driver;
@@ -62,5 +66,21 @@ public class Car {
 
     public void setFuelType(String fuelType) {
         this.fuelType = fuelType;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 }
