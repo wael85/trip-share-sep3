@@ -19,7 +19,7 @@ public class UserClientImp : IUserClient
     
     public async Task<ReturnedUserDTO> CreateAsync(User user)
     {
-        var response = await client.PostAsJsonAsync("/user", user);
+        var response = await client.PostAsJsonAsync("/users", user);
         var result = await response.Content.ReadAsStringAsync();
         
         if (!response.IsSuccessStatusCode)
