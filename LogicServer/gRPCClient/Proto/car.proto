@@ -1,0 +1,27 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "via.sep3.grpcserver.protobuf.carservices";
+
+service CarServices{
+  rpc createCar(RequestCarInfo) returns (ResponseCarInfo);
+}
+
+message RequestCarInfo{
+  string model = 1;
+  string color = 2;
+  string plate_number = 3;
+  int32 seats_count = 4;
+  string fuel_type = 5;
+  string driver_drive_license = 6;
+}
+message ResponseCarInfo{
+  string model = 1;
+  string color = 2;
+  string plate_number = 3;
+  int32 seats_count = 4;
+  string fuel_type = 5;
+}
+message ErrorResponse{
+  int32 status = 1;
+  string message = 2;
+}

@@ -1,4 +1,5 @@
 
+using Application.GrpcInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
 using Grpc.Net.Client;
@@ -15,10 +16,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService,UserGrpcImp>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
+builder.Services.AddScoped<IRegisterCarService, RegisterCarGrpcImp>();
+builder.Services.AddScoped<IRegisterCarLogic, RegisterCarLogic>();
 builder.Services.AddGrpc();
-builder.Services.AddSingleton(new UserServices.UserServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 
-// builder.Services.AddSingleton(new UserService.UserServiceClient(GrpcChannel.ForAddress("https://localhost:8081")));
+
+builder.Services.AddSingleton(new UserServices.UserServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
+builder.Services.AddSingleton(new CarServices.CarServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 
 var app = builder.Build();
 app.UseCors(x => x

@@ -10,7 +10,6 @@ namespace Domain.Model;
 
 public class Car
 {
-    
     [JsonPropertyName("registration_number")]
     public string PlateNumber { get; set; }
     [JsonPropertyName("color")]
@@ -22,9 +21,9 @@ public class Car
     [JsonPropertyName("fuel_type")]
     public string FuelType { get; set; }
 
+
     public Car( string plateNumber, string color, string carModel, int seatsCount, string fuelType)
     {
-        
         PlateNumber = plateNumber;
         Color = color;
         CarModel = carModel;
