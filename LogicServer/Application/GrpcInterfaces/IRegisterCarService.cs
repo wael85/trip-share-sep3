@@ -5,5 +5,5 @@ namespace Application.GrpcInterfaces;
 
 public interface IRegisterCarService
 {
-    Task<Car> RegisterAsync(string driverLicense,Car car);
+    Task<Car> RegisterAsync(BeADriverRequestDto dto);
 }

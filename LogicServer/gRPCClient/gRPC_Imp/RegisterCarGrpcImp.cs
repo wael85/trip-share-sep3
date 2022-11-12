@@ -7,22 +7,28 @@ namespace gRPCClient.gRPC_Imp;
 public class RegisterCarGrpcImp:IRegisterCarService
 {
     private readonly CarServices.CarServicesClient _client;
-    
-    public async Task<Car> RegisterAsync(string driverLicense ,Car car)
+
+    public RegisterCarGrpcImp(CarServices.CarServicesClient client)
+    {
+        _client = client;
+    }
+
+    public async Task<Car> RegisterAsync(BeADriverRequestDto dto)
     {
         var request = new RequestCarInfo
         {
-            Model = car.CarModel,
-            Color = car.Color,
-            PlateNumber = car.PlateNumber,
-            SeatsCount = car.SeatsCount,
-            FuelType = car.FuelType,
-            DriverDriveLicense = driverLicense
+            Model = dto.CarModel,
+            Color = dto.Color,
+            PlateNumber = dto.PlateNumber,
+            SeatsCount = dto.SeatsCount,
+            FuelType = dto.FuelType,
+            DriverDriveLicense = dto.DriveLicense
         };
-        var carInfo = _client.createCar(request);
+        var carInfo = await _client.createCarAsync(request);
+        
 
-        Car response = new Car(car.PlateNumber, carInfo.Color, carInfo.Model, car.SeatsCount, car.FuelType);
+        Car response = new Car(carInfo.PlateNumber, carInfo.Color, carInfo.Model, carInfo.SeatsCount, carInfo.FuelType);
 
-        return await Task.FromResult(response);
+        return response;
     }
 }

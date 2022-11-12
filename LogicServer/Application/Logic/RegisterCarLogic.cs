@@ -1,5 +1,6 @@
 using Application.GrpcInterfaces;
 using Application.LogicInterfaces;
+using Domain.DTOs;
 using Domain.Model;
 
 namespace Application.Logic;
@@ -14,10 +15,10 @@ public class RegisterCarLogic:IRegisterCarLogic
         _service = service;
     }
 
-    public async Task<Car> RegisterAsync(string driverLicense, Car car)
+    public async Task<Car> RegisterAsync(BeADriverRequestDto dto)
     {
-        var response = await _service.RegisterAsync(driverLicense, car);
-        
-        return await Task.FromResult(response); 
+        var response = await _service.RegisterAsync(dto);
+
+        return response;
     }
 }

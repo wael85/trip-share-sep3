@@ -22,12 +22,8 @@
     <ItemGroup>
       <None Remove="Proto\user.proto" />
       <Protobuf Include="Proto\user.proto" GrpcServices="Client" />
-      <None Remove="Proto\car.proto" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Proto\car.proto" />
+      <None Remove="Proto\car.proto"  />
+        <Protobuf Include="Proto\car.proto" GrpcServices="Client" />
     </ItemGroup>
     
-
 </Project>
