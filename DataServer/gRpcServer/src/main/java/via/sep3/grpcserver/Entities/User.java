@@ -17,8 +17,8 @@ public class User {
     private String phone;
     @Column(nullable = false)
     private String address;
-    @Column(nullable = true)
-    private String driveLicence;
+    @Column(name = "drive_license")
+    private String driveLicense;
 
     public String getEmail() {
         return email;
@@ -60,12 +60,12 @@ public class User {
         this.address = address;
     }
 
-    public String getDriveLicence() {
-        return driveLicence;
+    public String getDriveLicense() {
+        return driveLicense;
     }
 
-    public void setDriveLicence(String driveLicence) {
-        this.driveLicence = driveLicence;
+    public void setDriveLicense(String driveLicense) {
+        this.driveLicense = driveLicense;
     }
 
     @Override
