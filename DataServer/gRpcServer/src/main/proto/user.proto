@@ -22,3 +22,7 @@
    string address = 4;
    string email = 5;
  }
+ message ErrorResponse{
+   int32 status = 1;
+   string message = 2;
+ }
