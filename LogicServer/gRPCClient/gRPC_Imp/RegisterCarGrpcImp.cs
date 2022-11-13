@@ -1,10 +1,11 @@
 using Application.GrpcInterfaces;
 using Domain.DTOs;
 using Domain.Model;
+using Grpc.Core;
 
 namespace gRPCClient.gRPC_Imp;
 
-public class RegisterCarGrpcImp:IRegisterCarService
+public class RegisterCarGrpcImp : IRegisterCarService
 {
     private readonly CarServices.CarServicesClient _client;
 
@@ -24,11 +25,20 @@ public class RegisterCarGrpcImp:IRegisterCarService
             FuelType = dto.FuelType,
             DriverDriveLicense = dto.DriveLicense
         };
-        var carInfo = await _client.createCarAsync(request);
+
         
+        try
+        {
+            var carInfo = await _client.createCarAsync(request);
+            Car response = new Car(carInfo.PlateNumber, carInfo.Color, carInfo.Model, carInfo.SeatsCount,
+                carInfo.FuelType);
+             return response;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception(e.Message);
+        }
 
-        Car response = new Car(carInfo.PlateNumber, carInfo.Color, carInfo.Model, carInfo.SeatsCount, carInfo.FuelType);
-
-        return response;
     }
 }
