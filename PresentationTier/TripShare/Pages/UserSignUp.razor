@@ -1,43 +1,104 @@
 @page "/UserSignUp"
 @using Domain.Model
 @using HttpClient.ClientImplementation
+@using TripShare.Shared.Components
 
 @inject IUserClient UserClient;
-<h3>UserSignUp</h3>
-<div class="card">
-    <h3>Create User</h3>
-    <div class="input"></div>
-    <label> Email :</label>
-    <input type="text" @bind="Email" @bind:event="oninput"/>
-  
-    <label> Password :</label>
-    <input type="password" @bind="Password" @bind:event="oninput"/>
- 
-    <label> First Name :</label>
-    <input type="text" @bind="Firstname" @bind:event="oninput"/>
- 
-    <label> Last Name :</label>
-    <input type="text" @bind="Lastname" @bind:event="oninput"/>
- 
-    <label> Phone Number :</label>
-    <input type="text" @bind="PhoneNumber" @bind:event="oninput"/>
-   
-    <label> Address :</label>
-    <input type="text" @bind="Address" @bind:event="oninput"/>
-  
-    <label> Driving License Number :</label>
-    <input type="text" @bind="DriveLicense" @bind:event="oninput"/>
-    @if (string.IsNullOrEmpty(DriveLicense))
-    {
-        DriveLicense = null;
-    }
-    <div class="button-row">
-        <button @onclick="CreateAsync" disabled="@(string.IsNullOrEmpty(Email))" class="acceptbtn">Create</button>
-        <label style="color: @Color">@Msg</label>
-        
-    </div>
 
-</div>
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-150">
+    <div class="row justify-content-center align-items-center h-75">
+      <div class="col-12 col-lg-12 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-12">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Trip Share</h3>
+            <form>
+               <div class="row">
+                              <div class="col-md-6 mb-4">
+
+                                <div class="form-outline">
+                                    <label class="form-label" for="Example :emial@Domain.com">Email :</label>
+                                  <input type="email" @bind="Email" class="form-control form-control-lg"/>
+
+                                </div>
+                                </div>
+                 <div class="col-md-6 mb-4">
+
+                   <div class="form-outline">
+                     <label class="form-label" >Password :</label>
+                     <input type="password" @bind="Password" class="form-control form-control-lg"/>
+
+                   </div>
+
+                 </div>
+                 </div>
+              <div class="row">
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                     <label class="form-label" for="firstName">First Name :</label>
+                    <input type="text" @bind="Firstname"class="form-control form-control-lg"/>
+
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="lastName">Last Name :</label>
+                    <input type="text" @bind="Lastname" class="form-control form-control-lg"/>
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 d-flex align-items-center">
+
+                  <div class="form-outline datepicker w-100">
+                    <label for="City-street-Nu-floor" class="form-label">Adress :</label>
+                    <input type="text" @bind="Address" class="form-control form-control-lg"/>
+
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="phoneNumber">Phone Number :</label>
+                    
+                    <input type="tel" @bind="PhoneNumber" id="phoneNumber" class="form-control form-control-lg"/>
+
+                  </div>
+                </div>
+              </div>
+              
+              
+              <div class="row">
+                <div class="col-12">
+                  <DriverBox></DriverBox>
+
+                </div>
+              </div>
+
+              <div class="mt-4 pt-2">
+                <input class="btn btn-primary btn-lg" @onclick="CreateAsync" type="submit" value="Submit" />
+              </div>
+              @if (string.IsNullOrEmpty(Msg))
+              {
+
+                <label style="color: @Color">@Msg</label>
+              }
+              
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 @code {
     private string Email = "";
