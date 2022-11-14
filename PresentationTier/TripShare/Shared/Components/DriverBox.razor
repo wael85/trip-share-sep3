@@ -1,0 +1,107 @@
+<div class="row">
+<div class="form-check form-switch">
+    
+    <label class="form-label" for="flexSwitchCheckDefault">Do you want to be a Driver?</label>
+    <input class="form-check-input" style="float: right" type="checkbox" @bind-value="status" id="flexSwitchCheckDefault">
+
+</div>
+</div>
+@if (status)
+{
+
+    <div class="row">
+        <div class="col-md-6 mb-4 d-flex align-items-center">
+
+            <div class="form-outline datepicker w-100">
+                <label class="form-label">DriverLicense Nu. :</label>
+                <input type="text" @bind="DriveLicense" class="form-control form-control-lg"/>
+
+            </div>
+
+        </div>
+        <div class="col-md-6 mb-4 pb-2">
+
+            <div class="form-outline">
+                <label class="form-label" >Plate Number :</label>
+                    
+                <input type="number"  class="form-control form-control-lg"/>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-2 pt-2">
+        <input class="btn btn-primary btn-lg"  @onclick="CheckCar" type="Verify My Car" value="Verify My Car" />
+    </div>
+    
+    
+    
+    <div class="row">
+        <div class="col-md-4 mb-4 d-flex align-items-center">
+
+            <div class="form-outline  w-75">
+                <label  class="form-label">Color :</label>
+               
+                    @if (string.IsNullOrEmpty(Color))
+                    {
+                        <input  type="text" @bind="Color" class="form-control form-control-lg"/>
+                    }
+                    @if (!string.IsNullOrEmpty(Color))
+                    {
+                        <input disabled="disabled" type="text" @bind="Color" class="form-control form-control-lg"/>
+                    }
+                    
+            </div>
+
+        </div>
+        <div class="col-md-4 mb-4 pb-2">
+
+            <div class="form-outline w-75">
+                <label class="form-label" >Type :</label>
+                    
+                <input type="text" disabled="disabled" @bind="CarType" class="form-control form-control-lg"/>
+
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 d-flex align-items-center">
+        
+            <div class="form-outline  w-75">
+                <label  class="form-label">Model :</label>
+                <input type="text" disabled="disabled" @bind="Model" class="form-control form-control-lg"/>
+        
+            </div>
+        
+        </div>
+      
+    </div>
+    
+    <div class="col-md-3 mb-4 pb-2">
+        
+        <div class="form-outline w-50">
+            <label class="form-label" >Number of seats :</label>
+                            
+            <input type="number" @bind="seats" class="form-control form-control-lg"/>
+        
+        </div>
+    </div>
+   
+  
+}
+
+
+@code {
+  private bool status = false;
+   private string DriveLicense="";
+   private string PlateNumber = "";
+    private string Color = "";
+    private string Model = "";
+    private string CarType = "";
+    private int seats = 0;
+
+    private async Task CheckCar()
+    {
+        
+    }
+
+
+}
