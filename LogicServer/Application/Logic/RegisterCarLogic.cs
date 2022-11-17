@@ -21,4 +21,19 @@ public class RegisterCarLogic:IRegisterCarLogic
 
         return response;
     }
+
+    public async Task<Car?> VerifyCar(string plateNumber)
+    {
+        try
+        {
+            Console.WriteLine(plateNumber);
+            Car? car = new Car(plateNumber);
+            return await Task.FromResult(car);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }
