@@ -33,4 +33,17 @@ public class CarsController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+
+    [HttpGet]
+    [Route("verify")]
+    public async Task<Car?> VerifyCar([FromQuery] string plateNumber)
+    {
+        Car? existed = await _carLogic.VerifyCar(plateNumber);
+        if (existed == null)
+        {
+            throw new Exception("Car not exist or it is not personal car..");
+        }
+
+        return await Task.FromResult(existed);
+    } 
 }
