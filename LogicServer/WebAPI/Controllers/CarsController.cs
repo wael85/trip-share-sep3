@@ -17,14 +17,14 @@ public class CarsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Car>> CreateAsync([FromBody]BeADriverRequestDto dto)
+    public async Task<ActionResult<Car>> CreateAsync([FromBody] BeADriverRequestDto dto)
     {
         try
         {
-            
+
             Car returned = await _carLogic.RegisterAsync(dto);
             return Created($"/cars/{dto.DriveLicense}", returned);
-            
+
 
         }
         catch (Exception e)
@@ -36,14 +36,21 @@ public class CarsController : ControllerBase
 
     [HttpGet]
     [Route("verify")]
-    public async Task<Car?> VerifyCar([FromQuery] string plateNumber)
+    public async Task<ActionResult<Car?>> VerifyCar([FromQuery] string plateNumber)
     {
-        Car? existed = await _carLogic.VerifyCar(plateNumber);
-        if (existed == null)
+        try
         {
-            throw new Exception("Car not exist or it is not personal car..");
+            Car? existed = await _carLogic.VerifyCar(plateNumber);
+            return Ok(existed);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
         }
 
-        return await Task.FromResult(existed);
-    } 
+        
+
+
+    }
 }
