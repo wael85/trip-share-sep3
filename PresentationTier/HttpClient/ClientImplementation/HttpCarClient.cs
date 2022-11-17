@@ -30,4 +30,23 @@ public class HttpCarClient : ICarClient
         return car;
 
     }
+
+    public async Task<Car> Verify(string plateNumber)
+    {
+
+        var response = await client.GetAsync($"cars/verify?plateNumber={plateNumber}");
+        var result = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+
+        {
+            throw new Exception(result);
+
+        }
+
+        var car = JsonSerializer.Deserialize<Car>(result, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+        return car;
+    }
 }

@@ -35,7 +35,7 @@ public class RegisterCarLogic:IRegisterCarLogic
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            throw new Exception(e.Message);
         }
     }
 

@@ -1,3 +1,8 @@
+@using HttpClient.ClientImplementation
+@using Domain.Model
+@using Microsoft
+@inject ICarClient client;
+
 <div class="row">
 <div class="form-check form-switch">
     
@@ -24,7 +29,7 @@
             <div class="form-outline">
                 <label class="form-label" >Plate Number :</label>
                     
-                <input type="number"  class="form-control form-control-lg"/>
+                <input type="text" @bind="PlateNumber"  class="form-control form-control-lg"/>
 
             </div>
         </div>
@@ -42,7 +47,7 @@
             <div class="form-outline  w-75">
                 <label  class="form-label">Color :</label>
                
-                    @if (string.IsNullOrEmpty(Color))
+                    @if (string.IsNullOrEmpty(Color)|| Color.Equals("Ukendt"))
                     {
                         <input  type="text" @bind="Color" class="form-control form-control-lg"/>
                     }
@@ -59,7 +64,7 @@
             <div class="form-outline w-75">
                 <label class="form-label" >Type :</label>
                     
-                <input type="text" disabled="disabled" @bind="CarType" class="form-control form-control-lg"/>
+                <input type="text" disabled="disabled" @bind="CarType"  class="form-control form-control-lg"/>
 
             </div>
         </div>
@@ -79,8 +84,16 @@
         
         <div class="form-outline w-50">
             <label class="form-label" >Number of seats :</label>
-                            
-            <input type="number" @bind="seats" class="form-control form-control-lg"/>
+                @if (seats == 0|| seats==null)
+                {
+                    <input type="number" @bind="seats" class="form-control form-control-lg"/>
+                }   
+                @if (seats != 0 || !status == null)
+                {
+                    <input type="number" disabled="disabled" @bind="seats" class="form-control form-control-lg"/>
+                    
+                }
+            
         
         </div>
     </div>
@@ -91,16 +104,28 @@
 
 @code {
   private bool status = false;
-   private string DriveLicense="";
-   private string PlateNumber = "";
-    private string Color = "";
-    private string Model = "";
-    private string CarType = "";
-    private int seats = 0;
+
+    [Parameter]
+    public string DriveLicense { get; set; } = "";
+    [Parameter]
+    public string PlateNumber { get; set; } = "";
+    [Parameter]
+    public string Color { get; set; } = "";
+    [Parameter]
+    public string Model { get; set; } = "";
+    [Parameter]
+    public string CarType { get; set; } = "";
+    [Parameter]
+    public int seats { get; set; }
+  
 
     private async Task CheckCar()
     {
-        
+        Car car= await client.Verify(PlateNumber);
+        Color = car.Color;
+        Model = car.CarModel;
+        CarType = car.FuelType;
+        seats = (int)car.SeatsCount;
     }
 
 

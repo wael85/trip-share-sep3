@@ -8,4 +8,14 @@ public class BeADriverRequestDto
     public string CarModel { get; set; }
     public int SeatsCount { get; set; }
     public string FuelType { get; set; }
+
+    public BeADriverRequestDto(string? driveLicense, string plateNumber, string color, string carModel, int seatsCount, string fuelType)
+    {
+        DriveLicense = driveLicense;
+        PlateNumber = plateNumber;
+        Color = color;
+        CarModel = carModel;
+        SeatsCount = seatsCount;
+        FuelType = fuelType;
+    }
 }

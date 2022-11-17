@@ -2,9 +2,10 @@
 @using Domain.Model
 @using HttpClient.ClientImplementation
 @using TripShare.Shared.Components
+@using Domain.DTOs
 
 @inject IUserClient UserClient;
-
+@inject ICarClient CarClient;
 <section class="vh-100 gradient-custom">
   <div class="container py-5 h-150">
     <div class="row justify-content-center align-items-center h-75">
@@ -68,7 +69,7 @@
                   <div class="form-outline">
                     <label class="form-label" for="phoneNumber">Phone Number :</label>
                     
-                    <input type="tel" @bind="PhoneNumber" id="phoneNumber" class="form-control form-control-lg"/>
+                    <input type="number" @bind="PhoneNumber" id="phoneNumber" class="form-control form-control-lg"/>
 
                   </div>
                 </div>
@@ -77,7 +78,7 @@
               
               <div class="row">
                 <div class="col-12">
-                  <DriverBox></DriverBox>
+                  <DriverBox DriveLicense="DriveLicense" PlateNumber="plateNumber" CarType="FuelType" seats="Sreats" Color="CarColor" Model="CarModel"></DriverBox>
 
                 </div>
               </div>
@@ -107,17 +108,31 @@
     private string Lastname = "";
     private string PhoneNumber = "";
     private string Address = "";
-    private string? DriveLicense = "";
+    private string? DriveLicense ="";
     private string Color = "";
     private string Msg = "";
     private string SuccessMsg = "";
+  private string plateNumber = "";
+  private string CarColor = "";
+  private string CarModel = "";
+  private string FuelType = "";
+  private int Sreats = 0;
+  
 
     private async Task CreateAsync()
     {
         Msg = "";
         try
         {
-            await UserClient.CreateAsync(new User(Email, Password, Firstname, Lastname, PhoneNumber, Address, DriveLicense));
+          if (!string.IsNullOrEmpty(plateNumber))
+          {
+
+
+            await CarClient.CreateAsync(new BeADriverRequestDto(DriveLicense, plateNumber, CarColor, CarModel, Sreats, FuelType));
+          }
+
+
+          await UserClient.CreateAsync(new User(Email, Password, Firstname, Lastname, PhoneNumber, Address, DriveLicense));
 
             Email = "";
             Password = "";
@@ -126,6 +141,10 @@
             PhoneNumber = "";
             Address = "";
             DriveLicense = "";
+          CarColor = "";
+          CarModel = "";
+          FuelType = "";
+          Sreats = 0;
             Color = "green";
             Msg = "your Account has been add successfully";
         }
