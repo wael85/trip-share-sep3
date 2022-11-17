@@ -6,4 +6,6 @@ namespace Application.LogicInterfaces;
 public interface IRegisterCarLogic
 {
     Task<Car> RegisterAsync(BeADriverRequestDto dto);
+
+    Task<Car?> VerifyCar(string plateNumber);
 }
