@@ -1,0 +1,108 @@
+@page "/TripsSearch"
+@using Domain.Model
+@using Radzen
+@using Radzen.Blazor
+
+<div class="row">
+    
+    <div class="col-md-6 align-middle" >
+        <div class="input-group mb-3 ">
+            <span class="input-group-text">Trip</span>
+            <input type="text" class="form-control" placeholder="Start City">
+            <input type="text" class="form-control" placeholder="Destination City">
+        </div>
+    </div>
+    <div class="col-md-6 align-middle">
+        <RadzenCard>
+            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Trip Date</RadzenText>
+            <RadzenDatePicker Min="DateTime.Today.AddDays(0)" @bind-Value=@value ShowTime="true"  Change=@(args => OnChange(args.Value))
+                              HourFormat="12" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100" />
+        </RadzenCard>
+    </div>
+
+</div>
+<!--Trips cards container -->
+<div class="container-fluid mt-5">
+    <div class="row list-group-horizontal justify-content-center">
+           @if (trips == null)
+            {
+                <p>Loding .. ..</p>
+            }
+            else if (!trips.Any())
+            {
+                <p>There is no available trips ..</p>
+            }
+            else
+            {
+                @foreach (Trip t in trips)
+                {
+                    <div class="card list-group-item col-4 m-3  border-2" style="width: 18rem;">
+                    <!-- we can add car picture or driver
+                    <img src="..." class="card-img-top" alt="...">
+                   -->
+                    <div class="card-body">
+                            <h5 class="card-title">Trip To @t.Stops[t.Stops.Count -1].City</h5>
+                            <p class="card-text">Hello I am @t.Driver.FirstName and I will be happy if you join meon my trip to @t.Stops[t.Stops.Count -1].City </p>
+                        </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Start from: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime </li>
+                        @for (int i = 1; i < t.Stops.Count - 1; i++)
+                        {
+                            <li class="list-group-item">Stop @i : @t.Stops[i].getAddress() , at:@t.Stops[i].ArrivalTime </li>
+                        }
+                        <li class="list-group-item">Last destination: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Go TO Book</a>
+                    </div>
+                    </div>
+                }
+            }
+    </div>
+
+</div>
+
+
+
+@code {
+    private DateTime? value = DateTime.Now;
+    string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
+    int pageSize = 6;
+    int count;
+    bool modal = false;
+    
+    
+    // response to change date on search div
+    void OnChange(DateTime? value1)
+    {
+        value = value1;
+
+    }
+    
+    IEnumerable<Trip> trips;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Location location0 = new Location( 1,"8700","Horsens","ss","22",new DateTime() );
+        Location location1 = new Location( 2,"8700","Vejle","ss","22",new DateTime() );
+        Location location2 = new Location( 2,"8700","Odense","ss","22",new DateTime() );
+        Location location3 = new Location( 3,"8700","Copenhagen","ss","22",new DateTime() );
+        Trip t = new Trip();
+        t.Id = 1; t.Driver = new User("email","99","aqwe","haded","2233444","home","license");
+        t.Passengers = new List<User>();
+        t.Stops = new List<Location>() { location0,location1,location2,location3 };
+        t.AvailableSeats = 3;
+        trips = new List<Trip>(){t,t,t,t,t,t,t,t,t,t,t,t,t,t};
+        /* This to replace with api call to get all trips
+         await base.OnInitializedAsync();
+        count = dbContext.Orders.Count();
+        orders = GetOrders(0, pageSize);
+         */
+
+    }
+ 
+    
+
+ 
+}
