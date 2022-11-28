@@ -8,6 +8,7 @@ import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import via.sep3.grpcserver.Entities.User;
 import via.sep3.grpcserver.protobuf.carservices.ErrorResponse;
+import via.sep3.grpcserver.protobuf.userservices.GetUserByIdRequest;
 import via.sep3.grpcserver.protobuf.userservices.RequestUserInfo;
 import via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo;
 import via.sep3.grpcserver.protobuf.userservices.UserServicesGrpc;
@@ -63,4 +64,30 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
 
     }
 
+    @Override
+    public void getUserById(GetUserByIdRequest request, StreamObserver<ResponseUserInfo> responseObserver) {
+        Optional<User> resultUser = userRepository.findByEmail(request.getUserId());
+
+        if (resultUser.isEmpty()) {
+            Metadata.Key<ErrorResponse> errorResponseKey = ProtoUtils.keyForProto(ErrorResponse.getDefaultInstance());
+            ErrorResponse errorResponse = ErrorResponse.newBuilder()
+                    .setMessage("Driver does not exist")
+                    .setStatus(404)
+                    .build();
+            Metadata metadata = new Metadata();
+            metadata.put(errorResponseKey, errorResponse);
+            responseObserver.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("User with provided email is already existed.")
+                    .asRuntimeException(metadata));
+        } else {
+            var builder = ResponseUserInfo.newBuilder();
+            builder.setAddress(resultUser.get().getAddress())
+                    .setEmail(resultUser.get().getEmail())
+                    .setFirstName(resultUser.get().getFirstName())
+                    .setLastName(resultUser.get().getLastName())
+                    .setPhone(resultUser.get().getPhone());
+            ResponseUserInfo result = builder.build();
+            responseObserver.onNext(result);
+            responseObserver.onCompleted();
+        }
+    }
 }

@@ -4,6 +4,11 @@
 
  service UserServices{
    rpc createUser(RequestUserInfo) returns (ResponseUserInfo);
+   rpc getUserById(GetUserByIdRequest) returns (ResponseUserInfo);
+ }
+ 
+ message GetUserByIdRequest {
+   string user_id = 1;
  }
 
  message RequestUserInfo{
