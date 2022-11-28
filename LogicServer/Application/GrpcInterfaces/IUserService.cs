@@ -6,4 +6,5 @@ namespace gRPCClient.GrpcInterfaces;
 public interface IUserService
 {
     Task<ReturnedUserDTO> CreateAsync(User user);
+    Task<ReturnedUserDTO> GetUserById(string email);
 }
