@@ -1,10 +1,12 @@
+using Domain.DTOs;
+
 namespace Domain.Model;
 
 public class Trip
 {
     public long Id { get; set; }
-    public User Driver { get; set; }
-    public List<User> Passengers { get; set; }
+    public ReturnedUserDTO Driver { get; set; }
+    public List<ReturnedUserDTO> Passengers { get; set; }
     public int AvailableSeats { get; set; }
     public List<SeatTicket> Tickets { get; set; }
     public List<Location> Stops { get; set; }
