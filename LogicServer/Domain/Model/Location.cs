@@ -20,6 +20,10 @@ public class Location
     }
     public Location(){}
 
+    public Location()
+    {
+    }
+
     public string getAddress()
     {
         return StreetName + " " + StreetNumber + ", " + PostCode + " " + City;

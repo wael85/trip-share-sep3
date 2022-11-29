@@ -1,4 +1,5 @@
 using Application.LogicInterfaces;
+using Domain.DTOs;
 using Domain.Model;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ public class TripsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Trip>> CreateAsync([FromBody]Trip trip)
+    public async Task<ActionResult<Trip>> CreateAsync([FromBody]TripCreationDto trip)
     {
         try
         {

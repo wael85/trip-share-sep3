@@ -25,20 +25,18 @@ public class TripGrpcImp : ITripServices
         {
             DriverId = trip.Driver.Email,
             AvailableSeats = trip.AvailableSeats,
-            FullPrice = trip.AvailableSeats,
+            FullPrice = trip.FullPrice,
+             
             
         };
-        foreach (var stop in trip.Stops)
-        {
-            foreach (var rstop in request.Stops)
-            {
-                rstop.City = stop.City;
-                rstop.ArrivalTime = stop.ArrivalTime.Ticks;
-                rstop.PostCode = stop.PostCode;
-                rstop.StreetName = stop.StreetName;
-                rstop.StreetNumber = stop.StreetNumber; 
-            };
 
+        for (int i = 0; i < trip.Stops.Count; i++)
+        {
+            request.Stops[i].City= trip.Stops[i].City;
+            request.Stops[i].ArrivalTime = trip.Stops[i].ArrivalTime.Ticks;
+            request.Stops[i].PostCode = trip.Stops[i].PostCode;
+            request.Stops[i].StreetName = trip.Stops[i].StreetName;
+            request.Stops[i].StreetNumber = trip.Stops[i].StreetNumber;
         }
             
     
@@ -49,9 +47,8 @@ public class TripGrpcImp : ITripServices
         Trip returend = new Trip
         {
             AvailableSeats = response.AvailableSeats,
-            Passengers = new List<ReturnedUserDTO>(),
             Driver = await UserService.GetUserById(response.DriverId),                   
-            Tickets = new List<SeatTicket>(),
+           FullPrice = response.FullPrice
         };
         
         List<Location> locations = new List<Location>();
