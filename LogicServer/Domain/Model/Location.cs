@@ -19,6 +19,10 @@ public class Location
         ArrivalTime = arrivalTime;
     }
 
+    public Location()
+    {
+    }
+
     public string getAddress()
     {
         return StreetName + " " + StreetNumber + ", " + PostCode + " " + City;
