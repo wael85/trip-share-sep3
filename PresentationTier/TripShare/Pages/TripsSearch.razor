@@ -2,6 +2,7 @@
 @using Domain.Model
 @using Radzen
 @using Radzen.Blazor
+@using Domain.DTOs
 
 <div class="row">
     
@@ -89,8 +90,8 @@
         Location location2 = new Location( 2,"8700","Odense","ss","22",new DateTime() );
         Location location3 = new Location( 3,"8700","Copenhagen","ss","22",new DateTime() );
         Trip t = new Trip();
-        t.Id = 1; t.Driver = new User("email","99","aqwe","haded","2233444","home","license");
-        t.Passengers = new List<User>();
+        t.Id = 1; t.Driver = new ReturnedUserDTO();
+        t.Passengers = new List<ReturnedUserDTO>();
         t.Stops = new List<Location>() { location0,location1,location2,location3 };
         t.AvailableSeats = 3;
         trips = new List<Trip>(){t,t,t,t,t,t,t,t,t,t,t,t,t,t};

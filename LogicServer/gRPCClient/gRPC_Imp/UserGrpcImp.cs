@@ -44,4 +44,25 @@ public class UserGrpcImp : IUserService
       
 
     }
+
+    public async Task<ReturnedUserDTO> GetUserById(string email)
+    {
+
+        GetUserRequest request = new GetUserRequest
+        {
+            Email = email
+        };
+        
+        ResponseUserInfo response = await client.GetUserByIdAsync(request);
+        
+        return new ReturnedUserDTO
+        {
+            Address = response.Address,
+            Email = response.Email,
+            FirstName = response.FirstName,
+            LastName = response.LastName,
+            Phone = response.Phone
+        };
+
+    }
 }
