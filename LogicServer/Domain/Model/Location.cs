@@ -19,10 +19,7 @@ public class Location
         ArrivalTime = arrivalTime;
     }
     public Location(){}
-
-    public Location()
-    {
-    }
+    
 
     public string getAddress()
     {
