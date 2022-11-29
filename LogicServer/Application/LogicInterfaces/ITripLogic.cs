@@ -1,3 +1,4 @@
+using Domain.DTOs;
 using Domain.Model;
 
 namespace Application.LogicInterfaces;
@@ -5,5 +6,5 @@ namespace Application.LogicInterfaces;
 public interface ITripLogic
 {
 
-    Task<Trip> CreateAsync(Trip trip);
+    Task<Trip> CreateAsync(TripCreationDto trip);
 }

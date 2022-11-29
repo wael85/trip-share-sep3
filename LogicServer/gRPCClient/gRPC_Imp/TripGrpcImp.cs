@@ -25,7 +25,7 @@ public class TripGrpcImp : ITripServices
         {
             DriverId = trip.Driver.Email,
             AvailableSeats = trip.AvailableSeats,
-            FullPrice = trip.AvailableSeats,
+            FullPrice = trip.FullPrice,
              
             
         };
@@ -47,9 +47,8 @@ public class TripGrpcImp : ITripServices
         Trip returend = new Trip
         {
             AvailableSeats = response.AvailableSeats,
-            Passengers = new List<ReturnedUserDTO>(),
             Driver = await UserService.GetUserById(response.DriverId),                   
-            Tickets = new List<SeatTicket>(),
+           FullPrice = response.FullPrice
         };
         
         List<Location> locations = new List<Location>();
