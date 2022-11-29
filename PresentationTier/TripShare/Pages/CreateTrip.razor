@@ -5,6 +5,7 @@
 @using Domain.Model
 @using HttpClient.ClientImplementation
 @using Radzen
+@using Domain.DTOs
 @inject NotificationService _servic
 @inject ITripClient _client;
 
@@ -245,8 +246,8 @@
             Trip t = new Trip();
         
             //TODO: add login user
-            t.Driver = new User("a", "w", "v", "v", "d", "d", "d");
-            t.Passengers = new List<User>();
+            t.Driver = new ReturnedUserDTO();
+            t.Passengers = new List<ReturnedUserDTO>();
             t.Stops = stops;
             t.Tickets = new List<SeatTicket>();
             t.FullPrice = fullPrice;
