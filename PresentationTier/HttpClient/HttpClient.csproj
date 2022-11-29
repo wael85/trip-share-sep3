@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="ClientInterfaces" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\LogicServer\Domain\Domain.csproj" />
     </ItemGroup>
 

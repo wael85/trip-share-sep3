@@ -18,6 +18,7 @@ public class Location
         StreetNumber = streetNumber;
         ArrivalTime = arrivalTime;
     }
+    public Location(){}
 
     public string getAddress()
     {
