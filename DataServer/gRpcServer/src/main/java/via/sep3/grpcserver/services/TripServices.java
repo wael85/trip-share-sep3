@@ -33,7 +33,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
     public void createTrip(TripCreationRequest request, StreamObserver<TripResponse> responseObserver) {
         Trip trip = new Trip();
 
-        trip.setFullPrice(request.getFullPrice());
+        trip.setFullPrice((int) request.getFullPrice());
         trip.setAvailableSeats(request.getAvailableSeats());
         trip.setDriver(userRepository.findByEmail(request.getDriverId()).get());
 
