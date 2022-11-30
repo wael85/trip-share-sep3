@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     phone_ = "";
     address_ = "";
     email_ = "";
+    driverLicense_ = "";
   }
 
   @java.lang.Override
@@ -43,6 +44,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -83,6 +85,12 @@ private static final long serialVersionUID = 0L;
             email_ = s;
             break;
           }
+          case 50: {
+            java.lang.String s = input.readStringRequireUtf8();
+            bitField0_ |= 0x00000001;
+            driverLicense_ = s;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -117,6 +125,7 @@ private static final long serialVersionUID = 0L;
             via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo.class, via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo.Builder.class);
   }
 
+  private int bitField0_;
   public static final int FIRST_NAME_FIELD_NUMBER = 1;
   private volatile java.lang.Object firstName_;
   /**
@@ -307,6 +316,52 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int DRIVERLICENSE_FIELD_NUMBER = 6;
+  private volatile java.lang.Object driverLicense_;
+  /**
+   * <code>optional string driverLicense = 6;</code>
+   * @return Whether the driverLicense field is set.
+   */
+  @java.lang.Override
+  public boolean hasDriverLicense() {
+    return ((bitField0_ & 0x00000001) != 0);
+  }
+  /**
+   * <code>optional string driverLicense = 6;</code>
+   * @return The driverLicense.
+   */
+  @java.lang.Override
+  public java.lang.String getDriverLicense() {
+    java.lang.Object ref = driverLicense_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      driverLicense_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>optional string driverLicense = 6;</code>
+   * @return The bytes for driverLicense.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getDriverLicenseBytes() {
+    java.lang.Object ref = driverLicense_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      driverLicense_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -336,6 +391,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, email_);
     }
+    if (((bitField0_ & 0x00000001) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, driverLicense_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -359,6 +417,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, email_);
+    }
+    if (((bitField0_ & 0x00000001) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, driverLicense_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -385,6 +446,11 @@ private static final long serialVersionUID = 0L;
         .equals(other.getAddress())) return false;
     if (!getEmail()
         .equals(other.getEmail())) return false;
+    if (hasDriverLicense() != other.hasDriverLicense()) return false;
+    if (hasDriverLicense()) {
+      if (!getDriverLicense()
+          .equals(other.getDriverLicense())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -406,6 +472,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getAddress().hashCode();
     hash = (37 * hash) + EMAIL_FIELD_NUMBER;
     hash = (53 * hash) + getEmail().hashCode();
+    if (hasDriverLicense()) {
+      hash = (37 * hash) + DRIVERLICENSE_FIELD_NUMBER;
+      hash = (53 * hash) + getDriverLicense().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -549,6 +619,8 @@ private static final long serialVersionUID = 0L;
 
       email_ = "";
 
+      driverLicense_ = "";
+      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -575,11 +647,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo buildPartial() {
       via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo result = new via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo(this);
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
       result.firstName_ = firstName_;
       result.lastName_ = lastName_;
       result.phone_ = phone_;
       result.address_ = address_;
       result.email_ = email_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        to_bitField0_ |= 0x00000001;
+      }
+      result.driverLicense_ = driverLicense_;
+      result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
     }
@@ -648,6 +727,11 @@ private static final long serialVersionUID = 0L;
         email_ = other.email_;
         onChanged();
       }
+      if (other.hasDriverLicense()) {
+        bitField0_ |= 0x00000001;
+        driverLicense_ = other.driverLicense_;
+        onChanged();
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -676,6 +760,7 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object firstName_ = "";
     /**
@@ -1053,6 +1138,89 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       email_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object driverLicense_ = "";
+    /**
+     * <code>optional string driverLicense = 6;</code>
+     * @return Whether the driverLicense field is set.
+     */
+    public boolean hasDriverLicense() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional string driverLicense = 6;</code>
+     * @return The driverLicense.
+     */
+    public java.lang.String getDriverLicense() {
+      java.lang.Object ref = driverLicense_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        driverLicense_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>optional string driverLicense = 6;</code>
+     * @return The bytes for driverLicense.
+     */
+    public com.google.protobuf.ByteString
+        getDriverLicenseBytes() {
+      java.lang.Object ref = driverLicense_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        driverLicense_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>optional string driverLicense = 6;</code>
+     * @param value The driverLicense to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDriverLicense(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+      driverLicense_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional string driverLicense = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDriverLicense() {
+      bitField0_ = (bitField0_ & ~0x00000001);
+      driverLicense_ = getDefaultInstance().getDriverLicense();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional string driverLicense = 6;</code>
+     * @param value The bytes for driverLicense to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDriverLicenseBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      bitField0_ |= 0x00000001;
+      driverLicense_ = value;
       onChanged();
       return this;
     }

@@ -175,7 +175,7 @@
     }
     void OnChangeEndDate(DateTime? value)
   {
-        if (value <= startDateTime)
+        if (value < startDateTime)
         {
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = "End time can not be before start", Duration = 4000 });
             endDateTime = null;
@@ -184,7 +184,7 @@
         endDateTime = value;
   } void OnChangeStopDate(DateTime? value)
   {
-      if (stopDateTime < startDateTime || stopDateTime >= endDateTime)
+      if (value < startDateTime || value > endDateTime)
       {
           ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = "Stop time is not valid", Duration = 6000 });
           stopDateTime = null;
@@ -236,6 +236,8 @@
 
     private async void CreateTripAsync()
     {
+        Location start = new Location() { ArrivalTime = endDateTime!.Value, City = endCityName, StreetName = endCityName, PostCode = endZipCode, StreetNumber = endStreetNumber };
+        Location end = new Location() { ArrivalTime = startDateTime.Value, City = startCityName, StreetName = startCityName, PostCode = startZipCode, StreetNumber = startStreetNumber };
         if (startDateTime == null || endDateTime == null)
         {
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"Trips Dates need to be set... ", Duration = 6000 });
@@ -243,18 +245,19 @@
         }
         else
         {
-            Trip t = new Trip();
-        
-            //TODO: add login user
-            t.Driver = new ReturnedUserDTO();
-            t.Passengers = new List<ReturnedUserDTO>();
-            t.Stops = stops;
-            t.Tickets = new List<SeatTicket>();
-            t.FullPrice = fullPrice;
-            t.AvailableSeats = availableSeats;
+    //TODO: add login user
+
+            TripCreationDto dto = new TripCreationDto();
+            dto.DriverId = "Hello";
+            dto.Stops = stops;
+            dto.FullPrice = fullPrice;
+            dto.AvailableSeats = availableSeats;
+            dto.Stops.Add(end);
+            dto.Stops.Prepend(start);
             try
             {
-               // var trip = await _client.CreateTripAsync(t);
+                var trip = await _client.CreateTripAsync(dto);
+                Console.WriteLine(trip.Id);
                 ShowNotification(new NotificationMessage { Style = "position: absolute; left: -1000px;",
                     Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Success Detail", Duration = 60000 });
                startDateTime = null;
@@ -281,7 +284,7 @@
             }
             catch (Exception e)
             {
-                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = " Something went wrong..", Duration = 6000 });
 
             }
         }

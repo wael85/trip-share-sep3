@@ -18,12 +18,13 @@ public class TripsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Trip>> CreateAsync([FromBody]TripCreationDto trip)
+    public async Task<ActionResult<Trip>> CreateAsync([FromBody]TripCreationDto dto)
     {
         try
         {
-            Trip trip1 =   await logic.CreateAsync(trip);
-            return Created($"/trips/{trip1.Id}",trip1);
+            Console.WriteLine("at calling the end point");
+            Trip retuTrip =   await logic.CreateAsync(dto);
+            return Created($"/trips/{retuTrip.Id}",retuTrip);
 
         }
         catch (Exception e)

@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(schema = "trip_share")
+@Table(name = "location" ,schema = "trip_share")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,22 @@ public class Location {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "dropLocation",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<SeatTicket>dropLocations=new HashSet<>();
 
+
+    public Set<SeatTicket> getPickUpLocations() {
+        return pickUpLocations;
+    }
+
+    public void setPickUpLocations(Set<SeatTicket> pickUpLocations) {
+        this.pickUpLocations = pickUpLocations;
+    }
+
+    public Set<SeatTicket> getDropLocations() {
+        return dropLocations;
+    }
+
+    public void setDropLocations(Set<SeatTicket> dropLocations) {
+        this.dropLocations = dropLocations;
+    }
 
     public Location() {
     }

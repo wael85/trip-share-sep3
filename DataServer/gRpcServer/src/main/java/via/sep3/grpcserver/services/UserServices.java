@@ -1,3 +1,4 @@
+
 package via.sep3.grpcserver.services;
 
 
@@ -56,6 +57,7 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
                     .setFirstName(resultUser.getFirstName())
                     .setLastName(resultUser.getLastName())
                     .setPhone(resultUser.getPhone())
+                    .setDriverLicense(resultUser.getDriveLicense())
                     .build();
             responseUserInfo.onNext(result);
             responseUserInfo.onCompleted();
@@ -84,10 +86,12 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
                     .setEmail(resultUser.get().getEmail())
                     .setFirstName(resultUser.get().getFirstName())
                     .setLastName(resultUser.get().getLastName())
-                    .setPhone(resultUser.get().getPhone());
+                    .setPhone(resultUser.get().getPhone())
+                    .setDriverLicense(resultUser.get().getDriveLicense() != null ? resultUser.get().getDriveLicense() : "");
             ResponseUserInfo result = builder.build();
             responseObserver.onNext(result);
             responseObserver.onCompleted();
         }
     }
 }
+

@@ -45,6 +45,37 @@ public final class UserServicesGrpc {
     return getCreateUserMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.userservices.GetUserRequest,
+      via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> getGetUserByIdMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetUserById",
+      requestType = via.sep3.grpcserver.protobuf.userservices.GetUserRequest.class,
+      responseType = via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.userservices.GetUserRequest,
+      via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> getGetUserByIdMethod() {
+    io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.userservices.GetUserRequest, via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> getGetUserByIdMethod;
+    if ((getGetUserByIdMethod = UserServicesGrpc.getGetUserByIdMethod) == null) {
+      synchronized (UserServicesGrpc.class) {
+        if ((getGetUserByIdMethod = UserServicesGrpc.getGetUserByIdMethod) == null) {
+          UserServicesGrpc.getGetUserByIdMethod = getGetUserByIdMethod =
+              io.grpc.MethodDescriptor.<via.sep3.grpcserver.protobuf.userservices.GetUserRequest, via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetUserById"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.userservices.GetUserRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo.getDefaultInstance()))
+              .setSchemaDescriptor(new UserServicesMethodDescriptorSupplier("GetUserById"))
+              .build();
+        }
+      }
+    }
+    return getGetUserByIdMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -100,6 +131,13 @@ public final class UserServicesGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateUserMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getUserById(via.sep3.grpcserver.protobuf.userservices.GetUserRequest request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetUserByIdMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -109,6 +147,13 @@ public final class UserServicesGrpc {
                 via.sep3.grpcserver.protobuf.userservices.RequestUserInfo,
                 via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>(
                   this, METHODID_CREATE_USER)))
+          .addMethod(
+            getGetUserByIdMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                via.sep3.grpcserver.protobuf.userservices.GetUserRequest,
+                via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>(
+                  this, METHODID_GET_USER_BY_ID)))
           .build();
     }
   }
@@ -134,6 +179,14 @@ public final class UserServicesGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getCreateUserMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getUserById(via.sep3.grpcserver.protobuf.userservices.GetUserRequest request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetUserByIdMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -155,6 +208,13 @@ public final class UserServicesGrpc {
     public via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo createUser(via.sep3.grpcserver.protobuf.userservices.RequestUserInfo request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateUserMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo getUserById(via.sep3.grpcserver.protobuf.userservices.GetUserRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetUserByIdMethod(), getCallOptions(), request);
     }
   }
 
@@ -179,9 +239,18 @@ public final class UserServicesGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getCreateUserMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> getUserById(
+        via.sep3.grpcserver.protobuf.userservices.GetUserRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetUserByIdMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_CREATE_USER = 0;
+  private static final int METHODID_GET_USER_BY_ID = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -202,6 +271,10 @@ public final class UserServicesGrpc {
       switch (methodId) {
         case METHODID_CREATE_USER:
           serviceImpl.createUser((via.sep3.grpcserver.protobuf.userservices.RequestUserInfo) request,
+              (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>) responseObserver);
+          break;
+        case METHODID_GET_USER_BY_ID:
+          serviceImpl.getUserById((via.sep3.grpcserver.protobuf.userservices.GetUserRequest) request,
               (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>) responseObserver);
           break;
         default:
@@ -266,6 +339,7 @@ public final class UserServicesGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new UserServicesFileDescriptorSupplier())
               .addMethod(getCreateUserMethod())
+              .addMethod(getGetUserByIdMethod())
               .build();
         }
       }

@@ -1,3 +1,4 @@
+
 package via.sep3.grpcserver.services;
 
 import io.grpc.stub.StreamObserver;
@@ -88,3 +89,4 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
         super.getTripsByUserID(request, responseObserver);
     }
 }
+

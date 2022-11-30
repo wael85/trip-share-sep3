@@ -1,9 +1,12 @@
 
+using System.Collections.ObjectModel;
 using Application.GrpcInterfaces;
 using Domain.DTOs;
 using Domain.Model;
+using Google.Protobuf.Collections;
 using Google.Protobuf.Reflection;
 using gRPCClient.GrpcInterfaces;
+using Microsoft.VisualBasic;
 
 namespace gRPCClient.gRPC_Imp;
 
@@ -17,59 +20,67 @@ public class TripGrpcImp : ITripServices
         this.client = client;
     }
 
-    public async Task<Trip> CreateAsync(Trip trip)
+    public async Task<Trip> CreateAsync(TripCreationDto dto)
     {
-
+        List<TripCreationRequest.Types.Location> createlocations = new List<TripCreationRequest.Types.Location>(); 
+        dto.Stops.ForEach(x =>
+        {
+            TripCreationRequest.Types.Location l = new TripCreationRequest.Types.Location()
+            {
+                ArrivalTime = x.ArrivalTime.Millisecond,
+                City = x.City,
+                PostCode = x.PostCode,
+                StreetName = x.StreetName,
+                StreetNumber = x.StreetNumber
+            };
+            createlocations.Add(l);
+        });
 
         TripCreationRequest request = new TripCreationRequest
         {
-            DriverId = trip.Driver.Email,
-            AvailableSeats = trip.AvailableSeats,
-            FullPrice = trip.FullPrice,
-             
+            DriverId = dto.DriverId,
+            AvailableSeats = dto.AvailableSeats,
+            FullPrice = dto.FullPrice,
+            Stops = {createlocations}
             
-        };
-
-        for (int i = 0; i < trip.Stops.Count; i++)
-        {
-            request.Stops[i].City= trip.Stops[i].City;
-            request.Stops[i].ArrivalTime = trip.Stops[i].ArrivalTime.Ticks;
-            request.Stops[i].PostCode = trip.Stops[i].PostCode;
-            request.Stops[i].StreetName = trip.Stops[i].StreetName;
-            request.Stops[i].StreetNumber = trip.Stops[i].StreetNumber;
-        }
-            
-    
-    
-
-        TripResponse response = await client.createTripAsync(request);
-
-        Trip returend = new Trip
-        {
-            AvailableSeats = response.AvailableSeats,
-            Driver = await UserService.GetUserById(response.DriverId),                   
-           FullPrice = response.FullPrice
         };
         
-        List<Location> locations = new List<Location>();
-        foreach (var stop in response.Stops)
+
+        TripResponse response = await client.createTripAsync(request);
+        List<Location> resList = new List<Location>();
+        foreach(var x in response.Stops)
         {
-            Location location = new Location(
-                stop.Id,
-                stop.PostCode,
-                stop.City,
-                stop.StreetName,
-                stop.StreetNumber,
-                new DateTime(stop.ArrivalTime));
-            
-            
-            locations.Add(location);
-
+            Location l = new Location()
+            {
+                ArrivalTime = new DateTime(x.ArrivalTime),
+                City = x.City,
+                PostCode = x.PostCode,
+                StreetName = x.StreetName,
+                StreetNumber = x.StreetNumber
+            };
+            resList.Add(l);
         }
+//Todo: Replace hardcoded obj with getUserByEmail or UserName
+        ReturnedUserDTO d = new ReturnedUserDTO()
+        {
+            Address = "address",
+            Email = "Email",
+            FirstName = "Wael",
+            LastName = "Haded"
+        }; //await UserService.GetUserById(response.DriverId);
 
-        returend.Stops = locations;
+        Trip reTrip = new Trip();
 
-        return returend;
+        reTrip.Id = response.Id;
+        reTrip.AvailableSeats = response.AvailableSeats;
+        reTrip.Driver = d;
+        reTrip.FullPrice = response.FullPrice;
+        reTrip.Passengers = new List<ReturnedUserDTO>();
+        reTrip.Stops = resList;
+        reTrip.Tickets = new List<SeatTicket>();
+        
+
+        return await Task.FromResult(reTrip);
     }
 
 

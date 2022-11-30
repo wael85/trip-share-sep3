@@ -2,8 +2,6 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_package = "via.sep3.grpcserver.protobuf.tripservices";
 
-import "ticket.proto";
-
 service TripServices {
   rpc createTrip (TripCreationRequest) returns (TripResponse);
   rpc getTripsByUserID (TripsByDriverIDRequest) returns (TripsByDriverIDResponse);
@@ -30,7 +28,7 @@ message TripResponse {
   int32 available_seats = 3;
   string driver_id = 4;
   repeated Location stops = 5;
-  repeated SeatTicketResponse tickets = 6;
+  repeated SeatTicketResponseB tickets = 6;
   
   message Location {
     int64 id = 1;
@@ -41,6 +39,16 @@ message TripResponse {
     int64 arrival_time = 6;
   }
 }
+message SeatTicketResponseB {
+  int64 id = 1;
+  double seat_price = 2;
+  int32 total_seats = 3;
+  string passenger_id = 4;
+  int64 trip_id = 5;
+  int64 pickup_id = 6;
+  int64 dropoff_id = 7;
+}
+
 
 message TripsByDriverIDRequest {
   repeated string user_ids = 1;
