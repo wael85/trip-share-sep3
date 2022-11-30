@@ -27,12 +27,13 @@ public class TripGrpcImp : ITripServices
         {
             TripCreationRequest.Types.Location l = new TripCreationRequest.Types.Location()
             {
-                ArrivalTime = x.ArrivalTime.Millisecond,
+                ArrivalTime =(long)(x.ArrivalTime - new DateTime(1970, 1, 1)).TotalMilliseconds,
                 City = x.City,
                 PostCode = x.PostCode,
                 StreetName = x.StreetName,
                 StreetNumber = x.StreetNumber
             };
+            Console.WriteLine("num mili " + x.ArrivalTime);
             createlocations.Add(l);
         });
 
