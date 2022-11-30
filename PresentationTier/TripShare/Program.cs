@@ -1,4 +1,5 @@
 using HttpClient.ClientImplementation;
+using HttpClient.ClientInterfaces;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
@@ -12,6 +13,7 @@ builder.Services.AddScoped(sp => new System.Net.Http.HttpClient { BaseAddress = 
 builder.Services.AddScoped<IUserClient, UserClientImp>();
 builder.Services.AddScoped<ICarClient, HttpCarClient>();
 builder.Services.AddScoped<ITripClient, HttpTripClient>();
+builder.Services.AddScoped<ISeatTicketClient, HttpSeatTicketClient>();
 builder.Services.AddScoped<NotificationService>();
 
 await builder.Build().RunAsync();

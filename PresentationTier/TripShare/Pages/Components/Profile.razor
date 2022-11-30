@@ -1,0 +1,42 @@
+
+@using HttpClient.ClientInterfaces
+
+@inject IUserClient _userClient;
+@namespace Components
+
+
+<div class="card">
+     <div class="card-body">
+         
+         <p ><strong>EMAIL: </strong> @Email</p>
+         <p> <strong>FIRSTNAME: </strong>@firstName</p>
+         <p> <strong>LASTNAME: </strong>@lastName</p>
+         <p> <strong>PHONE: </strong>@phone</p>
+         <p> <strong>ADDRESS: </strong>@address</p>
+     </div>
+    </div>
+
+@code {
+    
+    [Parameter]
+    public string Email { get; set; }
+    
+    private string firstName;
+    private string lastName;
+    private string phone;
+    private string address;
+    
+        <!--todo this component is for check the profiles -->
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await _userClient.GetByIdAsync(Email);
+        Email = user.Email;
+        firstName = user.FirstName;
+        lastName = user.LastName;
+        phone = user.Phone;
+        address = user.Address;
+        
+        
+    }
+    
+}
