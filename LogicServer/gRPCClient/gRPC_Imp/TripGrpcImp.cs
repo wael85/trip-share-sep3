@@ -33,7 +33,6 @@ public class TripGrpcImp : ITripServices
                 StreetName = x.StreetName,
                 StreetNumber = x.StreetNumber
             };
-            Console.WriteLine("num mili " + x.ArrivalTime);
             createlocations.Add(l);
         });
 
