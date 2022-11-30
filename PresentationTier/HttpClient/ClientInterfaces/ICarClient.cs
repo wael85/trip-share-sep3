@@ -1,7 +1,7 @@
 using Domain.DTOs;
 using Domain.Model;
 
-namespace HttpClient.ClientImplementation;
+namespace HttpClient.ClientInterfaces;
 
 public interface ICarClient
 {

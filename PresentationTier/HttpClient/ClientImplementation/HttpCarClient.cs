@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Domain.DTOs;
 using Domain.Model;
+using HttpClient.ClientInterfaces;
 
 namespace HttpClient.ClientImplementation;
 

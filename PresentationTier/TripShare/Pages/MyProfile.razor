@@ -1,0 +1,255 @@
+@page "/MyProfile"
+@using Domain.Model
+@using Radzen.Blazor;
+@using Radzen
+@using Components
+@using System.Collections.Immutable
+@using HttpClient.ClientInterfaces
+@inject IUserClient _userClient;
+@inject ITripClient _tripClient;
+@inject ISeatTicketClient _SeatTicket;
+@inject NotificationService _servic
+
+<RadzenNotification/>
+<div class="row " style="margin: 10px">
+    <h3 class="col-md-9">My Profile</h3>
+    @if (!string.IsNullOrEmpty(drivingLicence))
+    {
+        <p class="col-md-3">Driver / Passenger</p>
+    }
+    else
+    {
+        <p class="col-lg-3">Passenger</p>
+    }
+
+</div>
+<hr style="margin: 5px"/>
+<div class="row ">
+    <div class="col-md-6">
+        <!--User details -->
+        <div class="col-lg-12">
+            <div class="card" style="margin-top: 40px">
+                <div class="card-body">
+
+                    <p >
+                        <strong>EMAIL: </strong> @email
+                    </p>
+                    <p>
+                        <strong>FIRST NAME: </strong>@firstName
+                    </p>
+                    <p>
+                        <strong>LAST NAME: </strong>@lastName
+                    </p>
+                    <p>
+                        <strong>PHONE: </strong>@phone
+                    </p>
+                    <p>
+                        <strong>ADDRESS: </strong>@address
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--Tickets -->
+        <div class="col-md-12">
+            <h5 style="margin-top: 10px">Tickets</h5>
+            @if (!myTickets.Any())
+            {
+                <p>There is no available tickets ..</p>
+            }
+            <div class="overflow-auto" style="height:300px; margin: 10px ">
+                <div class="row m-3">
+                    @foreach (SeatTicket ticket in myTickets)
+                    {
+                        <div class="card col-3 ml-2 " style="width: 18rem;margin: 5px">
+                            <div class="card-body">
+                                <div class="row">
+                                    <small class="card-text col-9">
+                                        <strong>Price: </strong>@ticket.SeatPrice
+                                    </small> <br>
+                                    @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now)
+                                    {
+                                        <small class="col-3" style="color: red">Done</small>
+                                    }
+                                    else
+                                    {
+                                        <small class="col-3" style="color: green">Active</small>
+                                    }
+                                </div>
+                                <small class="card-text"><strong>Seats: </strong>@ticket.SeatAmount kr</small> <br>
+                                <small class="card-text">
+                                    <strong>Meet time: </strong>@ticket.PickUpLocation.ArrivalTime
+                                </small> <br>
+                                <small class="card-text">
+                                    <strong>From: </strong>@ticket.PickUpLocation.getAddress()
+                                </small> <br>
+                                <small class="card-text">
+                                    <strong>Arrival: </strong>@ticket.DropLocation.ArrivalTime
+                                </small> <br>
+                                <small class="card-text">
+                                    <strong>To: </strong>@ticket.DropLocation.getAddress()
+                                </small> <br>
+                                @if (ticket.PickUpLocation.ArrivalTime >= DateTime.Now)
+                                {
+                                    <button style="width: 100px" class="btn-danger" @onclick="(args) => { CancelTicketAsync(ticket.Id); }">
+                                        <small>Cancel</small>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6 ">
+        <!--My trips or be a driver -->
+        <div class="col-md-12">
+            @if (string.IsNullOrEmpty(drivingLicence))
+            {
+                <div class="container" style="margin: 10px">
+                    <DriverBox
+                        OnDriveLicenseChange="UpdateDriveLicense" OnColorChange="UpdateCarColor" OnModelChange="UpdateCarModel"
+                        OnSeatsChange="UpdateSeats" OnCarTypeChange="UpdateFuelType" OnPlateNumberChange="UpdatePlateNumber">
+                    </DriverBox>
+                </div>
+            }
+            else
+            {
+                <h5 style="margin: 5px">My Trips</h5>
+                <div class="card overflow-auto" style="height:400px">
+                    @if (!myTrips.Any())
+                    {
+                        <p>There is no available trips ..</p>
+                    }
+                    @foreach (var tr in myTrips.ToImmutableList().Reverse())
+                    {
+                        <div class="card" style="margin: 10px">
+                            <div class="card-body">
+                                <div class="row">
+                                    <small class="col-10 card-text text-muted">Trip Id: @tr.Id</small>
+                                    @if (tr.Stops.First().ArrivalTime <= DateTime.Now)
+                                    {
+                                        <p class="col-2" style="color: red">Done</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="col-2" style="color: green">Active</p>
+                                    }
+
+                                </div>
+                                <hr/>
+                                @foreach (var s in tr.Stops)
+                                {
+                                    <small class="card-text text-muted">@s.ArrivalTime</small>
+                                    <p class="card-text">
+                                        @s.getAddress()
+                                    </p>
+                                }
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <!--todo seat request -->
+                <h5 style="margin: 10px">Seats request</h5>
+                <div class="overflow-auto" style="height:200px; margin: 10px ;">
+
+                    <p style="margin: 5px">Travel id: 1, username: juan</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    private string email;
+    private string firstName;
+    private string lastName;
+    private string phone;
+    private string address;
+    private string? drivingLicence;
+    private List<Trip> myTrips = new();
+    private List<SeatTicket> myTickets = new();
+    private string? DriveLicense;
+    private string Color = "";
+    private string SuccessMsg = "";
+    private string plateNumber = "";
+    private string CarColor = "";
+    private string CarModel = "";
+    private string FuelType = "";
+    private int Seats = 0;
+        <!--todo -->
+    //private List<RequestNotification> requestNotifications;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var user = await _userClient.GetByIdAsync("juan");
+            IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
+
+            <!--todo requestNotification -->
+            // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(email);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
+        }
+    }
+
+    private async void CancelTicketAsync(long id)
+    {
+        try
+        {
+            await _SeatTicket.CancelTicketAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
+        }
+    }
+
+    public void UpdateDriveLicense(string s)
+    {
+        DriveLicense = s;
+    }
+
+    public void UpdatePlateNumber(string s)
+    {
+        plateNumber = s;
+    }
+
+    public void UpdateCarColor(string s)
+    {
+        CarColor = s;
+    }
+
+    public void UpdateFuelType(string s)
+    {
+        FuelType = s;
+    }
+
+    public void UpdateCarModel(string s)
+    {
+        CarModel = s;
+    }
+
+    public void UpdateSeats(int i)
+    {
+        Seats = i;
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        _servic.Notify(message);
+    }
+
+}
