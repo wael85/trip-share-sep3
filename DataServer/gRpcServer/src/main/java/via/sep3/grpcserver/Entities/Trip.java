@@ -1,11 +1,10 @@
 package via.sep3.grpcserver.Entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(schema = "trip_share")
+@Table(name = "trip" ,schema = "trip_share")
 public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +26,19 @@ public class Trip {
     public Trip() {
 
     }
+
+    public List<Location> getStops() {
+        ArrayList<Location> stopsList = new ArrayList<>(stops);
+        stopsList.sort(Comparator.comparing(Location::getArrivalTime));
+
+
+        return stopsList ;
+    }
+
+    public void setStops(Set<Location> stops) {
+        this.stops = stops;
+    }
+
     public void addStopLocation(Location stopLocation){
         stops.add(stopLocation);
         stopLocation.setTrip(this);

@@ -66,4 +66,21 @@ public interface ResponseUserInfoOrBuilder extends
    */
   com.google.protobuf.ByteString
       getEmailBytes();
+
+  /**
+   * <code>optional string driverLicense = 6;</code>
+   * @return Whether the driverLicense field is set.
+   */
+  boolean hasDriverLicense();
+  /**
+   * <code>optional string driverLicense = 6;</code>
+   * @return The driverLicense.
+   */
+  java.lang.String getDriverLicense();
+  /**
+   * <code>optional string driverLicense = 6;</code>
+   * @return The bytes for driverLicense.
+   */
+  com.google.protobuf.ByteString
+      getDriverLicenseBytes();
 }

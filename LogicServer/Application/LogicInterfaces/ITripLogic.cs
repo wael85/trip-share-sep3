@@ -6,5 +6,5 @@ namespace Application.LogicInterfaces;
 public interface ITripLogic
 {
 
-    Task<Trip> CreateAsync(TripCreationDto trip);
+    Task<Trip> CreateAsync(TripCreationDto dto);
 }

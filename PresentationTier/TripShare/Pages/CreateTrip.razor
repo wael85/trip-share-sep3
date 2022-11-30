@@ -6,131 +6,134 @@
 @using HttpClient.ClientImplementation
 @using Radzen
 @using Domain.DTOs
-@using HttpClient.ClientInterfaces
+@using System.Security.Cryptography.X509Certificates
+@using System.Diagnostics
 @inject NotificationService _servic
 @inject ITripClient _client;
+@inject NavigationManager navG;
 
 
 <h2 class="mb-3" style="color: #1a1e21">Create a new Trip: </h2>
 <RadzenNotification/>
-<form class="container-fluid" action="/TripsSearch">
-     <!---------------------------------Start Point------------------------------> 
-     <div class="row border border-light border-2 container mt-5">
-         <h3>Start City: </h3>
-         <div class="col-md-2">
-             <label for="validationDefault03" class="form-label">Street Name</label>
-             <input type="text" @bind="startStreetName" class="form-control" id="validationDefault11" required>
-         </div>
-         <div class="col-md-2">
-             <label for="validationDefault03" class="form-label">Street number</label>
-             <input type="text" @bind="startStreetNumber" class="form-control" id="validationDefault12" required>
-         </div>
-         <div class="col-md-1">
-             <label for="validationDefault05" class="form-label">Zip</label>
-             <input type="text" @bind="startZipCode" class="form-control" id="validationDefault13" required>
-         </div>
-         <div class="col-md-2">
-             <label for="validationDefault03" class="form-label">City</label>
-             <input type="text" @bind="startCityName" class="form-control" id="validationDefault14" required>
-         </div>
-         <div class="col-md-4 align-middle">
-             <RadzenCard>
-                 <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Trip Start:</RadzenText>
-                 <RadzenDatePicker  Min="DateTime.Today.AddDays(0)" @bind-Value=@startDateTime ShowTime="true" Change=@(args => OnChangeStartDate(args.Value))
-                                    HourFormat="12" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100"/>
-             </RadzenCard>
-         </div>
-     </div>
-          <!---------------------------------End Point------------------------------> 
 
-     <div class="row border border-light border-2 container mt-5">
-         <h3>Destination City: </h3>
-         <div class="col-md-2">
-             <label for="validationDefault03" class="form-label">Street Name</label>
-             <input type="text" @bind="endStreetName" class="form-control" id="validationDefault01" required>
-         </div>
-         <div class="col-md-2">
-             <label for="validationDefault03" class="form-label">Street number</label>
-             <input type="text" @endStreetNumber class="form-control" id="validationDefault02" required>
-         </div>
-         <div class="col-md-1">
-             <label for="validationDefault05" class="form-label">Zip</label>
-             <input type="text" @bind="endZipCode" class="form-control" id="validationDefault03" required>
-         </div>
-         <div class="col-md-2">
-             <label for="validationDefault03" class="form-label">City</label>
-             <input type="text" @bind="endCityName" class="form-control" id="validationDefault04" required>
-         </div>
-         <div class="col-md-4 align-middle">
-             <RadzenCard>
-                 <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Arriving on:</RadzenText>
-                 <RadzenDatePicker r Min="DateTime.Today.AddDays(0)" @bind-Value=@endDateTime ShowTime="true" Change=@(args => OnChangeEndDate(args.Value))
-                                   HourFormat="12" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100"/>
-             </RadzenCard>
-         </div>
-     </div>
-          <!---------------------------------price and seats ------------------------------> 
+<form class="container-fluid" autocomplete="on" target="_self">
+    <!---------------------------------Start Point------------------------------>
+    <div class="row border border-light border-2 container mt-5">
+        <h3>Start City: </h3>
+        <div class="col-md-2">
+            <label for="validationDefault01" class="form-label">Street Name</label>
+            <input type="text" @bind="startStreetName" class="form-control" id="validationDefault01" required>
+        </div>
+        <div class="col-md-2">
+            <label for="validationDefault02" class="form-label">Street number</label>
+            <input type="text" @bind="startStreetNumber" class="form-control" id="validationDefault02" required>
+        </div>
+        <div class="col-md-1">
+            <label for="validationDefault03" class="form-label">Zip</label>
+            <input type="text" @bind="startZipCode" class="form-control" id="validationDefault03" required>
+        </div>
+        <div class="col-md-2">
+            <label for="validationDefault04" class="form-label">City</label>
+            <input type="text" @bind="startCityName" class="form-control" id="validationDefault04" required>
+        </div>
+        <div class="col-md-4 align-middle">
+            <RadzenCard>
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Trip Start:</RadzenText>
+                <RadzenDatePicker Min="DateTime.Today.AddDays(0)" @bind-Value=@startDateTime ShowTime="true" Change=@(args => OnChangeStartDate(args.Value))
+                                  HourFormat="24" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100"/>
+            </RadzenCard>
+        </div>
+    </div>
+    <!---------------------------------End Point------------------------------>
 
-     <div class="row">
-         <div class="col-3">
-             <label for="validationDefault01" class="form-label">Full price</label>
-             <input type="number" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="validationDefault05" @bind="fullPrice" required>
-         </div>
-         <div class="col-md-3">
-             <label for="validationDefault02" class="form-label">Avilable Seats:</label>
-             <input type="number" max="4" min="1" class="form-control" id="validationDefault06" @bind="availableSeats" required>
-         </div>
-       
-     </div>
-          <!---------------------------------Stops Point------------------------------> 
+    <div class="row border border-light border-2 container mt-5">
+        <h3>Destination City: </h3>
+        <div class="col-md-2">
+            <label for="validationDefault05" class="form-label">Street Name</label>
+            <input type="text"  @bind="endStreetName" class="form-control" id="validationDefault05" required>
+        </div>
+        <div class="col-md-2">
+            <label for="validationDefault06" class="form-label">Street number</label>
+            <input type="text" @bind="endStreetNumber" class="form-control" id="validationDefault06" required>
+        </div>
+        <div class="col-md-1">
+            <label for="validationDefault07" class="form-label">Zip</label>
+            <input type="text" @bind="endZipCode" class="form-control" id="validationDefault07" required>
+        </div>
+        <div class="col-md-2">
+            <label for="validationDefault08" class="form-label">City</label>
+            <input type="text" @bind="endCityName" class="form-control" id="validationDefault08" required>
+        </div>
+        <div class="col-md-4 align-middle">
+            <RadzenCard>
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Arriving on:</RadzenText>
+                <RadzenDatePicker r Min="DateTime.Today.AddDays(0)" @bind-Value=@endDateTime ShowTime="true" Change=@(args => OnChangeEndDate(args.Value))
+                                  HourFormat="24" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100"/>
+            </RadzenCard>
+        </div>
+    </div>
+    <!---------------------------------price and seats ------------------------------>
+
+    <div class="row">
+        <div class="col-3">
+            <label for="validationDefault09" class="form-label">Full price</label>
+            <input type="number" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="validationDefault09" @bind="fullPrice" required>
+        </div>
+        <div class="col-md-3">
+            <label for="validationDefault10" class="form-label">Avilable Seats:</label>
+            <input type="number" max="4" min="1" class="form-control" id="validationDefault10" @bind="availableSeats" required>
+        </div>
+
+    </div>
+    <!---------------------------------Stops Point------------------------------>
 
     <form autocomplete="on" target="_self">
         <div class="row border border-light border-2 container mt-5">
             <h3>Add Stop Location: </h3>
             <div class="col-md-2">
-                <label for="validationDefault03" class="form-label">Street Name</label>
-                <input type="text" @bind="stopStreetName " class="form-control" id="validationDefault07" required>
+                <label for="validationDefault11" class="form-label">Street Name</label>
+                <input type="text" @bind="stopStreetName " class="form-control" id="validationDefault11" required>
             </div>
             <div class="col-md-2">
-                <label for="validationDefault03" class="form-label">Street number</label>
-                <input type="text" class="form-control" @bind="stopStreetNumber" id="validationDefault08" required>
+                <label for="validationDefault12" class="form-label">Street number</label>
+                <input type="text" class="form-control" @bind="stopStreetNumber" id="validationDefault12" required>
             </div>
             <div class="col-md-1">
-                <label for="validationDefault05" class="form-label">Zip</label>
-                <input type="text" @bind="stopZipCode" class="form-control" id="validationDefault09" required>
+                <label for="validationDefault13" class="form-label">Zip</label>
+                <input type="text" @bind="stopZipCode" class="form-control" id="validationDefault13" required>
             </div>
             <div class="col-md-2">
-                <label for="validationDefault03" class="form-label">City</label>
-                <input type="text" class="form-control" @bind="stopCityName" id="validationDefault10" required>
+                <label for="validationDefault14" class="form-label">City</label>
+                <input type="text" class="form-control" @bind="stopCityName" id="validationDefault14" required>
             </div>
             <div class="col-md-4 align-middle">
                 <RadzenCard>
                     <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Arrive to location:</RadzenText>
-                    <RadzenDatePicker  Min="DateTime.Today.AddDays(0)" @bind-Value=@stopDateTime ShowTime="true" Change=@(args => OnChangeStopDate(args.Value))
-                                      HourFormat="12" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100"/>
+                    <RadzenDatePicker Min="DateTime.Today.AddDays(0)" @bind-Value=@stopDateTime ShowTime="true" Change=@(args => OnChangeStopDate(args.Value))
+                                      HourFormat="24" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100"/>
                 </RadzenCard>
             </div>
         </div>
         <button type="button" class="btn-outline-secondary m-4" @onclick="AddLocation">Add Location</button>
     </form>
-     
-     <div class="container-fluid ">
-         <div class="row m-3">
-         @foreach (Location l in stops)
-         {
-                 <div class="card col-3 ml-2" style="width: 18rem;">
-                     <div class="card-body">
-                         <h5 class="card-title">@l.getAddress()</h5>
-                         <h6 class="card-subtitle mb-2 text-muted">@l.ArrivalTime</h6>
-                         <button class="btn-danger" @onclick="(args) => { DeleteLocation(l); }">Remove Stop</button>
-                     </div>
-                 </div>
-         }
-         </div>
 
-     </div>
-     
- <!--   <div class="col-md-3">
+    <div class="container-fluid ">
+        <div class="row m-3">
+            @foreach (Location l in stops)
+            {
+                <div class="card col-3 ml-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@l.getAddress()</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@l.ArrivalTime</h6>
+                        <button class="btn-danger" @onclick="(args) => { DeleteLocation(l); }">Remove Stop</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <!--   <div class="col-md-3">
         <label for="validationDefault04" class="form-label">State</label>
         <select class="form-select" id="validationDefault04" required>
             <option selected disabled value="">Choose...</option>
@@ -139,14 +142,15 @@
     </div> -->
 
     <div class="col-12 mt-5">
-        <button type="button" class="btn btn-primary" @onclick="CreateTripAsync" >Create Trip</button>
+        <button type="button" class="btn btn-primary" @onclick="CreateTripAsync">Create Trip</button>
     </div>
-
 </form>
 
 
 
+
 @code {
+    bool f = false;
     DateTime? startDateTime;
     string startStreetName;
     string startStreetNumber;
@@ -165,32 +169,45 @@
     string stopCityName;
     string stopZipCode;
 
-    double fullPrice;
-    int availableSeats;
+    double fullPrice= 0;
+    int availableSeats = 1;
     List<Location> stops = new List<Location>();
 
 
     void OnChangeStartDate(DateTime? value)
     {
         startDateTime = value;
+        Console.WriteLine("start date : "+startDateTime);
     }
     void OnChangeEndDate(DateTime? value)
   {
-        if (value <= startDateTime)
+        if (value < startDateTime)
         {
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = "End time can not be before start", Duration = 4000 });
             endDateTime = null;
-            return;
+            
         }
-        endDateTime = value;
+        else
+        {
+            endDateTime = value;
+            Console.WriteLine("end date : "+endDateTime);
+ 
+
+        }
   } void OnChangeStopDate(DateTime? value)
   {
-      if (stopDateTime < startDateTime || stopDateTime >= endDateTime)
+      if (value < startDateTime || value > endDateTime)
       {
           ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = "Stop time is not valid", Duration = 6000 });
           stopDateTime = null;
       }
-      stopDateTime = value;
+      else
+      {
+          stopDateTime = value;
+          Console.WriteLine("stop date : "+stopDateTime);
+
+
+      }
   }
 
 
@@ -222,10 +239,10 @@
             };
             stops.Add(l);
             stopDateTime = null;
-            stopStreetName = null;
-            stopStreetNumber = null;
-            stopCityName = null;
-            stopZipCode = null;
+            stopStreetName = "";
+            stopStreetNumber = "";
+            stopCityName = "";
+            stopZipCode = "";
 
         }
     }
@@ -237,52 +254,74 @@
 
     private async void CreateTripAsync()
     {
-        if (startDateTime == null || endDateTime == null)
+        Location end = new Location() { ArrivalTime = endDateTime!.Value, City = endCityName, StreetName = endStreetName, PostCode = endZipCode, StreetNumber = endStreetNumber };
+        Location start = new Location() { ArrivalTime = startDateTime!.Value, City = startCityName, StreetName = startStreetName, PostCode = startZipCode, StreetNumber = startStreetNumber };
+        
+        if (startDateTime == null || endDateTime == null ||
+            String.IsNullOrEmpty(startCityName) 
+            || String.IsNullOrEmpty(startStreetName)
+            || String.IsNullOrEmpty(startStreetNumber)
+            || String.IsNullOrEmpty(startZipCode)
+            || String.IsNullOrEmpty(endCityName) 
+            || String.IsNullOrEmpty(endStreetName)
+            || String.IsNullOrEmpty(endStreetNumber)
+            || String.IsNullOrEmpty(endZipCode)
+        )
         {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"Trips Dates need to be set... ", Duration = 6000 });
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"All Trip field need to be set... ", Duration = 7000 });
 
         }
         else
         {
-            Trip t = new Trip();
-        
-            //TODO: add login user
-            t.Driver = new ReturnedUserDTO();
-            t.Passengers = new List<ReturnedUserDTO>();
-            t.Stops = stops;
-            t.Tickets = new List<SeatTicket>();
-            t.FullPrice = fullPrice;
-            t.AvailableSeats = availableSeats;
+    //TODO: add login user
+
+            
             try
             {
-               // var trip = await _client.CreateTripAsync(t);
-                ShowNotification(new NotificationMessage { Style = "position: absolute; left: -1000px;",
-                    Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Success Detail", Duration = 60000 });
+              
+                stops.Add(end);
+                stops.Insert(0,start);
+                TripCreationDto dto = new TripCreationDto();
+                dto.DriverId = "Hello";
+                dto.Stops = stops;
+                dto.FullPrice = fullPrice;
+                dto.AvailableSeats = availableSeats;
+                
+                var trip = await _client.CreateTripAsync(dto);
+                Console.WriteLine(trip.Id);
+               
                startDateTime = null;
-               startStreetName = null;
-               startStreetNumber = null;
-               startCityName = null;
-               startZipCode = null;
-    
+               startStreetName = "";
+               startStreetNumber = "";
+               startCityName = "";
+               startZipCode = "";
+                
                endDateTime = null;
-               endStreetName = null;
-               endStreetNumber = null;
-               endCityName = null;
-               endZipCode = null;
+               endStreetName = "";
+               endStreetNumber = "";
+               endCityName = "";
+               endZipCode = "";
     
-               stopDateTime = null;
-               stopStreetName = null;
-               stopStreetNumber = null;
-               stopCityName = null;
-               stopZipCode = null;
+                stopDateTime = null;
+                stopStreetName = "";
+                stopStreetNumber = "";
+                stopCityName = "";
+                stopZipCode = "";
 
                  fullPrice = 0;
-                availableSeats = 0;
+                availableSeats = 1;
+                stops.RemoveRange(0,stops.Count);
+                ShowNotification(new NotificationMessage { Style = "position: absolute; left: -1000px;",
+                    Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Success Detail", Duration = 60000 });
+                navG.NavigateTo("/");
 
             }
             catch (Exception e)
             {
-                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
+                stops.Remove(start!);
+                stops.Remove(end!);
+                    ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = " Something went wrong..", Duration = 6000 });
+                Console.WriteLine(e.Message);
 
             }
         }

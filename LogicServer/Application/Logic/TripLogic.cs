@@ -10,17 +10,16 @@ public class TripLogic : ITripLogic
 {
     private readonly IUserService UserService;
     private readonly ITripServices TripServices;
-    public async Task<Trip> CreateAsync(TripCreationDto trip)
+
+    public TripLogic(IUserService userService, ITripServices tripServices)
     {
-        Trip trip1 = new Trip();
+        UserService = userService;
+        TripServices = tripServices;
+    }
 
-        trip1.Stops = trip.Stops;
-        trip1.Driver = await UserService.GetUserById(trip.DriverId);
-        trip1.AvailableSeats = trip.AvailableSeats;
-        trip1.FullPrice = trip.FullPrice;
-
-        return await TripServices.CreateAsync(trip1);
-
-
+    public async Task<Trip> CreateAsync(TripCreationDto dto)
+    {
+        return await TripServices.CreateAsync(dto);
+        
     }
 }

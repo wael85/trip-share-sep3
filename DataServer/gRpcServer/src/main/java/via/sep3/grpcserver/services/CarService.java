@@ -1,3 +1,4 @@
+
 package via.sep3.grpcserver.services;
 
 import io.grpc.Metadata;
@@ -49,3 +50,4 @@ public class CarService extends CarServicesGrpc.CarServicesImplBase {
             responseCarInfo.onCompleted();
     }
 }
+

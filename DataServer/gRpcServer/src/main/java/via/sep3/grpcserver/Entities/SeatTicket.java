@@ -3,7 +3,7 @@ package via.sep3.grpcserver.Entities;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "trip_share")
+@Table(name= "seat_ticket" ,schema = "trip_share")
 public class SeatTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

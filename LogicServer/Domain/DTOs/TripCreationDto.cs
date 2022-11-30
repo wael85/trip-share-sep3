@@ -16,4 +16,8 @@ public class TripCreationDto
         AvailableSeats = availableSeats;
         Stops = stops;
     }
+
+    public TripCreationDto()
+    {
+    }
 }
