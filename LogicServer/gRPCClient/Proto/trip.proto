@@ -5,14 +5,18 @@ option java_package = "via.sep3.grpcserver.protobuf.tripservices";
 service TripServices {
   rpc createTrip (TripCreationRequest) returns (TripResponse);
   rpc getTripsByUserID (TripsByDriverIDRequest) returns (TripsByDriverIDResponse);
+  rpc getAllTrips (Emptymessage) returns (TripsByDriverIDResponse);
+}
+message Emptymessage{
+
 }
 
-message TripCreationRequest { 
+message TripCreationRequest {
   double full_price = 1;
   int32 available_seats = 2;
   string driver_id = 3;
   repeated Location stops = 4;
-  
+
   message Location {
     string post_code = 1;
     string city = 2;
@@ -29,7 +33,7 @@ message TripResponse {
   string driver_id = 4;
   repeated Location stops = 5;
   repeated SeatTicketResponseB tickets = 6;
-  
+
   message Location {
     int64 id = 1;
     string post_code = 2;
@@ -51,7 +55,7 @@ message SeatTicketResponseB {
 
 
 message TripsByDriverIDRequest {
-   string user_ids = 1;
+  string user_ids = 1;
 }
 
 message TripsByDriverIDResponse {

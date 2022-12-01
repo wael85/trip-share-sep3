@@ -1,11 +1,14 @@
 
 package via.sep3.grpcserver.services;
 
+import io.grpc.Metadata;
+import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import via.sep3.grpcserver.Entities.Location;
 import via.sep3.grpcserver.Entities.Trip;
+import via.sep3.grpcserver.protobuf.carservices.ErrorResponse;
 import via.sep3.grpcserver.protobuf.tripservices.*;
 import via.sep3.grpcserver.repositorys.LocationRepository;
 import via.sep3.grpcserver.repositorys.TripRepository;
@@ -15,6 +18,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.TimeZone;
 
 @GRpcService
@@ -66,14 +70,14 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
         responseObserver.onCompleted();
     }
 
-    private List<Location> createLocations (List<TripCreationRequest.Location> stops, Trip trip) {
+    private List<Location> createLocations(List<TripCreationRequest.Location> stops, Trip trip) {
         List<Location> locations = new ArrayList<>();
         for (TripCreationRequest.Location stop : stops) {
             Location location = new Location();
             location.setTrip(trip);
             location.setCity(stop.getCity());
             location.setArrivalTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(stop.getArrivalTime()),
-                                        TimeZone.getDefault().toZoneId()));
+                    TimeZone.getDefault().toZoneId()));
             location.setPostCode(stop.getPostCode());
             location.setStreetName(stop.getStreetName());
             location.setStreetNumber(stop.getStreetNumber());
@@ -85,8 +89,47 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
     }
 
     @Override
-    public void getTripsByUserID(TripsByDriverIDRequest request, StreamObserver<TripsByDriverIDResponse> responseObserver) {
-        super.getTripsByUserID(request, responseObserver);
+    public void getAllTrips(Emptymessage request, StreamObserver<TripsByDriverIDResponse> responseObserver) {
+        List<Trip> trips = tripRepository.findAll();
+        List<Location> stops = locationRepository.findAll();
+        List<TripsByDriverIDResponse> responses = new ArrayList<>();
+        List<TripResponse.Location> locations = new ArrayList<>();
+
+        for (Location l : stops) {
+            TripResponse.Location res = TripResponse.Location.newBuilder()
+                    .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
+                    .setCity(l.getCity())
+                    .setId(l.getId())
+                    .setPostCode(l.getPostCode())
+                    .setStreetName(l.getStreetName())
+                    .setStreetNumber(l.getStreetNumber())
+                    .build();
+            locations.add(res);
+        }
+        var tripsByDriverIDResponse = TripsByDriverIDResponse.newBuilder();
+        for (Trip trip : trips) {
+            TripResponse tripResponse = TripResponse.newBuilder()
+                    .setAvailableSeats(trip.getAvailableSeats())
+                    .setDriverId(trip.getDriver().getEmail())
+                    .setFullPrice(trip.getFullPrice())
+                    .setId(trip.getId())
+                    .addAllStops(locations)
+                    .build();
+
+
+            tripsByDriverIDResponse.addTrips(tripResponse);
+
+        }
+        TripsByDriverIDResponse response = tripsByDriverIDResponse.build();
+        responses.add(response);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+
     }
+
+
+
+
 }
+
 

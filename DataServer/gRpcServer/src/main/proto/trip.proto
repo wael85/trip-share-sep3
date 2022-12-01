@@ -5,6 +5,10 @@ option java_package = "via.sep3.grpcserver.protobuf.tripservices";
 service TripServices {
   rpc createTrip (TripCreationRequest) returns (TripResponse);
   rpc getTripsByUserID (TripsByDriverIDRequest) returns (TripsByDriverIDResponse);
+  rpc getAllTrips (Emptymessage) returns (TripsByDriverIDResponse);
+}
+message Emptymessage{
+
 }
 
 message TripCreationRequest { 
