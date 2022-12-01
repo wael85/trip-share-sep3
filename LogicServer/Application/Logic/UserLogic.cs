@@ -25,6 +25,17 @@ public class UserLogic:IUserLogic
         return toReturn;  
     }
 
+    public async Task<ReturnedUserDTO> GetUserByEmailAsync(string email)
+    {
+        ReturnedUserDTO returned = await service.GetUserById(email);
+        if (returned ==null)
+        {
+            throw new Exception($"User with email :{email} is not exist");
+        }
+
+        return returned;
+    }
+
     private static void ValidateUSer(User user)
     {
         if (user.Email.Length<3)

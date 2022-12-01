@@ -51,7 +51,7 @@ message SeatTicketResponseB {
 
 
 message TripsByDriverIDRequest {
-  repeated string user_ids = 1;
+   string user_ids = 1;
 }
 
 message TripsByDriverIDResponse {

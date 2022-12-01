@@ -60,14 +60,9 @@ public class TripGrpcImp : ITripServices
             };
             resList.Add(l);
         }
-//Todo: Replace hardcoded obj with getUserByEmail or UserName
-        ReturnedUserDTO d = new ReturnedUserDTO()
-        {
-            Address = "address",
-            Email = "Email",
-            FirstName = "Wael",
-            LastName = "Haded"
-        }; //await UserService.GetUserById(response.DriverId);
+
+        ReturnedUserDTO d = await UserService.GetUserById(response.DriverId);
+    
 
         Trip reTrip = new Trip();
 
