@@ -32,5 +32,21 @@ public class UsersController :ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<ActionResult<ReturnedUserDTO>> GetUserByEmailAsync([FromQuery] string email)
+    {
+        try
+        {
+            ReturnedUserDTO toReturn = await userLogic.GetUserByEmailAsync(email);
+            return Ok(toReturn);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
     
 }
