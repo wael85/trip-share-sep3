@@ -91,33 +91,46 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
     @Override
     public void getAllTrips(Emptymessage request, StreamObserver<TripsByDriverIDResponse> responseObserver) {
         List<Trip> trips = tripRepository.findAll();
-        List<Location> stops = locationRepository.findAll();
+
         List<TripsByDriverIDResponse> responses = new ArrayList<>();
         List<TripResponse.Location> locations = new ArrayList<>();
 
-        for (Location l : stops) {
-            TripResponse.Location res = TripResponse.Location.newBuilder()
-                    .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
-                    .setCity(l.getCity())
-                    .setId(l.getId())
-                    .setPostCode(l.getPostCode())
-                    .setStreetName(l.getStreetName())
-                    .setStreetNumber(l.getStreetNumber())
-                    .build();
-            locations.add(res);
-        }
+
         var tripsByDriverIDResponse = TripsByDriverIDResponse.newBuilder();
         for (Trip trip : trips) {
-            TripResponse tripResponse = TripResponse.newBuilder()
+            Optional<List<Location>> stops = locationRepository.getAllByTripId(trip.getId());
+
+            var tripResponse = TripResponse.newBuilder()
                     .setAvailableSeats(trip.getAvailableSeats())
                     .setDriverId(trip.getDriver().getEmail())
                     .setFullPrice(trip.getFullPrice())
-                    .setId(trip.getId())
-                    .addAllStops(locations)
-                    .build();
+                    .setId(trip.getId());
+
+                        for (Location l : stops.get()) {
+                            if (l.getTrip().getId() == trip.getId()) {
+                                TripResponse.Location res = TripResponse.Location.newBuilder()
+                                        .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
+                                        .setCity(l.getCity())
+                                        .setId(l.getId())
+                                        .setPostCode(l.getPostCode())
+                                        .setStreetName(l.getStreetName())
+                                        .setStreetNumber(l.getStreetNumber())
+                                        .build();
+                                locations.add(res);
+
+                                tripResponse.addAllStops(locations);
+
+                            }
+                            locations=new ArrayList<>();
 
 
-            tripsByDriverIDResponse.addTrips(tripResponse);
+                        }
+
+
+            TripResponse tripResponse1 = tripResponse.build();
+
+
+            tripsByDriverIDResponse.addTrips(tripResponse1);
 
         }
         TripsByDriverIDResponse response = tripsByDriverIDResponse.build();
@@ -126,8 +139,6 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
         responseObserver.onCompleted();
 
     }
-
-
 
 
 }
