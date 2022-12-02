@@ -26,19 +26,37 @@ public class RegisterCarGrpcImp : IRegisterCarService
             DriverDriveLicense = dto.DriveLicense
         };
 
-        
         try
         {
             var carInfo = await _client.createCarAsync(request);
             Car response = new Car(carInfo.PlateNumber, carInfo.Color, carInfo.Model, carInfo.SeatsCount,
                 carInfo.FuelType);
-             return response;
+            return response;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw new Exception(e.Message);
         }
+    }
 
+    public async Task<Car> GetByDriverIdAsync(string email)
+    {
+        var request = new DriverIdInfo()
+        {
+            DriverId = email
+        };
+        try
+        {
+            var carInfo = await _client.getCarByDriverIdAsync(request);
+            Car response = new Car(carInfo.PlateNumber, carInfo.Color, carInfo.Model, carInfo.SeatsCount,
+                carInfo.FuelType);
+            return response;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw new Exception(e.Message);
+        }
     }
 }

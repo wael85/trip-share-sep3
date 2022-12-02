@@ -22,7 +22,7 @@ public class HttpSeatTicketClient:ISeatTicketClient
         {
             throw new Exception(result);
         }
-        var reply =  JsonSerializer.Deserialize<ICollection<SeatTicket>>(result, new JsonSerializerOptions
+        var reply =  JsonSerializer.Deserialize<IEnumerable<SeatTicket>>(result, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         })!;

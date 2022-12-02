@@ -61,7 +61,8 @@ public class UserGrpcImp : IUserService
             Email = response.Email,
             FirstName = response.FirstName,
             LastName = response.LastName,
-            Phone = response.Phone
+            Phone = response.Phone,
+            DriveLicense = response.DriverLicense
         };
 
     }

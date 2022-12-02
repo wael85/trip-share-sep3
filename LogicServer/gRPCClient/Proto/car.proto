@@ -4,6 +4,10 @@ option java_package = "via.sep3.grpcserver.protobuf.carservices";
 
 service CarServices{
   rpc createCar(RequestCarInfo) returns (ResponseCarInfo);
+  rpc getCarByDriverId(DriverIdInfo)returns(ResponseCarInfo);
+}
+message DriverIdInfo{
+  string driver_id =1;
 }
 
 message RequestCarInfo{

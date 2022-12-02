@@ -9,13 +9,11 @@ import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import via.sep3.grpcserver.Entities.Car;
 import via.sep3.grpcserver.Entities.User;
-import via.sep3.grpcserver.protobuf.carservices.CarServicesGrpc;
-import via.sep3.grpcserver.protobuf.carservices.ErrorResponse;
-import via.sep3.grpcserver.protobuf.carservices.RequestCarInfo;
-import via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo;
+import via.sep3.grpcserver.protobuf.carservices.*;
 import via.sep3.grpcserver.repositorys.CarRepository;
 import via.sep3.grpcserver.repositorys.UserRepository;
 
+import java.sql.Driver;
 import java.util.Optional;
 
 @GRpcService
@@ -48,6 +46,23 @@ public class CarService extends CarServicesGrpc.CarServicesImplBase {
                     .build();
             responseCarInfo.onNext(responseCar);
             responseCarInfo.onCompleted();
+    }
+
+    @Override
+    public void getCarByDriverId(DriverIdInfo request, StreamObserver<ResponseCarInfo> responseCarInfo){
+        String email= request.getDriverId();
+
+
+        var result = carRepository.findCarByDriver_Email(email);
+        ResponseCarInfo responseCar = ResponseCarInfo.newBuilder()
+                .setColor(result.getColor())
+                .setFuelType(result.getFuelType())
+                .setSeatsCount(result.getSeatsCount())
+                .setPlateNumber(result.getPlateNumber())
+                .setModel(result.getModel())
+                .build();
+        responseCarInfo.onNext(responseCar);
+        responseCarInfo.onCompleted();
     }
 }
 

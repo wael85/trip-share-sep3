@@ -5,8 +5,12 @@ option java_package = "via.sep3.grpcserver.protobuf.ticketservices";
 service TicketServices {
   rpc createTicket (SeatTicketCreationRequest) returns (SeatTicketResponse);
   rpc getTicketsByTrip (TicketsByTripRequest) returns (TicketsByTripResponse);
+  rpc getAllUserTicket(TicketsByUserId) returns(TicketsByTripResponse);
 }
 
+message TicketsByUserId{
+  string email=1;
+}
 message TicketsByTripRequest {
   int64 trip_id = 1;
 }
@@ -14,7 +18,7 @@ message TicketsByTripRequest {
 message TicketsByTripResponse {
   repeated SeatTicketResponse tickets = 1;
 }
-
+//todo Check Location
 message SeatTicketCreationRequest {
   double seat_price = 1;
   int32 total_seats = 2;
@@ -30,6 +34,14 @@ message SeatTicketResponse {
   int32 total_seats = 3;
   string passenger_id = 4;
   int64 trip_id = 5;
-  int64 pickup_id = 6;
-  int64 dropoff_id = 7;
+  LocationMessage pickup = 6;
+  LocationMessage dropoff = 7;
+}
+message LocationMessage{
+  int64 id =1;
+  string post_code = 2;
+  string city = 3;
+  string street_name = 4;
+  string street_number = 5;
+  int64 arrival_time = 6;
 }
