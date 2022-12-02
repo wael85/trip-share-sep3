@@ -106,25 +106,25 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
                     .setFullPrice(trip.getFullPrice())
                     .setId(trip.getId());
 
-                        for (Location l : stops.get()) {
-                            if (l.getTrip().getId() == trip.getId()) {
-                                TripResponse.Location res = TripResponse.Location.newBuilder()
-                                        .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
-                                        .setCity(l.getCity())
-                                        .setId(l.getId())
-                                        .setPostCode(l.getPostCode())
-                                        .setStreetName(l.getStreetName())
-                                        .setStreetNumber(l.getStreetNumber())
-                                        .build();
-                                locations.add(res);
+            for (Location l : stops.get()) {
+                if (l.getTrip().getId() == trip.getId()) {
+                    TripResponse.Location res = TripResponse.Location.newBuilder()
+                            .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
+                            .setCity(l.getCity())
+                            .setId(l.getId())
+                            .setPostCode(l.getPostCode())
+                            .setStreetName(l.getStreetName())
+                            .setStreetNumber(l.getStreetNumber())
+                            .build();
+                    locations.add(res);
 
-                                tripResponse.addAllStops(locations);
+                    tripResponse.addAllStops(locations);
 
-                            }
-                            locations=new ArrayList<>();
+                }
+                locations = new ArrayList<>();
 
 
-                        }
+            }
 
 
             TripResponse tripResponse1 = tripResponse.build();
@@ -141,6 +141,47 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
     }
 
 
+    @Override
+    public void getTripsByUserID(TripsByDriverIDRequest request, StreamObserver<TripsByDriverIDResponse> responseObserver) {
+        String email = request.getUserId();
+        Optional<List<Trip>> userTrips = tripRepository.GetUsersTripsByUserId(email);
+        List<TripResponse.Location> locations = new ArrayList<>();
+        var response = TripsByDriverIDResponse.newBuilder();
+        for (Trip t : userTrips.get()) {
+            Optional<List<Location>> stops = locationRepository.getAllByTripId(t.getId());
+            var tripResponse = TripResponse.newBuilder()
+                    .setId(t.getId())
+                    .setFullPrice(t.getFullPrice())
+                    .setDriverId(t.getDriver().getEmail())
+                    .setAvailableSeats(t.getAvailableSeats());
+            for (Location l : stops.get()) {
+                if (l.getTrip().getId() == t.getId()) {
+                    TripResponse.Location res = TripResponse.Location.newBuilder()
+                            .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
+                            .setCity(l.getCity())
+                            .setId(l.getId())
+                            .setPostCode(l.getPostCode())
+                            .setStreetName(l.getStreetName())
+                            .setStreetNumber(l.getStreetNumber())
+                            .build();
+                    locations.add(res);
+
+                    tripResponse.addAllStops(locations);
+
+                }
+                locations = new ArrayList<>();
+
+
+            }
+            TripResponse tripResponse1 = tripResponse.build();
+            response.addTrips(tripResponse1);
+
+
+        }
+        TripsByDriverIDResponse response1 = response.build();
+        responseObserver.onNext(response1);
+        responseObserver.onCompleted();
+    }
 }
 
 
