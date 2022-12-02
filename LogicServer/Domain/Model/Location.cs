@@ -25,5 +25,10 @@ public class Location
     {
         return StreetName + " " + StreetNumber + ", " + PostCode + " " + City;
     }
+
+    public bool getLocationByCity(string searchCity)
+    {
+        return this.City.Equals(searchCity);
+    }
     
 }

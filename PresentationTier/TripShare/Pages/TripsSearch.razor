@@ -3,23 +3,35 @@
 @using Radzen
 @using Radzen.Blazor
 @using Domain.DTOs
+@inject NotificationService _servic
 
-<div class="row">
-    
-    <div class="col-md-6 align-middle" >
-        <div class="input-group mb-3 ">
-            <span class="input-group-text">Trip</span>
-            <input type="text" class="form-control" placeholder="Start City">
-            <input type="text" class="form-control" placeholder="Destination City">
+
+<div class="row align-content-middle">
+    <RadzenNotification/>
+    <div class="col-md-6 " >
+        <div class="row">
+            <div class="input-group mb-3 ">
+                <span class="input-group-text">Trip</span>
+                <input  type="text" @bind="startCity" class=" form-control " placeholder="Start City">
+                <input  type="text" @bind="endCity"   class=" form-control " placeholder="Destination City">
+            </div>
         </div>
+         <div class="row justify-content-center">
+             <button type="button" @onclick="resetSearch" class="btn btn-secondary col-2 ml-3 w-30">Reset</button>
+             <div class="col-2"></div>
+             <button type="button" @onclick="Search" class="btn btn-primary col-2 ml-3 w-30">Search</button>
+             </div>
     </div>
-    <div class="col-md-6 align-middle">
-        <RadzenCard>
-            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Trip Date</RadzenText>
-            <RadzenDatePicker Min="DateTime.Today.AddDays(0)" @bind-Value=@value ShowTime="true"  Change=@(args => OnChange(args.Value))
-                              HourFormat="12" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100" />
-        </RadzenCard>
-    </div>
+   
+     <div class="col-md-6">
+         <RadzenCard>
+             <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Trip Date</RadzenText>
+             <RadzenDatePicker Min="DateTime.Today.AddDays(0)" @bind-Value=@dateTime ShowTime="true"  Change=@(args => OnChange(args.Value))
+                               HourFormat="24" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100" 
+             />
+         </RadzenCard>
+     </div>
+    
 
 </div>
 <!--Trips cards container -->
@@ -41,11 +53,12 @@
                     <!-- we can add car picture or driver
                     <img src="..." class="card-img-top" alt="...">
                    -->
-                    <div class="card-body">
+                    <div class="card-body ">
                             <h5 class="card-title">Trip To @t.Stops[t.Stops.Count -1].City</h5>
                             <p class="card-text">Hello I am @t.Driver.FirstName and I will be happy if you join meon my trip to @t.Stops[t.Stops.Count -1].City </p>
                         </div>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush h-100 overflow-scroll">
+                        <li class="list-group-item">Your Search tickt price: @{ t.SubTripPrice(t.Stops.Find(x => x.getLocationByCity(startCity)), t.Stops.Find(x => x.getLocationByCity(endCity)));}</li>
                         <li class="list-group-item">Start from: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime </li>
                         @for (int i = 1; i < t.Stops.Count - 1; i++)
                         {
@@ -66,29 +79,66 @@
 
 
 @code {
-    private DateTime? value = DateTime.Now;
+    private DateTime? dateTime = DateTime.Now;
+    IEnumerable<Trip> trips;
+    private string startCity;
+    private string endCity;
     string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
     int pageSize = 6;
     int count;
     bool modal = false;
     
     
+    
     // response to change date on search div
     void OnChange(DateTime? value1)
     {
-        value = value1;
+        dateTime = value1;
 
     }
+
+    public void Search()
+    {
+        if (String.IsNullOrEmpty(startCity) && String.IsNullOrEmpty(endCity) && dateTime != null)
+        {
+            List<Trip> filterTrips = new List<Trip>();
+            foreach (Trip trip in trips)
+            {
+                
+                int index1 = trip.Stops.FindIndex(x => x.City.ToLower().Equals(startCity.ToLower()));
+                int index2 = trip.Stops.FindIndex(x => x.City.ToLower().Equals(endCity.ToLower()));
+                if (index1 > index2 && trip.Stops[0].ArrivalTime > dateTime)
+                {
+                    filterTrips.Add(trip);
+                } 
+            }
+             trips = filterTrips.AsEnumerable();
+        }
+        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = "There is no matches Trips", Duration = 4000 });
+
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        
+        _servic.Notify(message);
+    }
+
+    public void resetSearch()
+    {
+        dateTime = null;
+        startCity = "";
+        endCity = "";
+    }
     
-    IEnumerable<Trip> trips;
+    
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        Location location0 = new Location( 1,"8700","Horsens","ss","22",new DateTime() );
-        Location location1 = new Location( 2,"8700","Vejle","ss","22",new DateTime() );
-        Location location2 = new Location( 2,"8700","Odense","ss","22",new DateTime() );
-        Location location3 = new Location( 3,"8700","Copenhagen","ss","22",new DateTime() );
+        Location location0 = new Location( 1,"8700","Horsens","ss","22",new DateTime(2022,12,3) );
+        Location location1 = new Location( 2,"8700","Vejle","ss","22",new DateTime(2022,12,3) );
+        Location location2 = new Location( 2,"8700","Odense","ss","22",new DateTime(2022,12,3));
+        Location location3 = new Location( 3,"8700","Copenhagen","ss","22",new DateTime(2022,12,3) );
         Trip t = new Trip();
         t.Id = 1; t.Driver = new ReturnedUserDTO();
         t.Passengers = new List<ReturnedUserDTO>();
