@@ -59,4 +59,22 @@ public class HttpTripClient :  ITripClient
         
         return trips;
     }
+
+    public async Task<IEnumerable<Trip>> GetTripsAsync(TripSearchQuery searchQuery)
+    {
+        
+        var response = await client.GetAsync(
+            $"/Trips?Pickup={searchQuery.Pickup}&Dropoff={searchQuery.Dropoff}?");
+        string result = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+           
+            IEnumerable<Trip> trips = JsonSerializer.Deserialize<IEnumerable<Trip>>(result,new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+            return trips;
+        }
+        throw new Exception(result);
+    }
 }
