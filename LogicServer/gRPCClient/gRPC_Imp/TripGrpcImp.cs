@@ -1,12 +1,7 @@
-
-using System.Collections.ObjectModel;
 using Application.GrpcInterfaces;
 using Domain.DTOs;
 using Domain.Model;
-using Google.Protobuf.Collections;
-using Google.Protobuf.Reflection;
 using gRPCClient.GrpcInterfaces;
-using Microsoft.VisualBasic;
 
 namespace gRPCClient.gRPC_Imp;
 
@@ -78,9 +73,59 @@ public class TripGrpcImp : ITripServices
         return await Task.FromResult(reTrip);
     }
 
-
     public Task<ICollection<Trip>> GetTripByDriverIds(List<string> driverIds)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<List<Trip>> GetAllTripsAsync()
+    {
+        var msg = new Emptymessage();
+        TripsByDriverIDResponse response = await client.getAllTripsAsync(msg);
+
+        var tripResponses = response.Trips;
+        var trips = new List<Trip>();
+
+        foreach (var tripResponse in tripResponses)
+        {
+            var driver = await UserService.GetUserById(tripResponse.DriverId);
+
+            var trip = new Trip()
+            {
+                AvailableSeats = tripResponse.AvailableSeats,
+                Driver = new ReturnedUserDTO()
+                {
+                    Address = driver.Address,
+                    DriveLicense = driver.DriveLicense,
+                    Email = driver.Email,
+                    FirstName = driver.FirstName,
+                    LastName = driver.LastName,
+                    Phone = driver.Phone
+                },
+                FullPrice = tripResponse.FullPrice,
+                Id = tripResponse.Id,
+                Passengers = new List<ReturnedUserDTO>()
+            };
+
+            var stops = tripResponse.Stops.Select(stop => new Location()
+                {
+                    Id = stop.Id,
+                    ArrivalTime = new DateTime(stop.ArrivalTime),
+                    City = stop.City,
+                    PostCode = stop.PostCode,
+                    StreetName = stop.StreetName,
+                    StreetNumber = stop.StreetNumber
+                })
+                .ToList();
+            trip.Stops = stops;
+
+            //TODO: Not be lazy (:
+            var tickets = new List<SeatTicket>();
+            trip.Tickets = tickets;
+            
+            trips.Add(trip);
+        }
+
+        return trips;
     }
 }

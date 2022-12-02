@@ -1,7 +1,6 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Model;
-using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -34,5 +33,9 @@ public class TripsController : ControllerBase
         }
     }
 
-
+    [HttpGet]
+    public async Task<ActionResult<List<Trip>>> QueryAsync([FromQuery] TripSearchQuery query)
+    {
+        return await logic.QueryAsync(query.Pickup, query.Dropoff, query.PassengerAmount, query.MaxPrice);
+    }
 }
