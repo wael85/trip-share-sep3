@@ -3,7 +3,9 @@
 @using Radzen
 @using Radzen.Blazor
 @using Domain.DTOs
+@using HttpClient.ClientImplementation
 @inject NotificationService _servic
+@inject HttpTripClient _client;
 
 
 <div class="row align-content-middle">
@@ -14,6 +16,9 @@
                 <span class="input-group-text">Trip</span>
                 <input  type="text" @bind="startCity" class=" form-control " placeholder="Start City">
                 <input  type="text" @bind="endCity"   class=" form-control " placeholder="Destination City">
+                <input  type="text" @bind="passengerAmount"   class=" form-control " placeholder="Seats count">
+                <input  type="text" @bind="maxPrice"   class=" form-control " placeholder="Max Price">
+                
             </div>
         </div>
          <div class="row justify-content-center">
@@ -49,22 +54,22 @@
             {
                 @foreach (Trip t in trips)
                 {
-                    <div class="card list-group-item col-4 m-3  border-2" style="width: 18rem;">
+                    <div class="card list-group-item col-4 m-3 border-2" style="width: 18rem; height: 400px;">
                     <!-- we can add car picture or driver
                     <img src="..." class="card-img-top" alt="...">
                    -->
-                    <div class="card-body ">
+                    <div class="card-body h-60">
                             <h5 class="card-title">Trip To @t.Stops[t.Stops.Count -1].City</h5>
                             <p class="card-text">Hello I am @t.Driver.FirstName and I will be happy if you join meon my trip to @t.Stops[t.Stops.Count -1].City </p>
                         </div>
-                    <ul class="list-group list-group-flush h-100 overflow-scroll">
+                    <ul class="list-group list-group-flush  overflow-scroll" style="height: 200px">
                         <li class="list-group-item">Your Search tickt price: @{ t.SubTripPrice(t.Stops.Find(x => x.getLocationByCity(startCity)), t.Stops.Find(x => x.getLocationByCity(endCity)));}</li>
                         <li class="list-group-item">Start from: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime </li>
                         @for (int i = 1; i < t.Stops.Count - 1; i++)
                         {
                             <li class="list-group-item">Stop @i : @t.Stops[i].getAddress() , at:@t.Stops[i].ArrivalTime </li>
                         }
-                        <li class="list-group-item">Last destination: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime</li>
+                        <li class="list-group-item">Last destination: @t.Stops[t.Stops.Count-1].getAddress() , at:@t.Stops[t.Stops.Count-1].ArrivalTime</li>
                     </ul>
                     <div class="card-body">
                         <a href="#" class="card-link">Go TO Book</a>
@@ -81,15 +86,13 @@
 @code {
     private DateTime? dateTime = DateTime.Now;
     IEnumerable<Trip> trips;
-    private string startCity;
-    private string endCity;
-    string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
-    int pageSize = 6;
-    int count;
-    bool modal = false;
-    
-    
-    
+    private string startCity="";
+    private string endCity="";
+    double maxPrice = 0;
+    int passengerAmount = 1;
+
+
+
     // response to change date on search div
     void OnChange(DateTime? value1)
     {
@@ -97,22 +100,20 @@
 
     }
 
-    public void Search()
+    public async void Search()
     {
-        if (String.IsNullOrEmpty(startCity) && String.IsNullOrEmpty(endCity) && dateTime != null)
+        if (!String.IsNullOrEmpty(startCity) && !String.IsNullOrEmpty(endCity) && dateTime != null)
         {
-            List<Trip> filterTrips = new List<Trip>();
-            foreach (Trip trip in trips)
+            TripSearchQuery tripSearchQuery = new TripSearchQuery();
+            tripSearchQuery.Dropoff = endCity;
+            tripSearchQuery.Pickup = startCity;
+            if (maxPrice != 0)
             {
-                
-                int index1 = trip.Stops.FindIndex(x => x.City.ToLower().Equals(startCity.ToLower()));
-                int index2 = trip.Stops.FindIndex(x => x.City.ToLower().Equals(endCity.ToLower()));
-                if (index1 > index2 && trip.Stops[0].ArrivalTime > dateTime)
-                {
-                    filterTrips.Add(trip);
-                } 
+                tripSearchQuery.MaxPrice = maxPrice;
             }
-             trips = filterTrips.AsEnumerable();
+            tripSearchQuery.PassengerAmount = passengerAmount;
+            tripSearchQuery.TripDateTime = dateTime;
+            trips =await _client.GetTripsAsync(tripSearchQuery);
         }
         ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = "There is no matches Trips", Duration = 4000 });
 
@@ -125,9 +126,11 @@
 
     public void resetSearch()
     {
-        dateTime = null;
+        dateTime = DateTime.Now;
         startCity = "";
         endCity = "";
+        passengerAmount = 1;
+        maxPrice=0;
     }
     
     
@@ -135,21 +138,16 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        Location location0 = new Location( 1,"8700","Horsens","ss","22",new DateTime(2022,12,3) );
-        Location location1 = new Location( 2,"8700","Vejle","ss","22",new DateTime(2022,12,3) );
-        Location location2 = new Location( 2,"8700","Odense","ss","22",new DateTime(2022,12,3));
-        Location location3 = new Location( 3,"8700","Copenhagen","ss","22",new DateTime(2022,12,3) );
-        Trip t = new Trip();
-        t.Id = 1; t.Driver = new ReturnedUserDTO();
-        t.Passengers = new List<ReturnedUserDTO>();
-        t.Stops = new List<Location>() { location0,location1,location2,location3 };
-        t.AvailableSeats = 3;
-        trips = new List<Trip>(){t,t,t,t,t,t,t,t,t,t,t,t,t,t};
-        /* This to replace with api call to get all trips
-         await base.OnInitializedAsync();
-        count = dbContext.Orders.Count();
-        orders = GetOrders(0, pageSize);
-         */
+        TripSearchQuery tripSearchQuery = new TripSearchQuery();
+        tripSearchQuery.Dropoff = endCity;
+        tripSearchQuery.Pickup = startCity;
+        if (maxPrice != 0)
+        {
+            tripSearchQuery.MaxPrice = maxPrice;
+        }
+        tripSearchQuery.PassengerAmount = passengerAmount;
+        tripSearchQuery.TripDateTime = dateTime;
+        trips =await _client.GetTripsAsync(tripSearchQuery);
 
     }
  

@@ -8,4 +8,5 @@ public interface ITripClient
      Task<Trip> CreateTripAsync(TripCreationDto dto);
      Task<IEnumerable<Trip>> GetAllTripAsync();
      Task<IEnumerable<Trip>> GetTripsByUserIdAsync(string id);
+     Task<IEnumerable<Trip>> GetTripsAsync(TripSearchQuery searchQuery);
 }
