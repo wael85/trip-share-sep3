@@ -6,5 +6,5 @@ namespace HttpClient.ClientInterfaces;
 public interface IUserClient
 {
     Task<ReturnedUserDTO> CreateAsync(User user);
-    Task<ReturnedUserDTO> GetByIdAsync(string id);
+    Task<UserInformationDto> GetByIdAsync(string id);
 }
