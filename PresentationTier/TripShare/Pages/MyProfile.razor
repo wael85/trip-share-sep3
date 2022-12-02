@@ -193,15 +193,15 @@
     {
         try
         {
-            userInfoDto = await _userClient.GetByIdAsync("juan@gmail.com");
+            userInfoDto = await _userClient.GetByIdAsync("juan@email.com");
             
             // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
             // myTrips = trips.ToList();
 
-            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("juan@gmail.com");
+            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("juan@email.com");
             myTickets = tickets.ToList();
             
-    //todo
+    //todo Add user id after log in
     // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(email);
         }
         catch (Exception e)

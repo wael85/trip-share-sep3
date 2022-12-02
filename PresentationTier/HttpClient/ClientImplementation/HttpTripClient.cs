@@ -64,7 +64,7 @@ public class HttpTripClient :  ITripClient
     {
         
         var response = await client.GetAsync(
-            $"/Trips?Pickup={searchQuery.Pickup}&Dropoff={searchQuery.Dropoff}?");
+            $"/Trips?Pickup={searchQuery.Pickup}&Dropoff={searchQuery.Dropoff}?PassengerAmount?{searchQuery.PassengerAmount}?TripDateTime={searchQuery.TripDateTime}");
         string result = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
         {

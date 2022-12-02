@@ -36,6 +36,6 @@ public class TripsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<Trip>>> QueryAsync([FromQuery] TripSearchQuery query)
     {
-        return await logic.QueryAsync(query.Pickup, query.Dropoff, query.PassengerAmount, query.MaxPrice);
+        return null; //await logic.QueryAsync(query.Pickup, query.Dropoff, query.PassengerAmount, query.MaxPrice);
     }
 }
