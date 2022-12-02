@@ -33,7 +33,7 @@ public class UserClientImp : IUserClient
         return JsonSerializer.Deserialize<ReturnedUserDTO>(result, serialOpt)!;
     }
 
-    public async Task<ReturnedUserDTO> GetByIdAsync(string id)
+    public async Task<UserInformationDto> GetByIdAsync(string id)
     {
         
         
@@ -46,13 +46,11 @@ public class UserClientImp : IUserClient
             throw new Exception(content);
         }
 
-        var reply =  JsonSerializer.Deserialize<ReturnedUserDTO>(content, new JsonSerializerOptions
+        var reply =  JsonSerializer.Deserialize<UserInformationDto>(content, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         })!;
         
-        
-       
 
         return reply;
 
