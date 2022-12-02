@@ -20,13 +20,16 @@ builder.Services.AddScoped<ITripServices, TripGrpcImp>();
 builder.Services.AddScoped<IRegisterCarService, RegisterCarGrpcImp>();
 builder.Services.AddScoped<IRegisterCarLogic, RegisterCarLogic>();
 builder.Services.AddScoped<ITripLogic,TripLogic>();
+builder.Services.AddScoped<ISeatTicketService, SeatTicketGrpcImp>();
+builder.Services.AddScoped<ISeatTicketLogic, SeatTicketLogic>();
+
 builder.Services.AddGrpc();
 
 
 builder.Services.AddSingleton(new UserServices.UserServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 builder.Services.AddSingleton(new CarServices.CarServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 builder.Services.AddSingleton(new TripServices.TripServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
-
+builder.Services.AddSingleton(new TicketServices.TicketServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 var app = builder.Build();
 app.UseCors(x => x
     .AllowAnyMethod()

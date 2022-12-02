@@ -6,6 +6,5 @@ namespace Application.LogicInterfaces;
 public interface IUserLogic
 {
     Task<ReturnedUserDTO> CreateAsync(User user);
-    Task<ReturnedUserDTO> GetUserByEmailAsync(string email);
-
+    Task<UserInformationDto> GetUserInformationAsync(string email);
 }

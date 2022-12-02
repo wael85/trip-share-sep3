@@ -4,6 +4,7 @@
 @using Radzen
 @using Components
 @using System.Collections.Immutable
+@using Domain.DTOs
 @using HttpClient.ClientInterfaces
 @inject IUserClient _userClient;
 @inject ITripClient _tripClient;
@@ -13,7 +14,7 @@
 <RadzenNotification/>
 <div class="row " style="margin: 10px">
     <h3 class="col-md-9">My Profile</h3>
-    @if (!string.IsNullOrEmpty(drivingLicence))
+    @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
     {
         <p class="col-md-3">Driver / Passenger</p>
     }
@@ -30,22 +31,27 @@
         <div class="col-lg-12">
             <div class="card" style="margin-top: 40px">
                 <div class="card-body">
-
                     <p >
-                        <strong>EMAIL: </strong> @email
+                        <strong>EMAIL: </strong> @userInfoDto.Email
                     </p>
                     <p>
-                        <strong>FIRST NAME: </strong>@firstName
+                        <strong>FULL NAME </strong>@userInfoDto.FirstName @userInfoDto.LastName
                     </p>
                     <p>
-                        <strong>LAST NAME: </strong>@lastName
+                        <strong>PHONE: </strong>@userInfoDto.Phone
                     </p>
                     <p>
-                        <strong>PHONE: </strong>@phone
+                        <strong>ADDRESS: </strong>@userInfoDto.Address
                     </p>
-                    <p>
-                        <strong>ADDRESS: </strong>@address
-                    </p>
+                    @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
+                    {
+                        <p>
+                            <strong>Driving License: </strong>@userInfoDto.DriveLicense
+                        </p>
+                        <p>
+                            <strong>Car details: </strong> @userInfoDto.CarInfo?.CarModel, @userInfoDto.CarInfo?.Color, @userInfoDto.CarInfo?.FuelType, @userInfoDto.CarInfo?.SeatsCount seats, <br/> Plate Number:@userInfoDto.CarInfo?.PlateNumber
+                        </p>
+                    }
                 </div>
             </div>
         </div>
@@ -107,7 +113,7 @@
     <div class="col-md-6 ">
         <!--My trips or be a driver -->
         <div class="col-md-12">
-            @if (string.IsNullOrEmpty(drivingLicence))
+            @if (string.IsNullOrEmpty(userInfoDto.DriveLicense))
             {
                 <div class="container" style="margin: 10px">
                     <DriverBox
@@ -167,15 +173,11 @@
 
 @code {
 
-    private string email;
-    private string firstName;
-    private string lastName;
-    private string phone;
-    private string address;
-    private string? drivingLicence;
+    private UserInformationDto userInfoDto = new();
+
     private List<Trip> myTrips = new();
     private List<SeatTicket> myTickets = new();
-    private string? DriveLicense;
+    private string? DriveLicense = "ffff";
     private string Color = "";
     private string SuccessMsg = "";
     private string plateNumber = "";
@@ -191,11 +193,16 @@
     {
         try
         {
-            var user = await _userClient.GetByIdAsync("juan");
-            IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
+            userInfoDto = await _userClient.GetByIdAsync("juan@gmail.com");
+            
+            // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
+            // myTrips = trips.ToList();
 
-            <!--todo requestNotification -->
-            // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(email);
+            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("juan@gmail.com");
+            myTickets = tickets.ToList();
+            
+    //todo
+    // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(email);
         }
         catch (Exception e)
         {

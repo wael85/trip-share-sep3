@@ -16,7 +16,7 @@ public class Car {
 
 
     @OneToOne
-    @JoinColumn(name = "fk_drive_license",unique = true,nullable = false,referencedColumnName = "drive_license")
+    @JoinColumn(name = "fk_drive_id",unique = true,nullable = false,referencedColumnName = "email")
     private User driver;
     @Column(nullable = false)
     private String color;

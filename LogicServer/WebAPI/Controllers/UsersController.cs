@@ -33,18 +33,18 @@ public class UsersController :ControllerBase
         }
     }
 
-    [HttpGet]
-    public async Task<ActionResult<ReturnedUserDTO>> GetUserByEmailAsync([FromQuery] string email)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserInformationDto>> GetUserInfoAsync([FromRoute] string id)
     {
         try
         {
-            ReturnedUserDTO toReturn = await userLogic.GetUserByEmailAsync(email);
-            return Ok(toReturn);
-
+            UserInformationDto dto = await userLogic.GetUserInformationAsync(id);
+            return Ok(dto);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
+            
             return StatusCode(500, e.Message);
         }
     }
