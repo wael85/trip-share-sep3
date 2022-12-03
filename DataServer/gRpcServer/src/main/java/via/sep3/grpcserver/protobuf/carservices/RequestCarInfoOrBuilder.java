@@ -72,4 +72,16 @@ public interface RequestCarInfoOrBuilder extends
    */
   com.google.protobuf.ByteString
       getDriverIdBytes();
+
+  /**
+   * <code>string drive_license = 7;</code>
+   * @return The driveLicense.
+   */
+  java.lang.String getDriveLicense();
+  /**
+   * <code>string drive_license = 7;</code>
+   * @return The bytes for driveLicense.
+   */
+  com.google.protobuf.ByteString
+      getDriveLicenseBytes();
 }

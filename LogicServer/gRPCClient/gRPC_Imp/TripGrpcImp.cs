@@ -22,9 +22,10 @@ public class TripGrpcImp : ITripServices
         List<TripCreationRequest.Types.Location> createlocations = new List<TripCreationRequest.Types.Location>(); 
         dto.Stops.ForEach(x =>
         {
+            Console.WriteLine("This is arrive time: " + x.ArrivalTime.ToString("yyyy-MM-dd HH:mm"));
             TripCreationRequest.Types.Location l = new TripCreationRequest.Types.Location()
             {
-                ArrivalTime = x.ArrivalTime.ToString(new DateTimeFormatInfo().RFC1123Pattern),
+                ArrivalTime = x.ArrivalTime.ToString("yyyy-MM-dd HH:mm"),
                 City = x.City,
                 PostCode = x.PostCode,
                 StreetName = x.StreetName,
@@ -75,7 +76,7 @@ public class TripGrpcImp : ITripServices
         return await Task.FromResult(reTrip);
     }
 
-    public Task<ICollection<Trip>> GetTripByDriverIds(List<string> driverIds)
+    public Task<IEnumerable<Trip>> GetTripsByDriverId(List<string> driverId)
     {
         throw new NotImplementedException();
     }

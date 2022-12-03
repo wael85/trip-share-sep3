@@ -83,7 +83,6 @@ public class TripLogic : ITripLogic
             
             if (maxPrice > trip.SubTripPrice(validPickup, validDropoff) || maxPrice == null)
             {
-                Console.WriteLine(maxPrice);
                 trips2.Add(trip);
             }
         }

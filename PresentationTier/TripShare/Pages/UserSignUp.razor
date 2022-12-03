@@ -4,6 +4,7 @@
 @using Components
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
+@inject NavigationManager nvgM;
 
 @inject IUserClient UserClient;
 @inject ICarClient CarClient;
@@ -84,7 +85,7 @@
               </div>
 
               <div class="mt-4 pt-2">
-                <input class="btn btn-primary btn-lg" @onclick="CreateAsync" type="submit" value="Submit" />
+                <button class="btn btn-primary btn-lg" @onclick="CreateAsync" type="button" >Submit</button>
               </div>
               @if (string.IsNullOrEmpty(Msg))
               {
@@ -113,7 +114,8 @@
   private string CarModel = "";
   private string FuelType = "";
   private int Seats = 0;
-  
+
+
 
     private async Task CreateAsync()
     {
@@ -124,27 +126,26 @@
           && !string.IsNullOrEmpty(CarColor) && !string.IsNullOrEmpty(FuelType) && Seats >0)
           {
             await UserClient.CreateAsync(new User(Email, Password, Firstname, Lastname, PhoneNumber, Address, DriveLicense));
-            await CarClient.CreateAsync(new BeADriverRequestDto(DriveLicense, plateNumber, CarColor, CarModel, Seats, FuelType));
+            await CarClient.CreateAsync(new BeADriverRequestDto(Email,DriveLicense, plateNumber, CarColor, CarModel, Seats, FuelType));
           }
-          await UserClient.CreateAsync(new User(Email, Password, Firstname, Lastname, PhoneNumber, Address, DriveLicense));
-          
-            Email = "";
-            Password = "";
-            Firstname = "";
-            Lastname = "";
-            PhoneNumber = "";
-            Address = "";
-            DriveLicense = "";
-          CarColor = "";
-          CarModel = "";
-          FuelType = "";
-          Seats = 0;
-            Color = "green";
+          else
+          {
+            User u = new User();
+            u.Address = Address;
+            u.Password = Password;
+            u.Email = Email;
+            u.Phone = PhoneNumber;
+            u.FirstName = Firstname;
+            u.LastName = Lastname;
+            await UserClient.CreateAsync(u);
+          }
+          Color = "green";
             Msg = "your Account has been add successfully";
+          nvgM.NavigateTo("/");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
             Msg = e.Message;
             Color = "red";
         }
