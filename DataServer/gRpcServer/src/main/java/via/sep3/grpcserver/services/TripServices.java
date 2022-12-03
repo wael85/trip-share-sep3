@@ -146,6 +146,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
     public void getTripsByUserID(TripsByDriverIDRequest request, StreamObserver<TripsByDriverIDResponse> responseObserver) {
         String email = request.getUserId();
         Optional<List<Trip>> userTrips = tripRepository.GetUsersTripsByUserId(email);
+        System.out.println(userTrips.get());
         List<TripResponse.Location> locations = new ArrayList<>();
         var response = TripsByDriverIDResponse.newBuilder();
         for (Trip t : userTrips.get()) {
@@ -158,7 +159,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
             for (Location l : stops.get()) {
                 if (l.getTrip().getId() == t.getId()) {
                     TripResponse.Location res = TripResponse.Location.newBuilder()
-                            .setArrivalTime(l.getArrivalTime().format(DateTimeFormatter.RFC_1123_DATE_TIME))
+                            .setArrivalTime(l.getArrivalTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .setCity(l.getCity())
                             .setId(l.getId())
                             .setPostCode(l.getPostCode())

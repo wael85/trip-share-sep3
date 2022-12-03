@@ -51,13 +51,14 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
                         .asRuntimeException(metadata));
         }else {
             User resultUser = userRepository.save(u);
+            String driveLicense = resultUser.getDriveLicense() == null? "":resultUser.getDriveLicense();
             ResponseUserInfo result = ResponseUserInfo.newBuilder()
                     .setAddress(resultUser.getAddress())
                     .setEmail(resultUser.getEmail())
                     .setFirstName(resultUser.getFirstName())
                     .setLastName(resultUser.getLastName())
                     .setPhone(resultUser.getPhone())
-                    .setDriverLicense(resultUser.getDriveLicense())
+                    .setDriverLicense(driveLicense)
                     .build();
             responseUserInfo.onNext(result);
             responseUserInfo.onCompleted();
