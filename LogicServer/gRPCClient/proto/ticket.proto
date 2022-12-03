@@ -45,4 +45,3 @@ message LocationMessage{
   string street_number = 5;
   int64 arrival_time = 6;
 }
-

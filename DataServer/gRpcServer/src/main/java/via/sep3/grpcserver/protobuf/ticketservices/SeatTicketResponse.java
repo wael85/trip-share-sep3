@@ -75,14 +75,30 @@ private static final long serialVersionUID = 0L;
             tripId_ = input.readInt64();
             break;
           }
-          case 48: {
+          case 50: {
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder subBuilder = null;
+            if (pickup_ != null) {
+              subBuilder = pickup_.toBuilder();
+            }
+            pickup_ = input.readMessage(via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(pickup_);
+              pickup_ = subBuilder.buildPartial();
+            }
 
-            pickupId_ = input.readInt64();
             break;
           }
-          case 56: {
+          case 58: {
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder subBuilder = null;
+            if (dropoff_ != null) {
+              subBuilder = dropoff_.toBuilder();
+            }
+            dropoff_ = input.readMessage(via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(dropoff_);
+              dropoff_ = subBuilder.buildPartial();
+            }
 
-            dropoffId_ = input.readInt64();
             break;
           }
           default: {
@@ -201,26 +217,56 @@ private static final long serialVersionUID = 0L;
     return tripId_;
   }
 
-  public static final int PICKUP_ID_FIELD_NUMBER = 6;
-  private long pickupId_;
+  public static final int PICKUP_FIELD_NUMBER = 6;
+  private via.sep3.grpcserver.protobuf.ticketservices.LocationMessage pickup_;
   /**
-   * <code>int64 pickup_id = 6;</code>
-   * @return The pickupId.
+   * <code>.LocationMessage pickup = 6;</code>
+   * @return Whether the pickup field is set.
    */
   @java.lang.Override
-  public long getPickupId() {
-    return pickupId_;
+  public boolean hasPickup() {
+    return pickup_ != null;
+  }
+  /**
+   * <code>.LocationMessage pickup = 6;</code>
+   * @return The pickup.
+   */
+  @java.lang.Override
+  public via.sep3.grpcserver.protobuf.ticketservices.LocationMessage getPickup() {
+    return pickup_ == null ? via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.getDefaultInstance() : pickup_;
+  }
+  /**
+   * <code>.LocationMessage pickup = 6;</code>
+   */
+  @java.lang.Override
+  public via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder getPickupOrBuilder() {
+    return getPickup();
   }
 
-  public static final int DROPOFF_ID_FIELD_NUMBER = 7;
-  private long dropoffId_;
+  public static final int DROPOFF_FIELD_NUMBER = 7;
+  private via.sep3.grpcserver.protobuf.ticketservices.LocationMessage dropoff_;
   /**
-   * <code>int64 dropoff_id = 7;</code>
-   * @return The dropoffId.
+   * <code>.LocationMessage dropoff = 7;</code>
+   * @return Whether the dropoff field is set.
    */
   @java.lang.Override
-  public long getDropoffId() {
-    return dropoffId_;
+  public boolean hasDropoff() {
+    return dropoff_ != null;
+  }
+  /**
+   * <code>.LocationMessage dropoff = 7;</code>
+   * @return The dropoff.
+   */
+  @java.lang.Override
+  public via.sep3.grpcserver.protobuf.ticketservices.LocationMessage getDropoff() {
+    return dropoff_ == null ? via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.getDefaultInstance() : dropoff_;
+  }
+  /**
+   * <code>.LocationMessage dropoff = 7;</code>
+   */
+  @java.lang.Override
+  public via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder getDropoffOrBuilder() {
+    return getDropoff();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -252,11 +298,11 @@ private static final long serialVersionUID = 0L;
     if (tripId_ != 0L) {
       output.writeInt64(5, tripId_);
     }
-    if (pickupId_ != 0L) {
-      output.writeInt64(6, pickupId_);
+    if (pickup_ != null) {
+      output.writeMessage(6, getPickup());
     }
-    if (dropoffId_ != 0L) {
-      output.writeInt64(7, dropoffId_);
+    if (dropoff_ != null) {
+      output.writeMessage(7, getDropoff());
     }
     unknownFields.writeTo(output);
   }
@@ -286,13 +332,13 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(5, tripId_);
     }
-    if (pickupId_ != 0L) {
+    if (pickup_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(6, pickupId_);
+        .computeMessageSize(6, getPickup());
     }
-    if (dropoffId_ != 0L) {
+    if (dropoff_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(7, dropoffId_);
+        .computeMessageSize(7, getDropoff());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -320,10 +366,16 @@ private static final long serialVersionUID = 0L;
         .equals(other.getPassengerId())) return false;
     if (getTripId()
         != other.getTripId()) return false;
-    if (getPickupId()
-        != other.getPickupId()) return false;
-    if (getDropoffId()
-        != other.getDropoffId()) return false;
+    if (hasPickup() != other.hasPickup()) return false;
+    if (hasPickup()) {
+      if (!getPickup()
+          .equals(other.getPickup())) return false;
+    }
+    if (hasDropoff() != other.hasDropoff()) return false;
+    if (hasDropoff()) {
+      if (!getDropoff()
+          .equals(other.getDropoff())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -348,12 +400,14 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + TRIP_ID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTripId());
-    hash = (37 * hash) + PICKUP_ID_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getPickupId());
-    hash = (37 * hash) + DROPOFF_ID_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getDropoffId());
+    if (hasPickup()) {
+      hash = (37 * hash) + PICKUP_FIELD_NUMBER;
+      hash = (53 * hash) + getPickup().hashCode();
+    }
+    if (hasDropoff()) {
+      hash = (37 * hash) + DROPOFF_FIELD_NUMBER;
+      hash = (53 * hash) + getDropoff().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -497,10 +551,18 @@ private static final long serialVersionUID = 0L;
 
       tripId_ = 0L;
 
-      pickupId_ = 0L;
-
-      dropoffId_ = 0L;
-
+      if (pickupBuilder_ == null) {
+        pickup_ = null;
+      } else {
+        pickup_ = null;
+        pickupBuilder_ = null;
+      }
+      if (dropoffBuilder_ == null) {
+        dropoff_ = null;
+      } else {
+        dropoff_ = null;
+        dropoffBuilder_ = null;
+      }
       return this;
     }
 
@@ -532,8 +594,16 @@ private static final long serialVersionUID = 0L;
       result.totalSeats_ = totalSeats_;
       result.passengerId_ = passengerId_;
       result.tripId_ = tripId_;
-      result.pickupId_ = pickupId_;
-      result.dropoffId_ = dropoffId_;
+      if (pickupBuilder_ == null) {
+        result.pickup_ = pickup_;
+      } else {
+        result.pickup_ = pickupBuilder_.build();
+      }
+      if (dropoffBuilder_ == null) {
+        result.dropoff_ = dropoff_;
+      } else {
+        result.dropoff_ = dropoffBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -598,11 +668,11 @@ private static final long serialVersionUID = 0L;
       if (other.getTripId() != 0L) {
         setTripId(other.getTripId());
       }
-      if (other.getPickupId() != 0L) {
-        setPickupId(other.getPickupId());
+      if (other.hasPickup()) {
+        mergePickup(other.getPickup());
       }
-      if (other.getDropoffId() != 0L) {
-        setDropoffId(other.getDropoffId());
+      if (other.hasDropoff()) {
+        mergeDropoff(other.getDropoff());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -833,66 +903,242 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private long pickupId_ ;
+    private via.sep3.grpcserver.protobuf.ticketservices.LocationMessage pickup_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        via.sep3.grpcserver.protobuf.ticketservices.LocationMessage, via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder, via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder> pickupBuilder_;
     /**
-     * <code>int64 pickup_id = 6;</code>
-     * @return The pickupId.
+     * <code>.LocationMessage pickup = 6;</code>
+     * @return Whether the pickup field is set.
      */
-    @java.lang.Override
-    public long getPickupId() {
-      return pickupId_;
+    public boolean hasPickup() {
+      return pickupBuilder_ != null || pickup_ != null;
     }
     /**
-     * <code>int64 pickup_id = 6;</code>
-     * @param value The pickupId to set.
-     * @return This builder for chaining.
+     * <code>.LocationMessage pickup = 6;</code>
+     * @return The pickup.
      */
-    public Builder setPickupId(long value) {
-      
-      pickupId_ = value;
-      onChanged();
+    public via.sep3.grpcserver.protobuf.ticketservices.LocationMessage getPickup() {
+      if (pickupBuilder_ == null) {
+        return pickup_ == null ? via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.getDefaultInstance() : pickup_;
+      } else {
+        return pickupBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>.LocationMessage pickup = 6;</code>
+     */
+    public Builder setPickup(via.sep3.grpcserver.protobuf.ticketservices.LocationMessage value) {
+      if (pickupBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        pickup_ = value;
+        onChanged();
+      } else {
+        pickupBuilder_.setMessage(value);
+      }
+
       return this;
     }
     /**
-     * <code>int64 pickup_id = 6;</code>
-     * @return This builder for chaining.
+     * <code>.LocationMessage pickup = 6;</code>
      */
-    public Builder clearPickupId() {
-      
-      pickupId_ = 0L;
-      onChanged();
+    public Builder setPickup(
+        via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder builderForValue) {
+      if (pickupBuilder_ == null) {
+        pickup_ = builderForValue.build();
+        onChanged();
+      } else {
+        pickupBuilder_.setMessage(builderForValue.build());
+      }
+
       return this;
+    }
+    /**
+     * <code>.LocationMessage pickup = 6;</code>
+     */
+    public Builder mergePickup(via.sep3.grpcserver.protobuf.ticketservices.LocationMessage value) {
+      if (pickupBuilder_ == null) {
+        if (pickup_ != null) {
+          pickup_ =
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.newBuilder(pickup_).mergeFrom(value).buildPartial();
+        } else {
+          pickup_ = value;
+        }
+        onChanged();
+      } else {
+        pickupBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.LocationMessage pickup = 6;</code>
+     */
+    public Builder clearPickup() {
+      if (pickupBuilder_ == null) {
+        pickup_ = null;
+        onChanged();
+      } else {
+        pickup_ = null;
+        pickupBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.LocationMessage pickup = 6;</code>
+     */
+    public via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder getPickupBuilder() {
+      
+      onChanged();
+      return getPickupFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.LocationMessage pickup = 6;</code>
+     */
+    public via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder getPickupOrBuilder() {
+      if (pickupBuilder_ != null) {
+        return pickupBuilder_.getMessageOrBuilder();
+      } else {
+        return pickup_ == null ?
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.getDefaultInstance() : pickup_;
+      }
+    }
+    /**
+     * <code>.LocationMessage pickup = 6;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        via.sep3.grpcserver.protobuf.ticketservices.LocationMessage, via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder, via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder> 
+        getPickupFieldBuilder() {
+      if (pickupBuilder_ == null) {
+        pickupBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage, via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder, via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder>(
+                getPickup(),
+                getParentForChildren(),
+                isClean());
+        pickup_ = null;
+      }
+      return pickupBuilder_;
     }
 
-    private long dropoffId_ ;
+    private via.sep3.grpcserver.protobuf.ticketservices.LocationMessage dropoff_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        via.sep3.grpcserver.protobuf.ticketservices.LocationMessage, via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder, via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder> dropoffBuilder_;
     /**
-     * <code>int64 dropoff_id = 7;</code>
-     * @return The dropoffId.
+     * <code>.LocationMessage dropoff = 7;</code>
+     * @return Whether the dropoff field is set.
      */
-    @java.lang.Override
-    public long getDropoffId() {
-      return dropoffId_;
+    public boolean hasDropoff() {
+      return dropoffBuilder_ != null || dropoff_ != null;
     }
     /**
-     * <code>int64 dropoff_id = 7;</code>
-     * @param value The dropoffId to set.
-     * @return This builder for chaining.
+     * <code>.LocationMessage dropoff = 7;</code>
+     * @return The dropoff.
      */
-    public Builder setDropoffId(long value) {
-      
-      dropoffId_ = value;
-      onChanged();
+    public via.sep3.grpcserver.protobuf.ticketservices.LocationMessage getDropoff() {
+      if (dropoffBuilder_ == null) {
+        return dropoff_ == null ? via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.getDefaultInstance() : dropoff_;
+      } else {
+        return dropoffBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>.LocationMessage dropoff = 7;</code>
+     */
+    public Builder setDropoff(via.sep3.grpcserver.protobuf.ticketservices.LocationMessage value) {
+      if (dropoffBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        dropoff_ = value;
+        onChanged();
+      } else {
+        dropoffBuilder_.setMessage(value);
+      }
+
       return this;
     }
     /**
-     * <code>int64 dropoff_id = 7;</code>
-     * @return This builder for chaining.
+     * <code>.LocationMessage dropoff = 7;</code>
      */
-    public Builder clearDropoffId() {
-      
-      dropoffId_ = 0L;
-      onChanged();
+    public Builder setDropoff(
+        via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder builderForValue) {
+      if (dropoffBuilder_ == null) {
+        dropoff_ = builderForValue.build();
+        onChanged();
+      } else {
+        dropoffBuilder_.setMessage(builderForValue.build());
+      }
+
       return this;
+    }
+    /**
+     * <code>.LocationMessage dropoff = 7;</code>
+     */
+    public Builder mergeDropoff(via.sep3.grpcserver.protobuf.ticketservices.LocationMessage value) {
+      if (dropoffBuilder_ == null) {
+        if (dropoff_ != null) {
+          dropoff_ =
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.newBuilder(dropoff_).mergeFrom(value).buildPartial();
+        } else {
+          dropoff_ = value;
+        }
+        onChanged();
+      } else {
+        dropoffBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.LocationMessage dropoff = 7;</code>
+     */
+    public Builder clearDropoff() {
+      if (dropoffBuilder_ == null) {
+        dropoff_ = null;
+        onChanged();
+      } else {
+        dropoff_ = null;
+        dropoffBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.LocationMessage dropoff = 7;</code>
+     */
+    public via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder getDropoffBuilder() {
+      
+      onChanged();
+      return getDropoffFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.LocationMessage dropoff = 7;</code>
+     */
+    public via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder getDropoffOrBuilder() {
+      if (dropoffBuilder_ != null) {
+        return dropoffBuilder_.getMessageOrBuilder();
+      } else {
+        return dropoff_ == null ?
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.getDefaultInstance() : dropoff_;
+      }
+    }
+    /**
+     * <code>.LocationMessage dropoff = 7;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        via.sep3.grpcserver.protobuf.ticketservices.LocationMessage, via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder, via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder> 
+        getDropoffFieldBuilder() {
+      if (dropoffBuilder_ == null) {
+        dropoffBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            via.sep3.grpcserver.protobuf.ticketservices.LocationMessage, via.sep3.grpcserver.protobuf.ticketservices.LocationMessage.Builder, via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder>(
+                getDropoff(),
+                getParentForChildren(),
+                isClean());
+        dropoff_ = null;
+      }
+      return dropoffBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

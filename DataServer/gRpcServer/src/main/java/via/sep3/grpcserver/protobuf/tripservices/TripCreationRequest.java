@@ -166,10 +166,16 @@ private static final long serialVersionUID = 0L;
         getStreetNumberBytes();
 
     /**
-     * <code>int64 arrival_time = 5;</code>
+     * <code>string arrival_time = 5;</code>
      * @return The arrivalTime.
      */
-    long getArrivalTime();
+    java.lang.String getArrivalTime();
+    /**
+     * <code>string arrival_time = 5;</code>
+     * @return The bytes for arrivalTime.
+     */
+    com.google.protobuf.ByteString
+        getArrivalTimeBytes();
   }
   /**
    * Protobuf type {@code TripCreationRequest.Location}
@@ -188,6 +194,7 @@ private static final long serialVersionUID = 0L;
       city_ = "";
       streetName_ = "";
       streetNumber_ = "";
+      arrivalTime_ = "";
     }
 
     @java.lang.Override
@@ -244,9 +251,10 @@ private static final long serialVersionUID = 0L;
               streetNumber_ = s;
               break;
             }
-            case 40: {
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              arrivalTime_ = input.readInt64();
+              arrivalTime_ = s;
               break;
             }
             default: {
@@ -436,14 +444,41 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ARRIVAL_TIME_FIELD_NUMBER = 5;
-    private long arrivalTime_;
+    private volatile java.lang.Object arrivalTime_;
     /**
-     * <code>int64 arrival_time = 5;</code>
+     * <code>string arrival_time = 5;</code>
      * @return The arrivalTime.
      */
     @java.lang.Override
-    public long getArrivalTime() {
-      return arrivalTime_;
+    public java.lang.String getArrivalTime() {
+      java.lang.Object ref = arrivalTime_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        arrivalTime_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string arrival_time = 5;</code>
+     * @return The bytes for arrivalTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getArrivalTimeBytes() {
+      java.lang.Object ref = arrivalTime_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        arrivalTime_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -472,8 +507,8 @@ private static final long serialVersionUID = 0L;
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(streetNumber_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, streetNumber_);
       }
-      if (arrivalTime_ != 0L) {
-        output.writeInt64(5, arrivalTime_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(arrivalTime_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, arrivalTime_);
       }
       unknownFields.writeTo(output);
     }
@@ -496,9 +531,8 @@ private static final long serialVersionUID = 0L;
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(streetNumber_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, streetNumber_);
       }
-      if (arrivalTime_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, arrivalTime_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(arrivalTime_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, arrivalTime_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -523,8 +557,8 @@ private static final long serialVersionUID = 0L;
           .equals(other.getStreetName())) return false;
       if (!getStreetNumber()
           .equals(other.getStreetNumber())) return false;
-      if (getArrivalTime()
-          != other.getArrivalTime()) return false;
+      if (!getArrivalTime()
+          .equals(other.getArrivalTime())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -545,8 +579,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + STREET_NUMBER_FIELD_NUMBER;
       hash = (53 * hash) + getStreetNumber().hashCode();
       hash = (37 * hash) + ARRIVAL_TIME_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getArrivalTime());
+      hash = (53 * hash) + getArrivalTime().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -688,7 +721,7 @@ private static final long serialVersionUID = 0L;
 
         streetNumber_ = "";
 
-        arrivalTime_ = 0L;
+        arrivalTime_ = "";
 
         return this;
       }
@@ -785,8 +818,9 @@ private static final long serialVersionUID = 0L;
           streetNumber_ = other.streetNumber_;
           onChanged();
         }
-        if (other.getArrivalTime() != 0L) {
-          setArrivalTime(other.getArrivalTime());
+        if (!other.getArrivalTime().isEmpty()) {
+          arrivalTime_ = other.arrivalTime_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1121,33 +1155,78 @@ private static final long serialVersionUID = 0L;
         return this;
       }
 
-      private long arrivalTime_ ;
+      private java.lang.Object arrivalTime_ = "";
       /**
-       * <code>int64 arrival_time = 5;</code>
+       * <code>string arrival_time = 5;</code>
        * @return The arrivalTime.
        */
-      @java.lang.Override
-      public long getArrivalTime() {
-        return arrivalTime_;
+      public java.lang.String getArrivalTime() {
+        java.lang.Object ref = arrivalTime_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          arrivalTime_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>int64 arrival_time = 5;</code>
+       * <code>string arrival_time = 5;</code>
+       * @return The bytes for arrivalTime.
+       */
+      public com.google.protobuf.ByteString
+          getArrivalTimeBytes() {
+        java.lang.Object ref = arrivalTime_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          arrivalTime_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string arrival_time = 5;</code>
        * @param value The arrivalTime to set.
        * @return This builder for chaining.
        */
-      public Builder setArrivalTime(long value) {
-        
+      public Builder setArrivalTime(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         arrivalTime_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 arrival_time = 5;</code>
+       * <code>string arrival_time = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearArrivalTime() {
         
-        arrivalTime_ = 0L;
+        arrivalTime_ = getDefaultInstance().getArrivalTime();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string arrival_time = 5;</code>
+       * @param value The bytes for arrivalTime to set.
+       * @return This builder for chaining.
+       */
+      public Builder setArrivalTimeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        arrivalTime_ = value;
         onChanged();
         return this;
       }

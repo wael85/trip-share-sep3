@@ -76,6 +76,37 @@ public final class TicketServicesGrpc {
     return getGetTicketsByTripMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId,
+      via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse> getGetAllUserTicketMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getAllUserTicket",
+      requestType = via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId.class,
+      responseType = via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId,
+      via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse> getGetAllUserTicketMethod() {
+    io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId, via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse> getGetAllUserTicketMethod;
+    if ((getGetAllUserTicketMethod = TicketServicesGrpc.getGetAllUserTicketMethod) == null) {
+      synchronized (TicketServicesGrpc.class) {
+        if ((getGetAllUserTicketMethod = TicketServicesGrpc.getGetAllUserTicketMethod) == null) {
+          TicketServicesGrpc.getGetAllUserTicketMethod = getGetAllUserTicketMethod =
+              io.grpc.MethodDescriptor.<via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId, via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getAllUserTicket"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new TicketServicesMethodDescriptorSupplier("getAllUserTicket"))
+              .build();
+        }
+      }
+    }
+    return getGetAllUserTicketMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -138,6 +169,13 @@ public final class TicketServicesGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTicketsByTripMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getAllUserTicket(via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAllUserTicketMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -154,6 +192,13 @@ public final class TicketServicesGrpc {
                 via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripRequest,
                 via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse>(
                   this, METHODID_GET_TICKETS_BY_TRIP)))
+          .addMethod(
+            getGetAllUserTicketMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId,
+                via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse>(
+                  this, METHODID_GET_ALL_USER_TICKET)))
           .build();
     }
   }
@@ -187,6 +232,14 @@ public final class TicketServicesGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetTicketsByTripMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getAllUserTicket(via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetAllUserTicketMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -215,6 +268,13 @@ public final class TicketServicesGrpc {
     public via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse getTicketsByTrip(via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetTicketsByTripMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse getAllUserTicket(via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetAllUserTicketMethod(), getCallOptions(), request);
     }
   }
 
@@ -247,10 +307,19 @@ public final class TicketServicesGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetTicketsByTripMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse> getAllUserTicket(
+        via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetAllUserTicketMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_CREATE_TICKET = 0;
   private static final int METHODID_GET_TICKETS_BY_TRIP = 1;
+  private static final int METHODID_GET_ALL_USER_TICKET = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -275,6 +344,10 @@ public final class TicketServicesGrpc {
           break;
         case METHODID_GET_TICKETS_BY_TRIP:
           serviceImpl.getTicketsByTrip((via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripRequest) request,
+              (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse>) responseObserver);
+          break;
+        case METHODID_GET_ALL_USER_TICKET:
+          serviceImpl.getAllUserTicket((via.sep3.grpcserver.protobuf.ticketservices.TicketsByUserId) request,
               (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse>) responseObserver);
           break;
         default:
@@ -340,6 +413,7 @@ public final class TicketServicesGrpc {
               .setSchemaDescriptor(new TicketServicesFileDescriptorSupplier())
               .addMethod(getCreateTicketMethod())
               .addMethod(getGetTicketsByTripMethod())
+              .addMethod(getGetAllUserTicketMethod())
               .build();
         }
       }

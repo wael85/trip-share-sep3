@@ -44,14 +44,32 @@ public interface SeatTicketResponseOrBuilder extends
   long getTripId();
 
   /**
-   * <code>int64 pickup_id = 6;</code>
-   * @return The pickupId.
+   * <code>.LocationMessage pickup = 6;</code>
+   * @return Whether the pickup field is set.
    */
-  long getPickupId();
+  boolean hasPickup();
+  /**
+   * <code>.LocationMessage pickup = 6;</code>
+   * @return The pickup.
+   */
+  via.sep3.grpcserver.protobuf.ticketservices.LocationMessage getPickup();
+  /**
+   * <code>.LocationMessage pickup = 6;</code>
+   */
+  via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder getPickupOrBuilder();
 
   /**
-   * <code>int64 dropoff_id = 7;</code>
-   * @return The dropoffId.
+   * <code>.LocationMessage dropoff = 7;</code>
+   * @return Whether the dropoff field is set.
    */
-  long getDropoffId();
+  boolean hasDropoff();
+  /**
+   * <code>.LocationMessage dropoff = 7;</code>
+   * @return The dropoff.
+   */
+  via.sep3.grpcserver.protobuf.ticketservices.LocationMessage getDropoff();
+  /**
+   * <code>.LocationMessage dropoff = 7;</code>
+   */
+  via.sep3.grpcserver.protobuf.ticketservices.LocationMessageOrBuilder getDropoffOrBuilder();
 }

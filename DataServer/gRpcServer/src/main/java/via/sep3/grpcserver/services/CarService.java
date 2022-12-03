@@ -1,4 +1,5 @@
 
+
 package via.sep3.grpcserver.services;
 
 import io.grpc.Metadata;
@@ -27,8 +28,8 @@ public class CarService extends CarServicesGrpc.CarServicesImplBase {
         this.userRepository = userRepository;
     }
     @Override
-    public void createCar(RequestCarInfo requestCarInfo, StreamObserver<ResponseCarInfo> responseCarInfo) {
-       Optional<User> driver = userRepository.findByDriveLicense(requestCarInfo.getDriverDriveLicense());
+    public  void createCar(RequestCarInfo requestCarInfo, StreamObserver<ResponseCarInfo> responseCarInfo) {
+       Optional<User> driver =  userRepository.findByEmail(requestCarInfo.getDriverId());
         Car car = new Car();
         car.setModel(requestCarInfo.getModel());
         car.setPlateNumber(requestCarInfo.getPlateNumber());
@@ -65,4 +66,5 @@ public class CarService extends CarServicesGrpc.CarServicesImplBase {
         responseCarInfo.onCompleted();
     }
 }
+
 

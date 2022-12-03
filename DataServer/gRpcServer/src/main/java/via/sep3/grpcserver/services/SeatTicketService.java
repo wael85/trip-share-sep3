@@ -1,3 +1,4 @@
+
 package via.sep3.grpcserver.services;
 
 import io.grpc.stub.StreamObserver;
@@ -53,3 +54,4 @@ public class SeatTicketService extends TicketServicesGrpc.TicketServicesImplBase
     }
 
 }
+

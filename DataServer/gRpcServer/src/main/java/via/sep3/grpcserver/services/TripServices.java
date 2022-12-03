@@ -1,4 +1,5 @@
 
+
 package via.sep3.grpcserver.services;
 
 import io.grpc.Metadata;
@@ -50,7 +51,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
         for (Location location : locations) {
             var locationResult = TripResponse.Location.newBuilder()
                     .setId(location.getId())
-                    .setArrivalTime(location.getArrivalTime().format(DateTimeFormatter.RFC_1123_DATE_TIME))
+                    .setArrivalTime(location.getArrivalTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                     .setPostCode(location.getPostCode())
                     .setCity(location.getCity())
                     .setStreetName(location.getStreetName())
@@ -77,7 +78,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
             Location location = new Location();
             location.setTrip(trip);
             location.setCity(stop.getCity());
-            location.setArrivalTime(LocalDateTime.parse(stop.getArrivalTime(), DateTimeFormatter.RFC_1123_DATE_TIME));
+            location.setArrivalTime(LocalDateTime.parse(stop.getArrivalTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             location.setPostCode(stop.getPostCode());
             location.setStreetName(stop.getStreetName());
             location.setStreetNumber(stop.getStreetNumber());
@@ -183,5 +184,6 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
         responseObserver.onCompleted();
     }
 }
+
 
 

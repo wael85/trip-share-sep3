@@ -76,6 +76,37 @@ public final class TripServicesGrpc {
     return getGetTripsByUserIDMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.tripservices.Emptymessage,
+      via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse> getGetAllTripsMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getAllTrips",
+      requestType = via.sep3.grpcserver.protobuf.tripservices.Emptymessage.class,
+      responseType = via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.tripservices.Emptymessage,
+      via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse> getGetAllTripsMethod() {
+    io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.tripservices.Emptymessage, via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse> getGetAllTripsMethod;
+    if ((getGetAllTripsMethod = TripServicesGrpc.getGetAllTripsMethod) == null) {
+      synchronized (TripServicesGrpc.class) {
+        if ((getGetAllTripsMethod = TripServicesGrpc.getGetAllTripsMethod) == null) {
+          TripServicesGrpc.getGetAllTripsMethod = getGetAllTripsMethod =
+              io.grpc.MethodDescriptor.<via.sep3.grpcserver.protobuf.tripservices.Emptymessage, via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getAllTrips"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.tripservices.Emptymessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new TripServicesMethodDescriptorSupplier("getAllTrips"))
+              .build();
+        }
+      }
+    }
+    return getGetAllTripsMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -138,6 +169,13 @@ public final class TripServicesGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTripsByUserIDMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getAllTrips(via.sep3.grpcserver.protobuf.tripservices.Emptymessage request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAllTripsMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -154,6 +192,13 @@ public final class TripServicesGrpc {
                 via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest,
                 via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse>(
                   this, METHODID_GET_TRIPS_BY_USER_ID)))
+          .addMethod(
+            getGetAllTripsMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                via.sep3.grpcserver.protobuf.tripservices.Emptymessage,
+                via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse>(
+                  this, METHODID_GET_ALL_TRIPS)))
           .build();
     }
   }
@@ -187,6 +232,14 @@ public final class TripServicesGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetTripsByUserIDMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getAllTrips(via.sep3.grpcserver.protobuf.tripservices.Emptymessage request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetAllTripsMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -215,6 +268,13 @@ public final class TripServicesGrpc {
     public via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse getTripsByUserID(via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetTripsByUserIDMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse getAllTrips(via.sep3.grpcserver.protobuf.tripservices.Emptymessage request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetAllTripsMethod(), getCallOptions(), request);
     }
   }
 
@@ -247,10 +307,19 @@ public final class TripServicesGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetTripsByUserIDMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse> getAllTrips(
+        via.sep3.grpcserver.protobuf.tripservices.Emptymessage request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetAllTripsMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_CREATE_TRIP = 0;
   private static final int METHODID_GET_TRIPS_BY_USER_ID = 1;
+  private static final int METHODID_GET_ALL_TRIPS = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -275,6 +344,10 @@ public final class TripServicesGrpc {
           break;
         case METHODID_GET_TRIPS_BY_USER_ID:
           serviceImpl.getTripsByUserID((via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest) request,
+              (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse>) responseObserver);
+          break;
+        case METHODID_GET_ALL_TRIPS:
+          serviceImpl.getAllTrips((via.sep3.grpcserver.protobuf.tripservices.Emptymessage) request,
               (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDResponse>) responseObserver);
           break;
         default:
@@ -340,6 +413,7 @@ public final class TripServicesGrpc {
               .setSchemaDescriptor(new TripServicesFileDescriptorSupplier())
               .addMethod(getCreateTripMethod())
               .addMethod(getGetTripsByUserIDMethod())
+              .addMethod(getGetAllTripsMethod())
               .build();
         }
       }

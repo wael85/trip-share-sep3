@@ -62,14 +62,14 @@ public interface RequestCarInfoOrBuilder extends
       getFuelTypeBytes();
 
   /**
-   * <code>string driver_drive_license = 6;</code>
-   * @return The driverDriveLicense.
+   * <code>string driver_id = 6;</code>
+   * @return The driverId.
    */
-  java.lang.String getDriverDriveLicense();
+  java.lang.String getDriverId();
   /**
-   * <code>string driver_drive_license = 6;</code>
-   * @return The bytes for driverDriveLicense.
+   * <code>string driver_id = 6;</code>
+   * @return The bytes for driverId.
    */
   com.google.protobuf.ByteString
-      getDriverDriveLicenseBytes();
+      getDriverIdBytes();
 }

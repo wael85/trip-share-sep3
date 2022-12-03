@@ -45,6 +45,37 @@ public final class CarServicesGrpc {
     return getCreateCarMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.carservices.DriverIdInfo,
+      via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo> getGetCarByDriverIdMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getCarByDriverId",
+      requestType = via.sep3.grpcserver.protobuf.carservices.DriverIdInfo.class,
+      responseType = via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.carservices.DriverIdInfo,
+      via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo> getGetCarByDriverIdMethod() {
+    io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.carservices.DriverIdInfo, via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo> getGetCarByDriverIdMethod;
+    if ((getGetCarByDriverIdMethod = CarServicesGrpc.getGetCarByDriverIdMethod) == null) {
+      synchronized (CarServicesGrpc.class) {
+        if ((getGetCarByDriverIdMethod = CarServicesGrpc.getGetCarByDriverIdMethod) == null) {
+          CarServicesGrpc.getGetCarByDriverIdMethod = getGetCarByDriverIdMethod =
+              io.grpc.MethodDescriptor.<via.sep3.grpcserver.protobuf.carservices.DriverIdInfo, via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getCarByDriverId"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.carservices.DriverIdInfo.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo.getDefaultInstance()))
+              .setSchemaDescriptor(new CarServicesMethodDescriptorSupplier("getCarByDriverId"))
+              .build();
+        }
+      }
+    }
+    return getGetCarByDriverIdMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -100,6 +131,13 @@ public final class CarServicesGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateCarMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getCarByDriverId(via.sep3.grpcserver.protobuf.carservices.DriverIdInfo request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetCarByDriverIdMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -109,6 +147,13 @@ public final class CarServicesGrpc {
                 via.sep3.grpcserver.protobuf.carservices.RequestCarInfo,
                 via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo>(
                   this, METHODID_CREATE_CAR)))
+          .addMethod(
+            getGetCarByDriverIdMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                via.sep3.grpcserver.protobuf.carservices.DriverIdInfo,
+                via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo>(
+                  this, METHODID_GET_CAR_BY_DRIVER_ID)))
           .build();
     }
   }
@@ -134,6 +179,14 @@ public final class CarServicesGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getCreateCarMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getCarByDriverId(via.sep3.grpcserver.protobuf.carservices.DriverIdInfo request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetCarByDriverIdMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -155,6 +208,13 @@ public final class CarServicesGrpc {
     public via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo createCar(via.sep3.grpcserver.protobuf.carservices.RequestCarInfo request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateCarMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo getCarByDriverId(via.sep3.grpcserver.protobuf.carservices.DriverIdInfo request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetCarByDriverIdMethod(), getCallOptions(), request);
     }
   }
 
@@ -179,9 +239,18 @@ public final class CarServicesGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getCreateCarMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo> getCarByDriverId(
+        via.sep3.grpcserver.protobuf.carservices.DriverIdInfo request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetCarByDriverIdMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_CREATE_CAR = 0;
+  private static final int METHODID_GET_CAR_BY_DRIVER_ID = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -202,6 +271,10 @@ public final class CarServicesGrpc {
       switch (methodId) {
         case METHODID_CREATE_CAR:
           serviceImpl.createCar((via.sep3.grpcserver.protobuf.carservices.RequestCarInfo) request,
+              (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo>) responseObserver);
+          break;
+        case METHODID_GET_CAR_BY_DRIVER_ID:
+          serviceImpl.getCarByDriverId((via.sep3.grpcserver.protobuf.carservices.DriverIdInfo) request,
               (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.carservices.ResponseCarInfo>) responseObserver);
           break;
         default:
@@ -266,6 +339,7 @@ public final class CarServicesGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new CarServicesFileDescriptorSupplier())
               .addMethod(getCreateCarMethod())
+              .addMethod(getGetCarByDriverIdMethod())
               .build();
         }
       }

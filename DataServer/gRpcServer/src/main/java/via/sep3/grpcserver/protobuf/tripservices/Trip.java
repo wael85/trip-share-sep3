@@ -15,6 +15,11 @@ public final class Trip {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Emptymessage_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Emptymessage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TripCreationRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -58,39 +63,46 @@ public final class Trip {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\ntrip.proto\"\362\001\n\023TripCreationRequest\022\022\n\n" +
-      "full_price\030\001 \001(\001\022\027\n\017available_seats\030\002 \001(" +
-      "\005\022\021\n\tdriver_id\030\003 \001(\t\022,\n\005stops\030\004 \003(\0132\035.Tr" +
-      "ipCreationRequest.Location\032m\n\010Location\022\021" +
-      "\n\tpost_code\030\001 \001(\t\022\014\n\004city\030\002 \001(\t\022\023\n\013stree" +
-      "t_name\030\003 \001(\t\022\025\n\rstreet_number\030\004 \001(\t\022\024\n\014a" +
-      "rrival_time\030\005 \001(\003\"\243\002\n\014TripResponse\022\n\n\002id" +
-      "\030\001 \001(\003\022\022\n\nfull_price\030\002 \001(\001\022\027\n\017available_" +
-      "seats\030\003 \001(\005\022\021\n\tdriver_id\030\004 \001(\t\022%\n\005stops\030" +
-      "\005 \003(\0132\026.TripResponse.Location\022%\n\007tickets" +
-      "\030\006 \003(\0132\024.SeatTicketResponseB\032y\n\010Location" +
-      "\022\n\n\002id\030\001 \001(\003\022\021\n\tpost_code\030\002 \001(\t\022\014\n\004city\030" +
-      "\003 \001(\t\022\023\n\013street_name\030\004 \001(\t\022\025\n\rstreet_num" +
-      "ber\030\005 \001(\t\022\024\n\014arrival_time\030\006 \001(\003\"\230\001\n\023Seat" +
-      "TicketResponseB\022\n\n\002id\030\001 \001(\003\022\022\n\nseat_pric" +
-      "e\030\002 \001(\001\022\023\n\013total_seats\030\003 \001(\005\022\024\n\014passenge" +
-      "r_id\030\004 \001(\t\022\017\n\007trip_id\030\005 \001(\003\022\021\n\tpickup_id" +
-      "\030\006 \001(\003\022\022\n\ndropoff_id\030\007 \001(\003\"*\n\026TripsByDri" +
-      "verIDRequest\022\020\n\010user_ids\030\001 \003(\t\"7\n\027TripsB" +
-      "yDriverIDResponse\022\034\n\005trips\030\001 \003(\0132\r.TripR" +
-      "esponse2\210\001\n\014TripServices\0221\n\ncreateTrip\022\024" +
-      ".TripCreationRequest\032\r.TripResponse\022E\n\020g" +
-      "etTripsByUserID\022\027.TripsByDriverIDRequest" +
-      "\032\030.TripsByDriverIDResponseB-\n)via.sep3.g" +
-      "rpcserver.protobuf.tripservicesP\001b\006proto" +
-      "3"
+      "\n\ntrip.proto\"\016\n\014Emptymessage\"\362\001\n\023TripCre" +
+      "ationRequest\022\022\n\nfull_price\030\001 \001(\001\022\027\n\017avai" +
+      "lable_seats\030\002 \001(\005\022\021\n\tdriver_id\030\003 \001(\t\022,\n\005" +
+      "stops\030\004 \003(\0132\035.TripCreationRequest.Locati" +
+      "on\032m\n\010Location\022\021\n\tpost_code\030\001 \001(\t\022\014\n\004cit" +
+      "y\030\002 \001(\t\022\023\n\013street_name\030\003 \001(\t\022\025\n\rstreet_n" +
+      "umber\030\004 \001(\t\022\024\n\014arrival_time\030\005 \001(\t\"\243\002\n\014Tr" +
+      "ipResponse\022\n\n\002id\030\001 \001(\003\022\022\n\nfull_price\030\002 \001" +
+      "(\001\022\027\n\017available_seats\030\003 \001(\005\022\021\n\tdriver_id" +
+      "\030\004 \001(\t\022%\n\005stops\030\005 \003(\0132\026.TripResponse.Loc" +
+      "ation\022%\n\007tickets\030\006 \003(\0132\024.SeatTicketRespo" +
+      "nseB\032y\n\010Location\022\n\n\002id\030\001 \001(\003\022\021\n\tpost_cod" +
+      "e\030\002 \001(\t\022\014\n\004city\030\003 \001(\t\022\023\n\013street_name\030\004 \001" +
+      "(\t\022\025\n\rstreet_number\030\005 \001(\t\022\024\n\014arrival_tim" +
+      "e\030\006 \001(\t\"\230\001\n\023SeatTicketResponseB\022\n\n\002id\030\001 " +
+      "\001(\003\022\022\n\nseat_price\030\002 \001(\001\022\023\n\013total_seats\030\003" +
+      " \001(\005\022\024\n\014passenger_id\030\004 \001(\t\022\017\n\007trip_id\030\005 " +
+      "\001(\003\022\021\n\tpickup_id\030\006 \001(\003\022\022\n\ndropoff_id\030\007 \001" +
+      "(\003\")\n\026TripsByDriverIDRequest\022\017\n\007user_id\030" +
+      "\001 \001(\t\"7\n\027TripsByDriverIDResponse\022\034\n\005trip" +
+      "s\030\001 \003(\0132\r.TripResponse2\300\001\n\014TripServices\022" +
+      "1\n\ncreateTrip\022\024.TripCreationRequest\032\r.Tr" +
+      "ipResponse\022E\n\020getTripsByUserID\022\027.TripsBy" +
+      "DriverIDRequest\032\030.TripsByDriverIDRespons" +
+      "e\0226\n\013getAllTrips\022\r.Emptymessage\032\030.TripsB" +
+      "yDriverIDResponseB-\n)via.sep3.grpcserver" +
+      ".protobuf.tripservicesP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_TripCreationRequest_descriptor =
+    internal_static_Emptymessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_Emptymessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Emptymessage_descriptor,
+        new java.lang.String[] { });
+    internal_static_TripCreationRequest_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_TripCreationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TripCreationRequest_descriptor,
@@ -102,7 +114,7 @@ public final class Trip {
         internal_static_TripCreationRequest_Location_descriptor,
         new java.lang.String[] { "PostCode", "City", "StreetName", "StreetNumber", "ArrivalTime", });
     internal_static_TripResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_TripResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TripResponse_descriptor,
@@ -114,19 +126,19 @@ public final class Trip {
         internal_static_TripResponse_Location_descriptor,
         new java.lang.String[] { "Id", "PostCode", "City", "StreetName", "StreetNumber", "ArrivalTime", });
     internal_static_SeatTicketResponseB_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_SeatTicketResponseB_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SeatTicketResponseB_descriptor,
         new java.lang.String[] { "Id", "SeatPrice", "TotalSeats", "PassengerId", "TripId", "PickupId", "DropoffId", });
     internal_static_TripsByDriverIDRequest_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_TripsByDriverIDRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TripsByDriverIDRequest_descriptor,
-        new java.lang.String[] { "UserIds", });
+        new java.lang.String[] { "UserId", });
     internal_static_TripsByDriverIDResponse_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_TripsByDriverIDResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TripsByDriverIDResponse_descriptor,

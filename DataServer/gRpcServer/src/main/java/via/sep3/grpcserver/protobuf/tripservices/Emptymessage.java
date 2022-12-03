@@ -4,26 +4,25 @@
 package via.sep3.grpcserver.protobuf.tripservices;
 
 /**
- * Protobuf type {@code TripsByDriverIDRequest}
+ * Protobuf type {@code Emptymessage}
  */
-public final class TripsByDriverIDRequest extends
+public final class Emptymessage extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:TripsByDriverIDRequest)
-    TripsByDriverIDRequestOrBuilder {
+    // @@protoc_insertion_point(message_implements:Emptymessage)
+    EmptymessageOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use TripsByDriverIDRequest.newBuilder() to construct.
-  private TripsByDriverIDRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use Emptymessage.newBuilder() to construct.
+  private Emptymessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private TripsByDriverIDRequest() {
-    userId_ = "";
+  private Emptymessage() {
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new TripsByDriverIDRequest();
+    return new Emptymessage();
   }
 
   @java.lang.Override
@@ -31,7 +30,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private TripsByDriverIDRequest(
+  private Emptymessage(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -49,12 +48,6 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            userId_ = s;
-            break;
-          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -78,53 +71,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_TripsByDriverIDRequest_descriptor;
+    return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_Emptymessage_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_TripsByDriverIDRequest_fieldAccessorTable
+    return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_Emptymessage_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest.class, via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest.Builder.class);
-  }
-
-  public static final int USER_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object userId_;
-  /**
-   * <code>string user_id = 1;</code>
-   * @return The userId.
-   */
-  @java.lang.Override
-  public java.lang.String getUserId() {
-    java.lang.Object ref = userId_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      userId_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string user_id = 1;</code>
-   * @return The bytes for userId.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getUserIdBytes() {
-    java.lang.Object ref = userId_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      userId_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+            via.sep3.grpcserver.protobuf.tripservices.Emptymessage.class, via.sep3.grpcserver.protobuf.tripservices.Emptymessage.Builder.class);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -141,9 +96,6 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userId_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userId_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -153,9 +105,6 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userId_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userId_);
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -166,13 +115,11 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest)) {
+    if (!(obj instanceof via.sep3.grpcserver.protobuf.tripservices.Emptymessage)) {
       return super.equals(obj);
     }
-    via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest other = (via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest) obj;
+    via.sep3.grpcserver.protobuf.tripservices.Emptymessage other = (via.sep3.grpcserver.protobuf.tripservices.Emptymessage) obj;
 
-    if (!getUserId()
-        .equals(other.getUserId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -184,76 +131,74 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + USER_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getUserId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(byte[] data)
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(java.io.InputStream input)
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseDelimitedFrom(java.io.InputStream input)
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseDelimitedFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parseFrom(
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -266,7 +211,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest prototype) {
+  public static Builder newBuilder(via.sep3.grpcserver.protobuf.tripservices.Emptymessage prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -282,26 +227,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code TripsByDriverIDRequest}
+   * Protobuf type {@code Emptymessage}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:TripsByDriverIDRequest)
-      via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:Emptymessage)
+      via.sep3.grpcserver.protobuf.tripservices.EmptymessageOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_TripsByDriverIDRequest_descriptor;
+      return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_Emptymessage_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_TripsByDriverIDRequest_fieldAccessorTable
+      return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_Emptymessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest.class, via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest.Builder.class);
+              via.sep3.grpcserver.protobuf.tripservices.Emptymessage.class, via.sep3.grpcserver.protobuf.tripservices.Emptymessage.Builder.class);
     }
 
-    // Construct using via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest.newBuilder()
+    // Construct using via.sep3.grpcserver.protobuf.tripservices.Emptymessage.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -319,25 +264,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      userId_ = "";
-
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_TripsByDriverIDRequest_descriptor;
+      return via.sep3.grpcserver.protobuf.tripservices.Trip.internal_static_Emptymessage_descriptor;
     }
 
     @java.lang.Override
-    public via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest getDefaultInstanceForType() {
-      return via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest.getDefaultInstance();
+    public via.sep3.grpcserver.protobuf.tripservices.Emptymessage getDefaultInstanceForType() {
+      return via.sep3.grpcserver.protobuf.tripservices.Emptymessage.getDefaultInstance();
     }
 
     @java.lang.Override
-    public via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest build() {
-      via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest result = buildPartial();
+    public via.sep3.grpcserver.protobuf.tripservices.Emptymessage build() {
+      via.sep3.grpcserver.protobuf.tripservices.Emptymessage result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -345,9 +288,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest buildPartial() {
-      via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest result = new via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest(this);
-      result.userId_ = userId_;
+    public via.sep3.grpcserver.protobuf.tripservices.Emptymessage buildPartial() {
+      via.sep3.grpcserver.protobuf.tripservices.Emptymessage result = new via.sep3.grpcserver.protobuf.tripservices.Emptymessage(this);
       onBuilt();
       return result;
     }
@@ -386,20 +328,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest) {
-        return mergeFrom((via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest)other);
+      if (other instanceof via.sep3.grpcserver.protobuf.tripservices.Emptymessage) {
+        return mergeFrom((via.sep3.grpcserver.protobuf.tripservices.Emptymessage)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest other) {
-      if (other == via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest.getDefaultInstance()) return this;
-      if (!other.getUserId().isEmpty()) {
-        userId_ = other.userId_;
-        onChanged();
-      }
+    public Builder mergeFrom(via.sep3.grpcserver.protobuf.tripservices.Emptymessage other) {
+      if (other == via.sep3.grpcserver.protobuf.tripservices.Emptymessage.getDefaultInstance()) return this;
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -415,93 +353,17 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest parsedMessage = null;
+      via.sep3.grpcserver.protobuf.tripservices.Emptymessage parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest) e.getUnfinishedMessage();
+        parsedMessage = (via.sep3.grpcserver.protobuf.tripservices.Emptymessage) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
           mergeFrom(parsedMessage);
         }
       }
-      return this;
-    }
-
-    private java.lang.Object userId_ = "";
-    /**
-     * <code>string user_id = 1;</code>
-     * @return The userId.
-     */
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        userId_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string user_id = 1;</code>
-     * @return The bytes for userId.
-     */
-    public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string user_id = 1;</code>
-     * @param value The userId to set.
-     * @return This builder for chaining.
-     */
-    public Builder setUserId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      userId_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string user_id = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearUserId() {
-      
-      userId_ = getDefaultInstance().getUserId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string user_id = 1;</code>
-     * @param value The bytes for userId to set.
-     * @return This builder for chaining.
-     */
-    public Builder setUserIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      userId_ = value;
-      onChanged();
       return this;
     }
     @java.lang.Override
@@ -517,41 +379,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:TripsByDriverIDRequest)
+    // @@protoc_insertion_point(builder_scope:Emptymessage)
   }
 
-  // @@protoc_insertion_point(class_scope:TripsByDriverIDRequest)
-  private static final via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:Emptymessage)
+  private static final via.sep3.grpcserver.protobuf.tripservices.Emptymessage DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest();
+    DEFAULT_INSTANCE = new via.sep3.grpcserver.protobuf.tripservices.Emptymessage();
   }
 
-  public static via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest getDefaultInstance() {
+  public static via.sep3.grpcserver.protobuf.tripservices.Emptymessage getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<TripsByDriverIDRequest>
-      PARSER = new com.google.protobuf.AbstractParser<TripsByDriverIDRequest>() {
+  private static final com.google.protobuf.Parser<Emptymessage>
+      PARSER = new com.google.protobuf.AbstractParser<Emptymessage>() {
     @java.lang.Override
-    public TripsByDriverIDRequest parsePartialFrom(
+    public Emptymessage parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new TripsByDriverIDRequest(input, extensionRegistry);
+      return new Emptymessage(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<TripsByDriverIDRequest> parser() {
+  public static com.google.protobuf.Parser<Emptymessage> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<TripsByDriverIDRequest> getParserForType() {
+  public com.google.protobuf.Parser<Emptymessage> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public via.sep3.grpcserver.protobuf.tripservices.TripsByDriverIDRequest getDefaultInstanceForType() {
+  public via.sep3.grpcserver.protobuf.tripservices.Emptymessage getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

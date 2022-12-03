@@ -15,6 +15,11 @@ public final class Ticket {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TicketsByUserId_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TicketsByUserId_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TicketsByTripRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -34,6 +39,11 @@ public final class Ticket {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_SeatTicketResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_LocationMessage_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_LocationMessage_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -43,51 +53,70 @@ public final class Ticket {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014ticket.proto\"\'\n\024TicketsByTripRequest\022\017" +
-      "\n\007trip_id\030\001 \001(\003\"=\n\025TicketsByTripResponse" +
-      "\022$\n\007tickets\030\001 \003(\0132\023.SeatTicketResponse\"\222" +
-      "\001\n\031SeatTicketCreationRequest\022\022\n\nseat_pri" +
-      "ce\030\001 \001(\001\022\023\n\013total_seats\030\002 \001(\005\022\024\n\014passeng" +
-      "er_id\030\003 \001(\t\022\017\n\007trip_id\030\004 \001(\003\022\021\n\tpickup_i" +
-      "d\030\005 \001(\003\022\022\n\ndropoff_id\030\006 \001(\003\"\227\001\n\022SeatTick" +
-      "etResponse\022\n\n\002id\030\001 \001(\003\022\022\n\nseat_price\030\002 \001" +
-      "(\001\022\023\n\013total_seats\030\003 \001(\005\022\024\n\014passenger_id\030" +
-      "\004 \001(\t\022\017\n\007trip_id\030\005 \001(\003\022\021\n\tpickup_id\030\006 \001(" +
-      "\003\022\022\n\ndropoff_id\030\007 \001(\0032\224\001\n\016TicketServices" +
-      "\022?\n\014createTicket\022\032.SeatTicketCreationReq" +
-      "uest\032\023.SeatTicketResponse\022A\n\020getTicketsB" +
-      "yTrip\022\025.TicketsByTripRequest\032\026.TicketsBy" +
-      "TripResponseB/\n+via.sep3.grpcserver.prot" +
-      "obuf.ticketservicesP\001b\006proto3"
+      "\n\014ticket.proto\" \n\017TicketsByUserId\022\r\n\005ema" +
+      "il\030\001 \001(\t\"\'\n\024TicketsByTripRequest\022\017\n\007trip" +
+      "_id\030\001 \001(\003\"=\n\025TicketsByTripResponse\022$\n\007ti" +
+      "ckets\030\001 \003(\0132\023.SeatTicketResponse\"\222\001\n\031Sea" +
+      "tTicketCreationRequest\022\022\n\nseat_price\030\001 \001" +
+      "(\001\022\023\n\013total_seats\030\002 \001(\005\022\024\n\014passenger_id\030" +
+      "\003 \001(\t\022\017\n\007trip_id\030\004 \001(\003\022\021\n\tpickup_id\030\005 \001(" +
+      "\003\022\022\n\ndropoff_id\030\006 \001(\003\"\265\001\n\022SeatTicketResp" +
+      "onse\022\n\n\002id\030\001 \001(\003\022\022\n\nseat_price\030\002 \001(\001\022\023\n\013" +
+      "total_seats\030\003 \001(\005\022\024\n\014passenger_id\030\004 \001(\t\022" +
+      "\017\n\007trip_id\030\005 \001(\003\022 \n\006pickup\030\006 \001(\0132\020.Locat" +
+      "ionMessage\022!\n\007dropoff\030\007 \001(\0132\020.LocationMe" +
+      "ssage\"\200\001\n\017LocationMessage\022\n\n\002id\030\001 \001(\003\022\021\n" +
+      "\tpost_code\030\002 \001(\t\022\014\n\004city\030\003 \001(\t\022\023\n\013street" +
+      "_name\030\004 \001(\t\022\025\n\rstreet_number\030\005 \001(\t\022\024\n\014ar" +
+      "rival_time\030\006 \001(\0032\322\001\n\016TicketServices\022?\n\014c" +
+      "reateTicket\022\032.SeatTicketCreationRequest\032" +
+      "\023.SeatTicketResponse\022A\n\020getTicketsByTrip" +
+      "\022\025.TicketsByTripRequest\032\026.TicketsByTripR" +
+      "esponse\022<\n\020getAllUserTicket\022\020.TicketsByU" +
+      "serId\032\026.TicketsByTripResponseB/\n+via.sep" +
+      "3.grpcserver.protobuf.ticketservicesP\001b\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_TicketsByTripRequest_descriptor =
+    internal_static_TicketsByUserId_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_TicketsByUserId_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TicketsByUserId_descriptor,
+        new java.lang.String[] { "Email", });
+    internal_static_TicketsByTripRequest_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_TicketsByTripRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TicketsByTripRequest_descriptor,
         new java.lang.String[] { "TripId", });
     internal_static_TicketsByTripResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_TicketsByTripResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TicketsByTripResponse_descriptor,
         new java.lang.String[] { "Tickets", });
     internal_static_SeatTicketCreationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_SeatTicketCreationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SeatTicketCreationRequest_descriptor,
         new java.lang.String[] { "SeatPrice", "TotalSeats", "PassengerId", "TripId", "PickupId", "DropoffId", });
     internal_static_SeatTicketResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_SeatTicketResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SeatTicketResponse_descriptor,
-        new java.lang.String[] { "Id", "SeatPrice", "TotalSeats", "PassengerId", "TripId", "PickupId", "DropoffId", });
+        new java.lang.String[] { "Id", "SeatPrice", "TotalSeats", "PassengerId", "TripId", "Pickup", "Dropoff", });
+    internal_static_LocationMessage_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_LocationMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_LocationMessage_descriptor,
+        new java.lang.String[] { "Id", "PostCode", "City", "StreetName", "StreetNumber", "ArrivalTime", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
