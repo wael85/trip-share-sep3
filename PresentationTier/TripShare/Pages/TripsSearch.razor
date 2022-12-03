@@ -3,9 +3,9 @@
 @using Radzen
 @using Radzen.Blazor
 @using Domain.DTOs
-@using HttpClient.ClientImplementation
-@inject NotificationService _servic
-@inject HttpTripClient _client;
+@using HttpClient.ClientInterfaces
+@inject NotificationService Service
+@inject ITripClient TripClient
 
 
 <div class="row align-content-middle">
@@ -14,144 +14,126 @@
         <div class="row">
             <div class="input-group mb-3 ">
                 <span class="input-group-text">Trip</span>
-                <input  type="text" @bind="startCity" class=" form-control " placeholder="Start City">
-                <input  type="text" @bind="endCity"   class=" form-control " placeholder="Destination City">
-                <input  type="text" @bind="passengerAmount"   class=" form-control " placeholder="Seats count">
-                <input  type="text" @bind="maxPrice"   class=" form-control " placeholder="Max Price">
-                
+                <input  type="text" @bind="_searchQuery.Pickup" class=" form-control " placeholder="Start City">
+                <input  type="text" @bind="_searchQuery.Dropoff"   class=" form-control " placeholder="Destination City">
+                <input  type="number" @bind="_searchQuery.PassengerAmount"   class=" form-control " placeholder="Seats count" min="1">
+                <input  type="number" @bind="_searchQuery.MaxPrice"   class=" form-control " placeholder="Max Price" min="0">
             </div>
         </div>
-         <div class="row justify-content-center">
-             <button type="button" @onclick="resetSearch" class="btn btn-secondary col-2 ml-3 w-30">Reset</button>
-             <div class="col-2"></div>
-             <button type="button" @onclick="Search" class="btn btn-primary col-2 ml-3 w-30">Search</button>
-             </div>
+        <div class="row justify-content-center">
+            <button type="button" @onclick="ResetSearch" class="btn btn-secondary col-2 ml-3 w-30">Reset</button>
+            <div class="col-2"></div>
+            <button type="button" @onclick="Search" class="btn btn-primary col-2 ml-3 w-30">Search</button>
+        </div>
     </div>
    
-     <div class="col-md-6">
-         <RadzenCard>
-             <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Trip Date</RadzenText>
-             <RadzenDatePicker Min="DateTime.Today.AddDays(0)" @bind-Value=@dateTime ShowTime="true"  Change=@(args => OnChange(args.Value))
-                               HourFormat="24" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100" 
-             />
-         </RadzenCard>
-     </div>
-    
-
+    <div class="col-md-6">
+        <RadzenCard>
+            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Trip Date</RadzenText>
+            <RadzenDatePicker Min="DateTime.Today.AddDays(0)" @bind-Value="@_searchQuery.TripDateTime" ShowTime="true"  Change="@(args => OnChange(args.Value))"
+                              HourFormat="24" DateFormat="yyyy/MM/dd h:mm tt" Class="w-100" 
+            />
+        </RadzenCard>
+    </div>
 </div>
+
 <!--Trips cards container -->
 <div class="container-fluid mt-5">
     <div class="row list-group-horizontal justify-content-center">
-           @if (trips == null)
+        @if (_trips == null)
+        {
+            <p>Loading .. ..</p>
+        }
+        else if (!_trips.Any())
+        {
+            <p>There is no available trips ..</p>
+        }
+        else
+        {
+            @foreach (var t in _trips)
             {
-                <p>Loding .. ..</p>
-            }
-            else if (!trips.Any())
-            {
-                <p>There is no available trips ..</p>
-            }
-            else
-            {
-                @foreach (Trip t in trips)
-                {
-                    <div class="card list-group-item col-4 m-3 border-2" style="width: 18rem; height: 400px;">
-                    <!-- we can add car picture or driver
-                    <img src="..." class="card-img-top" alt="...">
-                   -->
+                <div class="card list-group-item col-4 m-3 border-2" style="width: 18rem; height: 400px;">
                     <div class="card-body h-60">
-                            <h5 class="card-title">Trip To @t.Stops[t.Stops.Count -1].City</h5>
-                            <p class="card-text">Hello I am @t.Driver.FirstName and I will be happy if you join meon my trip to @t.Stops[t.Stops.Count -1].City </p>
-                        </div>
-                    <ul class="list-group list-group-flush  overflow-scroll" style="height: 200px">
-                        <li class="list-group-item">Your Search tickt price: @{ t.SubTripPrice(t.Stops.Find(x => x.getLocationByCity(startCity)), t.Stops.Find(x => x.getLocationByCity(endCity)));}</li>
-                        <li class="list-group-item">Start from: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime </li>
-                        @for (int i = 1; i < t.Stops.Count - 1; i++)
-                        {
-                            <li class="list-group-item">Stop @i : @t.Stops[i].getAddress() , at:@t.Stops[i].ArrivalTime </li>
+                        <h5 class="card-title">Trip To @t.Stops[^1].City</h5>
+                        <p class="card-text">Hello I am @t.Driver.FirstName and I will be happy if you join meon my trip to @t.Stops[^1].City </p>
+                    </div>
+                <ul class="list-group list-group-flush  overflow-scroll" style="height: 200px">
+                    <li class="list-group-item">
+                        Your Search tickt price:
+                        @{ 
+                            t.SubTripPrice(
+                               t.Stops.Find(x => x.getLocationByCity(_searchQuery.Pickup)),
+                               t.Stops.Find(x => x.getLocationByCity(_searchQuery.Dropoff))
+                                ); 
                         }
-                        <li class="list-group-item">Last destination: @t.Stops[t.Stops.Count-1].getAddress() , at:@t.Stops[t.Stops.Count-1].ArrivalTime</li>
-                    </ul>
+                    </li>
+                    <li class="list-group-item">
+                        Start from: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime
+                    </li>
+                    @for (int i = 1; i < t.Stops.Count - 1; i++)
+                    {
+                        <li class="list-group-item">Stop @i : @t.Stops[i].getAddress(), at:@t.Stops[i].ArrivalTime</li>
+                    }
+                    <li class="list-group-item">Last destination: @t.Stops[^1].getAddress(), at:@t.Stops[^1].ArrivalTime</li>
+                </ul>
                     <div class="card-body">
                         <a href="#" class="card-link">Go TO Book</a>
                     </div>
-                    </div>
-                }
+                </div>
             }
+        }
     </div>
-
 </div>
 
 
-
 @code {
-    private DateTime? dateTime = DateTime.Now;
-    IEnumerable<Trip> trips;
-    private string startCity="";
-    private string endCity="";
-    double maxPrice = 0;
-    int passengerAmount = 1;
-
-
-
+    List<Trip> _trips = new List<Trip>();
+    TripSearchQuery _searchQuery = new TripSearchQuery();
+    
+    private void ResetSearch()
+    {
+        _searchQuery.Pickup = "";
+        _searchQuery.Dropoff = "";
+        _searchQuery.PassengerAmount = 1;
+        _searchQuery.MaxPrice = 0;
+        _searchQuery.TripDateTime = DateTime.Now;
+    }
+    
     // response to change date on search div
-    void OnChange(DateTime? value1)
+    void OnChange(DateTime dateTime)
     {
-        dateTime = value1;
-
+        _searchQuery.TripDateTime = dateTime;
     }
 
-    public async void Search()
+    private async void Search()
     {
-        if (!String.IsNullOrEmpty(startCity) && !String.IsNullOrEmpty(endCity) && dateTime != null)
+        _trips = await TripClient.GetTripsAsync(_searchQuery.Clone());
+        if (_trips.Count > 0)
         {
-            TripSearchQuery tripSearchQuery = new TripSearchQuery();
-            tripSearchQuery.Dropoff = endCity;
-            tripSearchQuery.Pickup = startCity;
-            if (maxPrice != 0)
+            Service.Notify(new NotificationMessage
             {
-                tripSearchQuery.MaxPrice = maxPrice;
-            }
-            tripSearchQuery.PassengerAmount = passengerAmount;
-            tripSearchQuery.TripDateTime = dateTime;
-            trips =await _client.GetTripsAsync(tripSearchQuery);
+                Severity = NotificationSeverity.Success, 
+                Summary = "Search", 
+                Detail = $"{_trips.Count} trips were found!", 
+                Duration = 1000
+            });
         }
-        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = "There is no matches Trips", Duration = 4000 });
-
+        else
+        {
+            Service.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error, 
+                Summary = "Search", 
+                Detail = "No trips were found!", 
+                Duration = 1000
+            });
+        }
     }
-    void ShowNotification(NotificationMessage message)
-    {
-        
-        _servic.Notify(message);
-    }
-
-    public void resetSearch()
-    {
-        dateTime = DateTime.Now;
-        startCity = "";
-        endCity = "";
-        passengerAmount = 1;
-        maxPrice=0;
-    }
-    
-    
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        TripSearchQuery tripSearchQuery = new TripSearchQuery();
-        tripSearchQuery.Dropoff = endCity;
-        tripSearchQuery.Pickup = startCity;
-        if (maxPrice != 0)
-        {
-            tripSearchQuery.MaxPrice = maxPrice;
-        }
-        tripSearchQuery.PassengerAmount = passengerAmount;
-        tripSearchQuery.TripDateTime = dateTime;
-        trips =await _client.GetTripsAsync(tripSearchQuery);
-
+        ResetSearch();
+        _trips = await TripClient.GetTripsAsync(_searchQuery.Clone());
     }
- 
-    
-
- 
 }

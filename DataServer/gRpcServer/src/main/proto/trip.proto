@@ -22,7 +22,7 @@ message TripCreationRequest {
     string city = 2;
     string street_name = 3;
     string street_number = 4;
-    int64 arrival_time = 5;
+    string arrival_time = 5;
   }
 }
 
@@ -40,7 +40,7 @@ message TripResponse {
     string city = 3;
     string street_name = 4;
     string street_number = 5;
-    int64 arrival_time = 6;
+    string arrival_time = 6;
   }
 }
 message SeatTicketResponseB {

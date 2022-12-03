@@ -20,64 +20,79 @@ public class TripLogic : ITripLogic
     public async Task<Trip> CreateAsync(TripCreationDto dto)
     {
         return await TripServices.CreateAsync(dto);
-        
     }
 
-    public async Task<List<Trip>> QueryAsync(Location pickup, Location dropoff, int passengerAmount, double maxPrice)
+    public async Task<List<Trip>> GetAllAsync()
+    {
+        return await TripServices.GetAllTripsAsync();
+    }
+
+    public async Task<List<Trip>> QueryAsync(string? pickup, string? dropoff, int queryPassengerAmount, double? maxPrice, DateTime tripDateTime)
     {
         var trips = await TripServices.GetAllTripsAsync();
+        var skipLocations = pickup == null || dropoff == null; // If either location query is none ignore both
+        
+        var trips2 = new List<Trip>();
 
         foreach (var trip in trips)
         {
-            var hasPickup = false;
-            var hasDropoff = false;
-
-            Location cPickup = new Location();
-            Location cStop = new Location();
+            if (trip.Stops.Count < 1)
+                continue;
+            
+            Location? validPickup = null;
+            Location? validDropoff = null;
 
             foreach (var stop in trip.Stops)
             {
-                if (QueryLocations(stop, pickup) &&
-                    stop.ArrivalTime.CompareTo(pickup.ArrivalTime) >= 0)
+                if (!skipLocations)
                 {
-                    cPickup = stop;
-                    hasPickup = true;
-                }
+                    if (QueryLocations(stop, pickup) &&
+                        stop.ArrivalTime.CompareTo(tripDateTime) >= 0)
+                    {
+                        validPickup = stop;
+                    }
                 
-                if (QueryLocations(stop, dropoff) && hasPickup &&
-                    stop.ArrivalTime.CompareTo(dropoff.ArrivalTime) <= 0)
-                {
-                    if (!hasDropoff)
-                        cStop = stop;
-                    
-                    hasDropoff = true;
+                    if (QueryLocations(stop, dropoff) && validPickup != null)
+                    {
+                        validDropoff ??= stop;
+                    }
                 }
 
-                if (!hasPickup) continue;
+                if (validPickup == null) 
+                    continue;
+                
                 var currentPassengerAmount = trip.Tickets
                     .Where(ticket => ticket.PickUpLocation == stop)
                     .Sum(ticket => ticket.SeatAmount);
 
-                if (currentPassengerAmount + passengerAmount > trip.AvailableSeats)
-                {
-                    hasPickup = false;
-                }
+                if (currentPassengerAmount + queryPassengerAmount <= trip.AvailableSeats) 
+                    continue;
+                
+                validPickup = null;
+                validDropoff = null;
             }
+            
+            if ((validPickup == null || validDropoff == null) && !skipLocations) 
+                continue;
 
-            if (!(hasPickup && hasDropoff))
-                trips.Remove(trip);
-            else if (hasDropoff && hasPickup && maxPrice < trip.SubTripPrice(cPickup, cStop))
-                trips.Remove(trip);
+            if (skipLocations && maxPrice < trip.FullPrice)
+                continue;
+            
+            if (queryPassengerAmount > trip.AvailableSeats)
+                continue;
+            
+            if (maxPrice > trip.SubTripPrice(validPickup, validDropoff) || maxPrice == null)
+            {
+                Console.WriteLine(maxPrice);
+                trips2.Add(trip);
+            }
         }
 
-        return trips;
+        return trips2;
     }
 
-    private static bool QueryLocations(Location original, Location query)
+    private static bool QueryLocations(Location original, string query)
     {
-        return (query.StreetNumber == "!EMPTY!" || query.StreetNumber == original.StreetNumber) &&
-               (query.StreetName == "!EMPTY!" || query.StreetName == original.StreetName) &&
-               (query.StreetName == "!EMPTY!" || query.City == original.City) &&
-               (query.PostCode == "!EMPTY!" || query.PostCode == original.PostCode);
+        return (query == "" || query.ToLower() == original.City.ToLower());
     }
 }

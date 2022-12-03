@@ -16,6 +16,7 @@ import via.sep3.grpcserver.repositorys.UserRepository;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
         for (Location location : locations) {
             var locationResult = TripResponse.Location.newBuilder()
                     .setId(location.getId())
-                    .setArrivalTime(location.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(location.getArrivalTime())))
+                    .setArrivalTime(location.getArrivalTime().format(DateTimeFormatter.RFC_1123_DATE_TIME))
                     .setPostCode(location.getPostCode())
                     .setCity(location.getCity())
                     .setStreetName(location.getStreetName())
@@ -76,8 +77,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
             Location location = new Location();
             location.setTrip(trip);
             location.setCity(stop.getCity());
-            location.setArrivalTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(stop.getArrivalTime()),
-                    TimeZone.getDefault().toZoneId()));
+            location.setArrivalTime(LocalDateTime.parse(stop.getArrivalTime(), DateTimeFormatter.RFC_1123_DATE_TIME));
             location.setPostCode(stop.getPostCode());
             location.setStreetName(stop.getStreetName());
             location.setStreetNumber(stop.getStreetNumber());
@@ -109,7 +109,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
             for (Location l : stops.get()) {
                 if (l.getTrip().getId() == trip.getId()) {
                     TripResponse.Location res = TripResponse.Location.newBuilder()
-                            .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
+                            .setArrivalTime(l.getArrivalTime().toString())
                             .setCity(l.getCity())
                             .setId(l.getId())
                             .setPostCode(l.getPostCode())
@@ -157,7 +157,7 @@ public class TripServices extends TripServicesGrpc.TripServicesImplBase {
             for (Location l : stops.get()) {
                 if (l.getTrip().getId() == t.getId()) {
                     TripResponse.Location res = TripResponse.Location.newBuilder()
-                            .setArrivalTime(l.getArrivalTime().toEpochSecond(TimeZone.getDefault().toZoneId().getRules().getOffset(l.getArrivalTime())))
+                            .setArrivalTime(l.getArrivalTime().format(DateTimeFormatter.RFC_1123_DATE_TIME))
                             .setCity(l.getCity())
                             .setId(l.getId())
                             .setPostCode(l.getPostCode())

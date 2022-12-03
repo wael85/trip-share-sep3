@@ -7,5 +7,6 @@ public interface ITripLogic
 {
 
     Task<Trip> CreateAsync(TripCreationDto dto);
-    Task<List<Trip>> QueryAsync(Location pickup, Location dropoff, int passengerAmount, double maxPrice);
+    Task<List<Trip>> GetAllAsync();
+    Task<List<Trip>> QueryAsync(string? pickup, string? dropoff, int passengerAmount, double? maxPrice, DateTime tripDateTime);
 }

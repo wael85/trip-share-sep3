@@ -1,3 +1,4 @@
+using System.Globalization;
 using Application.GrpcInterfaces;
 using Domain.DTOs;
 using Domain.Model;
@@ -10,9 +11,10 @@ public class TripGrpcImp : ITripServices
     private readonly TripServices.TripServicesClient client;
     private readonly IUserService UserService;
 
-    public TripGrpcImp(TripServices.TripServicesClient client)
+    public TripGrpcImp(TripServices.TripServicesClient client, IUserService UserService)
     {
         this.client = client;
+        this.UserService = UserService;
     }
 
     public async Task<Trip> CreateAsync(TripCreationDto dto)
@@ -22,7 +24,7 @@ public class TripGrpcImp : ITripServices
         {
             TripCreationRequest.Types.Location l = new TripCreationRequest.Types.Location()
             {
-                ArrivalTime =(long)(x.ArrivalTime - new DateTime(1970, 1, 1)).TotalMilliseconds,
+                ArrivalTime = x.ArrivalTime.ToString(new DateTimeFormatInfo().RFC1123Pattern),
                 City = x.City,
                 PostCode = x.PostCode,
                 StreetName = x.StreetName,
@@ -47,7 +49,7 @@ public class TripGrpcImp : ITripServices
         {
             Location l = new Location()
             {
-                ArrivalTime = new DateTime(x.ArrivalTime),
+                ArrivalTime = DateTime.Parse(x.ArrivalTime),
                 City = x.City,
                 PostCode = x.PostCode,
                 StreetName = x.StreetName,
@@ -81,7 +83,7 @@ public class TripGrpcImp : ITripServices
     public async Task<List<Trip>> GetAllTripsAsync()
     {
         var msg = new Emptymessage();
-        TripsByDriverIDResponse response = await client.getAllTripsAsync(msg);
+        var response = await client.getAllTripsAsync(msg);
 
         var tripResponses = response.Trips;
         var trips = new List<Trip>();
@@ -110,7 +112,7 @@ public class TripGrpcImp : ITripServices
             var stops = tripResponse.Stops.Select(stop => new Location()
                 {
                     Id = stop.Id,
-                    ArrivalTime = new DateTime(stop.ArrivalTime),
+                    ArrivalTime = DateTime.Parse(stop.ArrivalTime),
                     City = stop.City,
                     PostCode = stop.PostCode,
                     StreetName = stop.StreetName,
