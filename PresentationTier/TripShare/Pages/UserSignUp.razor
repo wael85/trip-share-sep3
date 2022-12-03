@@ -85,9 +85,9 @@
               </div>
 
               <div class="mt-4 pt-2">
-                <button class="btn btn-primary btn-lg" @onclick="CreateAsync" type="button" >Submit</button>
+                <button class="btn btn-primary btn-lg" @onmouseover="(e) => { Console.WriteLine(DriveLicense + ' ' + plateNumber +' ' + Color + ' ' + Seats + ' ' + FuelType + ' ' +CarModel); }" @onclick="CreateAsync" type="button" >Submit</button>
               </div>
-              @if (string.IsNullOrEmpty(Msg))
+              @if (!string.IsNullOrEmpty(Msg))
               {
 
                 <label style="color: @Color">@Msg</label>
@@ -113,7 +113,7 @@
   private string CarColor = "";
   private string CarModel = "";
   private string FuelType = "";
-  private int Seats = 0;
+  private int Seats;
 
 
 
@@ -145,8 +145,7 @@
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            Msg = e.Message;
+          Msg = e.Message;
             Color = "red";
         }
     }
@@ -154,26 +153,37 @@
   public void UpdateDriveLicense(string s)
   {
     DriveLicense = s;
+    Console.WriteLine(s);
   }
   public void UpdatePlateNumber(string s)
   {
     plateNumber = s;
+    Console.WriteLine(s);
+
   }
   public void UpdateCarColor(string s)
   {
     CarColor = s;
+    Console.WriteLine(s);
+
   }
   public void UpdateFuelType(string s)
   {
     FuelType = s;
+    Console.WriteLine(s);
+
   }
   public void UpdateCarModel(string s)
   {
     CarModel = s;
+    Console.WriteLine(s);
+
   }
   public void UpdateSeats(int i)
   {
     Seats = i;
+    Console.WriteLine(i);
+
   }
 
 }
