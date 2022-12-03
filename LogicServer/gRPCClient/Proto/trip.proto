@@ -11,18 +11,18 @@ message Emptymessage{
 
 }
 
-message TripCreationRequest {
+message TripCreationRequest { 
   double full_price = 1;
   int32 available_seats = 2;
   string driver_id = 3;
   repeated Location stops = 4;
-
+  
   message Location {
     string post_code = 1;
     string city = 2;
     string street_name = 3;
     string street_number = 4;
-    int64 arrival_time = 5;
+    string arrival_time = 5;
   }
 }
 
@@ -33,14 +33,14 @@ message TripResponse {
   string driver_id = 4;
   repeated Location stops = 5;
   repeated SeatTicketResponseB tickets = 6;
-
+  
   message Location {
     int64 id = 1;
     string post_code = 2;
     string city = 3;
     string street_name = 4;
     string street_number = 5;
-    int64 arrival_time = 6;
+    string arrival_time = 6;
   }
 }
 message SeatTicketResponseB {
@@ -55,7 +55,7 @@ message SeatTicketResponseB {
 
 
 message TripsByDriverIDRequest {
-  string user_id = 1;
+   string user_id = 1;
 }
 
 message TripsByDriverIDResponse {

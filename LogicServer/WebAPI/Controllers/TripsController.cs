@@ -22,7 +22,7 @@ public class TripsController : ControllerBase
         try
         {
             Console.WriteLine("at calling the end point");
-            Trip retuTrip =   await logic.CreateAsync(dto);
+            Trip retuTrip = await logic.CreateAsync(dto);
             return Created($"/trips/{retuTrip.Id}",retuTrip);
 
         }
@@ -34,8 +34,31 @@ public class TripsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Trip>>> QueryAsync([FromQuery] TripSearchQuery query)
+    public async Task<ActionResult<List<Trip>>> GetAsync([FromQuery] TripSearchQuery? query)
     {
-        return null; //await logic.QueryAsync(query.Pickup, query.Dropoff, query.PassengerAmount, query.MaxPrice);
+        try
+        {
+            List<Trip> trips;
+
+            if (query == null)
+            {
+                trips = await logic.GetAllAsync();
+            }
+            else
+            {
+                Console.WriteLine(query.MaxPrice + " " + query.PassengerAmount);
+                if (!(query.MaxPrice > 0) || query.PassengerAmount < 1)
+                    return BadRequest();
+                
+                trips = await logic.QueryAsync(query.Pickup, query.Dropoff, query.PassengerAmount, query.MaxPrice, query.TripDateTime);
+            }
+
+            return Ok(trips);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
     }
 }
