@@ -1,5 +1,6 @@
 using Application.GrpcInterfaces;
 using Application.LogicInterfaces;
+using Domain.DTOs;
 using Domain.Model;
 
 namespace Application.Logic;
@@ -19,5 +20,12 @@ public class SeatTicketLogic:ISeatTicketLogic
         IEnumerable<SeatTicket> result =  await _ticketService.GetTicketsByUserIdAsync(email);
         return result;
 
+    }
+
+    public async Task<SeatTicket> CreateAsync(CreateSeatTicketDto ticketDto)
+    {
+        SeatTicket result = await _ticketService.CreateAsync(ticketDto);
+        
+        return result;
     }
 }

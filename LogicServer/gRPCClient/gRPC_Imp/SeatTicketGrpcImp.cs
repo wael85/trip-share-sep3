@@ -32,24 +32,8 @@ public class SeatTicketGrpcImp:ISeatTicketService
         
         foreach (var l in reply.Tickets)
         {
-            Location pick = new Location()
-            {
-                Id = l.Pickup.Id,
-                PostCode = l.Pickup.PostCode,
-                City = l.Pickup.City,
-                StreetName = l.Pickup.StreetName,
-                StreetNumber = l.Pickup.StreetNumber,
-                ArrivalTime = new DateTime(l.Pickup.ArrivalTime)
-            };
-            Location drop = new Location()
-            {
-                Id = l.Dropoff.Id,
-                PostCode = l.Dropoff.PostCode,
-                City = l.Dropoff.City,
-                StreetName = l.Dropoff.StreetName,
-                StreetNumber = l.Dropoff.StreetNumber,
-                ArrivalTime = new DateTime(l.Dropoff.ArrivalTime)
-            };
+            Location pick = BuildLocation(l.Pickup);
+            Location drop = BuildLocation(l.Dropoff);
             
             SeatTicket st = new SeatTicket
             {
@@ -65,4 +49,51 @@ public class SeatTicketGrpcImp:ISeatTicketService
 
         return tickets;
     }
+
+    public async Task<SeatTicket> CreateAsync(CreateSeatTicketDto ticketDto)
+    {
+        SeatTicketCreationRequest creationRequest = new()
+        {
+            SeatPrice = ticketDto.SeatPrice,
+            TotalSeats = ticketDto.SeatAmount,
+            PassengerId = ticketDto.PassengerId,
+            TripId = ticketDto.TripId,
+            PickupId = ticketDto.PickUpLocationId,
+            DropoffId = ticketDto.DropLocationId
+        };
+        var request = _ticketClient.createTicket(creationRequest);
+        ReturnedUserDTO dto = await _userService.GetUserById(request.PassengerId);
+        User passenger = new User(dto.Email, "**", dto.FirstName, dto.LastName, dto.Phone, dto.Address,
+            dto.DriveLicense);
+
+        SeatTicket seatTicket = new()
+        {
+            Id = request.Id,
+            SeatAmount = request.TotalSeats,
+            SeatPrice = request.SeatPrice,
+            TripId = request.TripId,
+            Passenger = passenger,
+            PickUpLocation = BuildLocation(request.Pickup),
+            DropLocation = BuildLocation(request.Dropoff)
+        };
+        return seatTicket;
+
+
+    }
+
+    private Location BuildLocation(LocationMessage locationMessage)
+    {
+        Location location = new Location()
+        {
+            Id = locationMessage.Id,
+            PostCode = locationMessage.PostCode,
+            City = locationMessage.City,
+            StreetName = locationMessage.StreetName,
+            StreetNumber = locationMessage.StreetNumber,
+            ArrivalTime = DateTime.Parse(locationMessage.ArrivalTime)
+        };
+
+        return location;
+    }
+
 }
