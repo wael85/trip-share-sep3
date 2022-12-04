@@ -16,7 +16,8 @@ message RequestCarInfo{
   string plate_number = 3;
   int32 seats_count = 4;
   string fuel_type = 5;
-  string driver_drive_license = 6;
+  string driver_id= 6;
+  string drive_license = 7;
 }
 message ResponseCarInfo{
   string model = 1;

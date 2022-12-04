@@ -30,23 +30,38 @@ public class CarService extends CarServicesGrpc.CarServicesImplBase {
     @Override
     public  void createCar(RequestCarInfo requestCarInfo, StreamObserver<ResponseCarInfo> responseCarInfo) {
        Optional<User> driver =  userRepository.findByEmail(requestCarInfo.getDriverId());
-        Car car = new Car();
-        car.setModel(requestCarInfo.getModel());
-        car.setPlateNumber(requestCarInfo.getPlateNumber());
-        car.setColor(requestCarInfo.getColor());
-        car.setFuelType(requestCarInfo.getFuelType());
-        car.setSeatsCount(requestCarInfo.getSeatsCount());
-        car.setDriver(driver.get());
-            Car result = carRepository.save(car);
-            ResponseCarInfo responseCar = ResponseCarInfo.newBuilder()
-                    .setColor(result.getColor())
-                    .setFuelType(result.getFuelType())
-                    .setSeatsCount(result.getSeatsCount())
-                    .setPlateNumber(result.getPlateNumber())
-                    .setModel(result.getModel())
-                    .build();
-            responseCarInfo.onNext(responseCar);
-            responseCarInfo.onCompleted();
+       if(driver.isPresent()){
+           driver.get().setDriveLicense(requestCarInfo.getDriveLicense());
+           userRepository.save(driver.get());
+           Car car = new Car();
+           car.setModel(requestCarInfo.getModel());
+           car.setPlateNumber(requestCarInfo.getPlateNumber());
+           car.setColor(requestCarInfo.getColor());
+           car.setFuelType(requestCarInfo.getFuelType());
+           car.setSeatsCount(requestCarInfo.getSeatsCount());
+           car.setDriver(driver.get());
+           Car result = carRepository.save(car);
+           ResponseCarInfo responseCar = ResponseCarInfo.newBuilder()
+                   .setColor(result.getColor())
+                   .setFuelType(result.getFuelType())
+                   .setSeatsCount(result.getSeatsCount())
+                   .setPlateNumber(result.getPlateNumber())
+                   .setModel(result.getModel())
+                   .build();
+           responseCarInfo.onNext(responseCar);
+           responseCarInfo.onCompleted();
+       }else {
+           Metadata.Key<ErrorResponse> errorResponseKey = ProtoUtils.keyForProto(ErrorResponse.getDefaultInstance());
+           ErrorResponse errorResponse = ErrorResponse.newBuilder()
+                   .setMessage("Driver does not exist")
+                   .setStatus(404)
+                   .build();
+           Metadata metadata = new Metadata();
+           metadata.put(errorResponseKey, errorResponse);
+           responseCarInfo.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("User with provided email is already existed.")
+                   .asRuntimeException(metadata));
+       }
+
     }
 
     @Override

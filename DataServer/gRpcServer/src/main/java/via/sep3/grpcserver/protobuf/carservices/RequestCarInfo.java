@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     plateNumber_ = "";
     fuelType_ = "";
     driverId_ = "";
+    driveLicense_ = "";
   }
 
   @java.lang.Override
@@ -86,6 +87,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             driverId_ = s;
+            break;
+          }
+          case 58: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            driveLicense_ = s;
             break;
           }
           default: {
@@ -323,6 +330,44 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int DRIVE_LICENSE_FIELD_NUMBER = 7;
+  private volatile java.lang.Object driveLicense_;
+  /**
+   * <code>string drive_license = 7;</code>
+   * @return The driveLicense.
+   */
+  @java.lang.Override
+  public java.lang.String getDriveLicense() {
+    java.lang.Object ref = driveLicense_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      driveLicense_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string drive_license = 7;</code>
+   * @return The bytes for driveLicense.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getDriveLicenseBytes() {
+    java.lang.Object ref = driveLicense_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      driveLicense_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -355,6 +400,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(driverId_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, driverId_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(driveLicense_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, driveLicense_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -383,6 +431,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(driverId_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, driverId_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(driveLicense_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, driveLicense_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -410,6 +461,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getFuelType())) return false;
     if (!getDriverId()
         .equals(other.getDriverId())) return false;
+    if (!getDriveLicense()
+        .equals(other.getDriveLicense())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -433,6 +486,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getFuelType().hashCode();
     hash = (37 * hash) + DRIVER_ID_FIELD_NUMBER;
     hash = (53 * hash) + getDriverId().hashCode();
+    hash = (37 * hash) + DRIVE_LICENSE_FIELD_NUMBER;
+    hash = (53 * hash) + getDriveLicense().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -578,6 +633,8 @@ private static final long serialVersionUID = 0L;
 
       driverId_ = "";
 
+      driveLicense_ = "";
+
       return this;
     }
 
@@ -610,6 +667,7 @@ private static final long serialVersionUID = 0L;
       result.seatsCount_ = seatsCount_;
       result.fuelType_ = fuelType_;
       result.driverId_ = driverId_;
+      result.driveLicense_ = driveLicense_;
       onBuilt();
       return result;
     }
@@ -679,6 +737,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getDriverId().isEmpty()) {
         driverId_ = other.driverId_;
+        onChanged();
+      }
+      if (!other.getDriveLicense().isEmpty()) {
+        driveLicense_ = other.driveLicense_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -1117,6 +1179,82 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       driverId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object driveLicense_ = "";
+    /**
+     * <code>string drive_license = 7;</code>
+     * @return The driveLicense.
+     */
+    public java.lang.String getDriveLicense() {
+      java.lang.Object ref = driveLicense_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        driveLicense_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string drive_license = 7;</code>
+     * @return The bytes for driveLicense.
+     */
+    public com.google.protobuf.ByteString
+        getDriveLicenseBytes() {
+      java.lang.Object ref = driveLicense_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        driveLicense_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string drive_license = 7;</code>
+     * @param value The driveLicense to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDriveLicense(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      driveLicense_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string drive_license = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDriveLicense() {
+      
+      driveLicense_ = getDefaultInstance().getDriveLicense();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string drive_license = 7;</code>
+     * @param value The bytes for driveLicense to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDriveLicenseBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      driveLicense_ = value;
       onChanged();
       return this;
     }

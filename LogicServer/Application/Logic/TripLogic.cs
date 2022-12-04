@@ -81,9 +81,8 @@ public class TripLogic : ITripLogic
             if (queryPassengerAmount > trip.AvailableSeats)
                 continue;
             
-            if (maxPrice > trip.SubTripPrice(validPickup, validDropoff) || maxPrice == null)
+            if (maxPrice >= trip.SubTripPrice(validPickup!.City, validDropoff!.City) || maxPrice == null)
             {
-                Console.WriteLine(maxPrice);
                 trips2.Add(trip);
             }
         }

@@ -16,11 +16,11 @@ public class Trip
     {
         // do something
     }
-    public double SubTripPrice(Location start , Location end)
+    public double SubTripPrice(string start , string end)
     {
         double startPrice = FullPrice * 0.2;
         double stepPrice = (FullPrice - startPrice) / (Stops.Count-1);
-        int stepsCount = Stops.IndexOf(end) - Stops.IndexOf(start);
+        int stepsCount =Math.Abs( Stops.IndexOf(Stops.Single(x=>x.getLocationByCity(end))) - Stops.IndexOf(Stops.Single(x=>x.getLocationByCity(start))));
         return startPrice + (stepsCount * stepPrice);
 
     }

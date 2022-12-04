@@ -6,6 +6,6 @@ namespace Application.GrpcInterfaces;
 public interface ITripServices
 {
     Task<Trip> CreateAsync(TripCreationDto dto);
-    Task<ICollection<Trip>> GetTripByDriverIds(List<string> driverIds);
+    Task<IEnumerable<Trip>> GetTripsByDriverId(List<string> driverId);
     Task<List<Trip>> GetAllTripsAsync();
 }

@@ -15,12 +15,12 @@
 </div>
 @if (status)
 {
-    <div class="row" @onmouseover="(e) => { CarTypeChanged(CarType); ModelChanged(Model); Console.WriteLine(CarType+' '+Model);}">
+    <div class="row" @onmouseover="(e) => { CarTypeChanged(CarType); ModelChanged(Model);}">
         <div class="col-md-6 mb-4 d-flex align-items-center">
 
             <div class="form-outline datepicker w-100">
                 <label class="form-label">DriverLicense Nu. :</label>
-                <input type="text" @bind="DriveLicense" @bind:event="oninput" @onchange="DriveLicenseChanged" class="form-control form-control-lg"/>
+                <input type="text" @bind="DriveLicense" @bind:event="oninput" @onchange="(e)=>DriveLicenseChanged(e)" class="form-control form-control-lg"/>
 
             </div>
 
@@ -30,7 +30,7 @@
             <div class="form-outline">
                 <label class="form-label">Plate Number :</label>
 
-                <input type="text" @bind="PlateNumber" @bind:event="oninput" @onchange="PlateNumberChanged" class="form-control form-control-lg"/>
+                <input type="text" @bind="PlateNumber" @bind:event="oninput" @onchange="(e)=>PlateNumberChanged(e)" class="form-control form-control-lg"/>
 
             </div>
         </div>
@@ -42,12 +42,12 @@
 
 @if (!String.IsNullOrEmpty(PlateNumber) && infoCar != null)
 {
-    <div class="row" @onmouseover="(e) => { CarTypeChanged(CarType); ModelChanged(Model); Console.WriteLine(CarType+' '+Model);}">
+    <div class="row" @onmouseover="(e) => { CarTypeChanged(CarType); ModelChanged(Model);ColorChanged(Color);SeatsChanged(Seats);}">
         <div class="col-md-4 mb-4 d-flex align-items-center">
 
             <div class="form-outline  w-75">
                 <label class="form-label">Color</label>
-                <input type="text" @bind="Color"  @bind:event="oninput" @onchange="ColorChanged"   class="form-control form-control-lg"/>
+                <input type="text" @bind="Color"  @bind:event="oninput" @onchange="(e)=>ColorChanged(Color)"   class="form-control form-control-lg"/>
 
             </div>
 
@@ -75,7 +75,7 @@
         <div class="col-md-3 mb-4 pb-2">
             <label class="form-label">Seats count </label>
             <input type="number" min="2" max="7" disabled="@(infoCar is {SeatsCount: > 0 })" 
-                   @bind:event="oninput" @onchange="SeatsChanged" @bind="Seats"/>
+                   @bind:event="oninput" @onchange="(e)=>SeatsChanged(Seats)" @bind="Seats"/>
         </div>
 
     </div>
@@ -118,7 +118,7 @@
     
     public string CarType { get; set; }
     
-    public int? Seats { get; set; }
+    public int Seats { get; set; }
 
     public string msg = "";
 
@@ -144,9 +144,9 @@
     {
         await OnDriveLicenseChange.InvokeAsync((string?)e.Value);
     }
-    protected async Task ColorChanged(ChangeEventArgs e)
+    protected async Task ColorChanged(string color)
     {
-        await OnColorChange.InvokeAsync((string?)e.Value);
+        await OnColorChange.InvokeAsync(color);
     }
     protected async Task PlateNumberChanged(ChangeEventArgs e)
     {
@@ -160,11 +160,10 @@
     {
         await OnModelChange.InvokeAsync(model);
     }
-    protected async Task SeatsChanged(ChangeEventArgs e)
+    protected async Task SeatsChanged(int i)
     {
-        string value = (string)e.Value!;
-        int x = Int32.Parse(value);
-        await OnSeatsChange.InvokeAsync(x);
+     
+        await OnSeatsChange.InvokeAsync(i);
     }
 
 

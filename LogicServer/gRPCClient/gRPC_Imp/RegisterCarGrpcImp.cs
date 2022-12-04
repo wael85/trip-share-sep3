@@ -23,7 +23,8 @@ public class RegisterCarGrpcImp : IRegisterCarService
             PlateNumber = dto.PlateNumber,
             SeatsCount = dto.SeatsCount,
             FuelType = dto.FuelType,
-            DriverDriveLicense = dto.DriveLicense
+            DriverId = dto.DriverId,
+            DriveLicense = dto.DriveLicense
         };
 
         try
