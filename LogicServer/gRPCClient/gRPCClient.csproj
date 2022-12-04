@@ -35,6 +35,9 @@
       <Protobuf Include="Proto\trip.proto" />
       <Protobuf Include="Proto\user.proto" />
       <None Remove="Proto\ticket.proto" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Protobuf Include="Proto\ticket.proto" />
     </ItemGroup>
     
