@@ -71,13 +71,67 @@ public class TripGrpcImp : ITripServices
         reTrip.Stops = resList;
         reTrip.Tickets = new List<SeatTicket>();
         
+        
 
         return await Task.FromResult(reTrip);
     }
 
-    public Task<ICollection<Trip>> GetTripByDriverIds(List<string> driverIds)
+    public Task<ICollection<Trip>> GetTripByDriverIds(string driverEmail)
     {
-        throw new NotImplementedException();
+        ICollection<Trip> trips = new List<Trip>();
+        TripsByDriverIDRequest request = new TripsByDriverIDRequest()
+        {
+            UserId = driverEmail
+        };
+
+        var response = client.getTripsByUserID(request);
+        var tripresponse = response.Trips;
+        ;
+        foreach (TripResponse var in tripresponse)
+        {
+            Trip trip = new Trip();
+            ReturnedUserDTO driver = new ReturnedUserDTO()
+            {
+                Email = var.DriverId
+            };
+            trip.Driver = driver;
+            var.Id = trip.Id;
+            var.AvailableSeats = trip.AvailableSeats;
+            var.FullPrice = trip.FullPrice;
+            trip.Stops = new List<Location>();
+            
+            SeatTicket tic = new SeatTicket();
+            foreach (var stop in var.Stops)
+            {
+                Location location = new Location();
+
+                location.City = stop.City;
+                location.Id = stop.Id;
+                location.ArrivalTime = DateTime.Parse(stop.ArrivalTime);
+                location.PostCode = stop.PostCode;
+                location.StreetName = stop.StreetName;
+                location.StreetNumber = stop.StreetNumber;
+                trip.Stops.Add(location);
+            }
+
+            foreach (var ticket in var.Tickets)
+            {
+                tic.Id = ticket.Id;
+                tic.Passenger.Email = ticket.PassengerId;
+                tic.DropLocation.Id = ticket.DropoffId;
+                tic.SeatAmount = ticket.TotalSeats;
+                tic.SeatPrice = ticket.SeatPrice;
+                tic.PickUpLocation.Id = ticket.PickupId;
+                trip.Tickets.Add(tic);
+            }
+
+
+
+            trips.Add(trip);
+        }
+        Console.WriteLine(trips.FirstOrDefault().Driver.Email);
+
+        return Task.FromResult<ICollection<Trip>>(trips);
     }
 
     public async Task<List<Trip>> GetAllTripsAsync()
@@ -101,7 +155,7 @@ public class TripGrpcImp : ITripServices
                     DriveLicense = driver.DriveLicense,
                     Email = driver.Email,
                     FirstName = driver.FirstName,
-                    LastName = driver.LastName,
+                    LastName = driver.LastName, 
                     Phone = driver.Phone
                 },
                 FullPrice = tripResponse.FullPrice,

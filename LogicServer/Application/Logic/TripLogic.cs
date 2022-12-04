@@ -91,6 +91,23 @@ public class TripLogic : ITripLogic
         return trips2;
     }
 
+    public async Task<List<Trip>> GetUsersTripsByEmail(string email)
+    {
+        ICollection<Trip> trpc=await TripServices.GetTripByDriverIds(email);
+        if (trpc==null)
+        {
+            throw new Exception("This deiver dosenot have any trips");
+
+        }
+        List<Trip> trips = new List<Trip>();
+        foreach (Trip trip in trpc)
+        {
+            trips.Add(trip);
+        }
+
+        return trips;
+    }
+
     private static bool QueryLocations(Location original, string query)
     {
         return (query == "" || query.ToLower() == original.City.ToLower());
