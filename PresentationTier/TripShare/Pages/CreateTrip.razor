@@ -148,7 +148,6 @@
 
 
 @code {
-    bool f = false;
     DateTime? startDateTime;
     string startStreetName;
     string startStreetNumber;
@@ -280,7 +279,7 @@
                 stops.Add(end);
                 stops.Insert(0,start);
                 TripCreationDto dto = new TripCreationDto();
-                dto.DriverId = "Hello";
+                dto.DriverId = "juan@email.com";
                 dto.Stops = stops;
                 dto.FullPrice = fullPrice;
                 dto.AvailableSeats = availableSeats;

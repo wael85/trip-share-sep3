@@ -22,7 +22,6 @@ public class TripGrpcImp : ITripServices
         List<TripCreationRequest.Types.Location> createlocations = new List<TripCreationRequest.Types.Location>(); 
         dto.Stops.ForEach(x =>
         {
-            Console.WriteLine("This is arrive time: " + x.ArrivalTime.ToString("yyyy-MM-dd HH:mm"));
             TripCreationRequest.Types.Location l = new TripCreationRequest.Types.Location()
             {
                 ArrivalTime = x.ArrivalTime.ToString("yyyy-MM-dd HH:mm"),
