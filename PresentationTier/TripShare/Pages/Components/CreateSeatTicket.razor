@@ -2,6 +2,7 @@
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
 @using Radzen
+@inject NavigationManager nvgM;
 @inject ISeatTicketClient SeatTicketClient;
 
 @namespace TripShare.Pages.Components
@@ -15,6 +16,7 @@
         <p class="card-text"> From :@SelectedDetails.Pickup</p>
         <p class="card-text"> To : @SelectedDetails.Dropoff</p>
         <p class="card-text"> Num. Seats : @SelectedDetails.PassengerAmount</p>
+        <p class="card-text">Driver : @SelectedTrip.Driver.FirstName @SelectedTrip.Driver.LastName</p>
         
             @foreach (var t in SelectedTrip.Stops)
             {
@@ -69,6 +71,7 @@
         await SeatTicketClient.ReserveTicketAsync(ticket);
         
         await ModalCancel();
+        nvgM.NavigateTo("/MyProfile");
     }
 
 
