@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using System.Text.Json;
 using Domain.DTOs;
 using Domain.Model;
@@ -38,5 +39,22 @@ public class HttpSeatTicketClient:ISeatTicketClient
             throw new Exception(content);
             
         }
+    }
+
+    public async Task<SeatTicket> ReserveTicketAsync(CreateSeatTicketDto seatTicketDto)
+    {
+        var response = await client.PostAsJsonAsync($"/seatTickets", seatTicketDto);
+        string content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            
+            throw new Exception(content);
+            
+        }
+        SeatTicket seatTicket =JsonSerializer.Deserialize<SeatTicket>(content,new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        return seatTicket;
     }
 }

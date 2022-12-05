@@ -1,0 +1,75 @@
+@using Domain.Model
+@using Domain.DTOs
+@using HttpClient.ClientInterfaces
+@using Radzen
+@inject ISeatTicketClient SeatTicketClient;
+
+@namespace TripShare.Pages.Components
+
+<div class="card">
+    <div class="row card-header">
+        <h5 class="card-title col-10">Reserve Seat</h5>
+        <button type="button" class="btn-close col-2 w-5" @onclick="@ModalCancel">&times;</button>
+    </div>
+    <div class="card-body">
+        <p class="card-text"> From :@SelectedDetails.Pickup</p>
+        <p class="card-text"> To : @SelectedDetails.Dropoff</p>
+        <p class="card-text"> Num. Seats : @SelectedDetails.PassengerAmount</p>
+        
+            @foreach (var t in SelectedTrip.Stops)
+            {
+                if (t.City==SelectedDetails.Pickup)
+                {
+                    <p class="card-text">Meet time @t.ArrivalTime</p>
+                }
+            }
+        <p class="card-text">Total Price : @SelectedTrip.FullPrice</p>
+
+    </div>
+    <button class="btn btn-primary col-2 m-3 w-25" @onclick="@ReserveTicketAsync">Confirm</button>
+</div>
+
+@code {
+
+    [Parameter]
+    public TripSearchQuery SelectedDetails { get; set; } = new();
+    [Parameter]
+    public Trip SelectedTrip{ get; set; } = new();
+    
+    [Parameter]
+    public EventCallback<bool> CloseModal { get; set; }
+    
+
+    private Task ModalCancel()
+    {
+        return CloseModal.InvokeAsync(false);
+    }
+
+    private async Task ReserveTicketAsync()
+    {
+        CreateSeatTicketDto ticket = new()
+        {
+            SeatAmount = SelectedDetails.PassengerAmount,
+            SeatPrice = SelectedTrip.FullPrice,
+            TripId = SelectedTrip.Id,
+    //todo add User Logged Id
+            PassengerId = "syamend@email.com"
+        };
+        foreach (var l in SelectedTrip.Stops)
+        {
+            if (l.City == SelectedDetails.Pickup)
+            {
+                ticket.PickUpLocationId = l.Id;
+            }
+            if (l.City==SelectedDetails.Dropoff)
+            {
+                ticket.DropLocationId = l.Id;
+            }
+        }
+        await SeatTicketClient.ReserveTicketAsync(ticket);
+        
+        await ModalCancel();
+    }
+
+
+}
