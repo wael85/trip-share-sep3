@@ -2,7 +2,7 @@
 @using Domain.Model
 @using Radzen.Blazor;
 @using Radzen
-@using Components
+@using TripShare.Pages.Components
 @using System.Collections.Immutable
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
@@ -193,12 +193,12 @@
     {
         try
         {
-            userInfoDto = await _userClient.GetByIdAsync("juan@email.com");
+            userInfoDto = await _userClient.GetByIdAsync("syamend@email.com");
             
             // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
             // myTrips = trips.ToList();
 
-            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("juan@email.com");
+            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("syamend@email.com");
             myTickets = tickets.ToList();
             
     //todo Add user id after log in

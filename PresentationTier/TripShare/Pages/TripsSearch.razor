@@ -3,6 +3,7 @@
 @using Radzen
 @using Radzen.Blazor
 @using Domain.DTOs
+@using TripShare.Pages.Components
 @using HttpClient.ClientInterfaces
 @inject NotificationService Service
 @inject ITripClient TripClient
@@ -78,17 +79,24 @@
                     <li class="list-group-item">Last destination: @t.Stops[^1].getAddress(), at:@t.Stops[^1].ArrivalTime</li>
                 </ul>
                     <div class="card-body">
-                        <a href="#" class="card-link">Go TO Book</a>
+                        <a style="cursor:pointer;"  @onclick="@(() => { SowPopUp = true;_reserveSeat = t;})" class="card-link" >Go TO Book</a>
                     </div>
                 </div>
             }
         }
     </div>
 </div>
+<Modal ShowModal="@SowPopUp">
+    <CreateSeatTicket CloseModal="@CloseModal" SelectedTrip ="@_reserveSeat" SelectedDetails="@_searchQuery" ></CreateSeatTicket>
+</Modal>
 
 
 @code {
     IEnumerable<Trip> _trips = new List<Trip>();
+    public bool SowPopUp { get; set; }
+    private Trip _reserveSeat = new();
+    
+    
     TripSearchQuery _searchQuery = new TripSearchQuery
     {
         Pickup = "",
@@ -108,6 +116,11 @@
         _trips = new List<Trip>();
     }
     
+    private void CloseModal(bool accepted)
+    {
+        SowPopUp = false;
+        StateHasChanged();
+    }
 
     private async void Search()
     {
