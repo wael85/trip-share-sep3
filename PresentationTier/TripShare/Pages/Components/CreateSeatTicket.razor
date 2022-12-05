@@ -20,7 +20,7 @@
         
             @foreach (var t in SelectedTrip.Stops)
             {
-                if (t.City==SelectedDetails.Pickup)
+                if (t.City.Equals(SelectedDetails.Pickup))
                 {
                     <p class="card-text">Meet time @t.ArrivalTime</p>
                 }
@@ -59,11 +59,11 @@
         };
         foreach (var l in SelectedTrip.Stops)
         {
-            if (l.City == SelectedDetails.Pickup)
+            if (l.City.Equals(SelectedDetails.Pickup) )
             {
                 ticket.PickUpLocationId = l.Id;
             }
-            if (l.City==SelectedDetails.Dropoff)
+            if (l.City.Equals(SelectedDetails.Dropoff))
             {
                 ticket.DropLocationId = l.Id;
             }
