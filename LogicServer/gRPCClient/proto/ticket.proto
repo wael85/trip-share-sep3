@@ -6,8 +6,18 @@ service TicketServices {
   rpc createTicket (SeatTicketCreationRequest) returns (SeatTicketResponse);
   rpc getTicketsByTrip (TicketsByTripIdRequest) returns (TicketsResponse);
   rpc getAllUserTicket(TicketsByUserId) returns(TicketsResponse);
+  rpc deleteById(TicketIdMessage)returns(TicketEmptyMessage);
+
 }
 
+
+message TicketEmptyMessage{
+
+
+}
+message TicketIdMessage{
+  int64 id=1;
+}
 
 message TicketsByUserId{
   string email=1;
