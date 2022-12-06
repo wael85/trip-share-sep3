@@ -29,10 +29,10 @@ public class Location {
     @JoinColumn(nullable=false)
     private Trip trip;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "pickUpLocation",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "pickUpLocation",cascade = CascadeType.ALL)
     private Set<SeatTicket> pickUpLocations =new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "dropLocation",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "dropLocation",cascade = CascadeType.ALL)
     private Set<SeatTicket>dropLocations=new HashSet<>();
 
 
