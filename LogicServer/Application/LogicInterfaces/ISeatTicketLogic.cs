@@ -7,4 +7,5 @@ public interface ISeatTicketLogic
 {
     Task<IEnumerable<SeatTicket>> GetTicketsByUserIdAsync(string email);
     Task<SeatTicket> CreateAsync(CreateSeatTicketDto ticketDto);
+    Task DeleteAsync(long id);
 }

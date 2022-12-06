@@ -81,6 +81,17 @@ public class SeatTicketGrpcImp:ISeatTicketService
 
     }
 
+    public async Task DeleteAsync(long id)
+    {
+        TicketIdMessage request = new()
+        {
+            Id = id
+        };
+       await _ticketClient.deleteByIdAsync(request);
+      
+      
+    }
+
     private Location BuildLocation(LocationMessage locationMessage)
     {
         Location location = new Location()
