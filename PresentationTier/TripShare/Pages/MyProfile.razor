@@ -12,51 +12,35 @@
 @inject NotificationService _servic
 
 <RadzenNotification/>
-<div class="row " style="margin: 10px">
-    <h3 class="col-md-9">My Profile</h3>
-    @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
-    {
-        <p class="col-md-3">Driver / Passenger</p>
-    }
-    else
-    {
-        <p class="col-lg-3">Passenger</p>
-    }
+<div class="container">
+    <div class="row " style="margin: 10px">
+        <h3 class="col-md-9">My Profile</h3>
+        @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
+        {
+            <p class="col-md-3">Driver</p>
+        }
 
-</div>
-<hr style="margin: 5px"/>
-<div class="row ">
-    <div class="col-md-6">
-        <!--User details -->
-        <div class="col-lg-12">
+    </div>
+    <hr style="margin: 5px"/>
+    <div class="row ">
+        <div class="col-md-6">
+            <!--User details -->
             <div class="card" style="margin-top: 40px">
                 <div class="card-body">
-                    <p >
-                        <strong>EMAIL: </strong> @userInfoDto.Email
-                    </p>
-                    <p>
-                        <strong>FULL NAME </strong>@userInfoDto.FirstName @userInfoDto.LastName
-                    </p>
-                    <p>
-                        <strong>PHONE: </strong>@userInfoDto.Phone
-                    </p>
-                    <p>
-                        <strong>ADDRESS: </strong>@userInfoDto.Address
-                    </p>
+                    <p ><strong>EMAIL: </strong> @userInfoDto.Email</p>
+                    <p><strong>FULL NAME </strong>@userInfoDto.FirstName @userInfoDto.LastName</p>
+                    <p><strong>PHONE: </strong>@userInfoDto.Phone</p>
+                    <p><strong>ADDRESS: </strong>@userInfoDto.Address</p>
                     @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
                     {
-                        <p>
-                            <strong>Driving License: </strong>@userInfoDto.DriveLicense
-                        </p>
-                        <p>
-                            <strong>Car details: </strong> @userInfoDto.CarInfo?.CarModel, @userInfoDto.CarInfo?.Color, @userInfoDto.CarInfo?.FuelType, @userInfoDto.CarInfo?.SeatsCount seats, <br/> Plate Number:@userInfoDto.CarInfo?.PlateNumber
-                        </p>
+                        <p><strong>Driving License: </strong>@userInfoDto.DriveLicense</p>
+                        <p><strong>Car details: </strong> @userInfoDto.CarInfo?.CarModel, @userInfoDto.CarInfo?.Color, @userInfoDto.CarInfo?.FuelType, @userInfoDto.CarInfo?.SeatsCount seats, <br/> Plate Number:@userInfoDto.CarInfo?.PlateNumber</p>
                     }
                 </div>
             </div>
-        </div>
-        <!--Tickets -->
-        <div class="col-md-12">
+
+            <!--Tickets -->
+
             <h5 style="margin-top: 10px">Tickets</h5>
             @if (!myTickets.Any())
             {
@@ -70,7 +54,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <small class="card-text col-9">
-                                        <strong>Price: </strong>@ticket.SeatPrice
+                                        <strong>Price: </strong>@ticket.SeatPrice Kr
                                     </small> <br>
                                     @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now)
                                     {
@@ -81,7 +65,7 @@
                                         <small class="col-3" style="color: green">Active</small>
                                     }
                                 </div>
-                                <small class="card-text"><strong>Seats: </strong>@ticket.SeatAmount kr</small> <br>
+                                <small class="card-text"><strong>Seats: </strong>@ticket.SeatAmount</small> <br>
                                 <small class="card-text">
                                     <strong>Meet time: </strong>@ticket.PickUpLocation.ArrivalTime
                                 </small> <br>
@@ -96,23 +80,21 @@
                                 </small> <br>
                                 @if (ticket.PickUpLocation.ArrivalTime >= DateTime.Now)
                                 {
-                                    <button style="width: 100px" class="btn-danger" @onclick="(args) => { CancelTicketAsync(ticket.Id); }">
+                                    <button style="width: 100px; margin: 5px" class="btn-danger" @onclick="(args) => { CancelTicketAsync(ticket.Id); myTickets.Remove(ticket);}">
                                         <small>Cancel</small>
                                     </button>
                                 }
+                                
                             </div>
                         </div>
                     }
                 </div>
-
             </div>
+
         </div>
 
-    </div>
-
-    <div class="col-md-6 ">
-        <!--My trips or be a driver -->
-        <div class="col-md-12">
+        <div class="col-md-6 ">
+            <!--My trips or be a driver -->
             @if (string.IsNullOrEmpty(userInfoDto.DriveLicense))
             {
                 <div class="container" style="margin: 10px">
@@ -144,15 +126,12 @@
                                     {
                                         <p class="col-2" style="color: green">Active</p>
                                     }
-
                                 </div>
                                 <hr/>
                                 @foreach (var s in tr.Stops)
                                 {
                                     <small class="card-text text-muted">@s.ArrivalTime</small>
-                                    <p class="card-text">
-                                        @s.getAddress()
-                                    </p>
+                                    <p class="card-text">@s.getAddress()</p>
                                 }
                             </div>
 
@@ -162,14 +141,13 @@
                 <!--todo seat request -->
                 <h5 style="margin: 10px">Seats request</h5>
                 <div class="overflow-auto" style="height:200px; margin: 10px ;">
-
                     <p style="margin: 5px">Travel id: 1, username: juan</p>
                 </div>
             }
+
         </div>
     </div>
 </div>
-
 
 @code {
 
@@ -177,7 +155,7 @@
 
     private List<Trip> myTrips = new();
     private List<SeatTicket> myTickets = new();
-    private string? DriveLicense = "ffff";
+    private string? DriveLicense = "";
     private string Color = "";
     private string SuccessMsg = "";
     private string plateNumber = "";
@@ -194,13 +172,13 @@
         try
         {
             userInfoDto = await _userClient.GetByIdAsync("syamend@email.com");
-            
-            // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
-            // myTrips = trips.ToList();
+
+    // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
+    // myTrips = trips.ToList();
 
             IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("syamend@email.com");
             myTickets = tickets.ToList();
-            
+
     //todo Add user id after log in
     // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(email);
         }
@@ -211,9 +189,9 @@
         }
     }
 
-    private async void CancelTicketAsync(long id)
+    private async Task CancelTicketAsync(long id)
     {
-        try
+    try
         {
             await _SeatTicket.CancelTicketAsync(id);
         }
