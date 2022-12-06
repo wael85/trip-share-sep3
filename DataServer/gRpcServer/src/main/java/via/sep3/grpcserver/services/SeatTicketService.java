@@ -34,6 +34,19 @@ public class SeatTicketService extends TicketServicesGrpc.TicketServicesImplBase
         this.tripRepository=tripRepository;
     }
 
+    @Transactional
+    @Override
+    public void deleteById(TicketIdMessage request, StreamObserver<TicketEmptyMessage> responseObserver) {
+        Long id =request.getId();
+         Optional<SeatTicket> seatTicket= ticketRepository.findById(id);
+
+         ticketRepository.delete(seatTicket.get());
+
+        responseObserver.onNext(TicketEmptyMessage.newBuilder().build());
+        responseObserver.onCompleted();
+
+    }
+
     @Override
     public void getAllUserTicket(TicketsByUserId request, StreamObserver<TicketsResponse> response){
         String email =request.getEmail();
@@ -60,13 +73,7 @@ public class SeatTicketService extends TicketServicesGrpc.TicketServicesImplBase
     public void createTicket(SeatTicketCreationRequest request, StreamObserver<SeatTicketResponse> responseObserver) {
         Optional<Trip> trip = tripRepository.findById(request.getTripId());
         if (trip.isEmpty()){
-            Metadata.Key<via.sep3.grpcserver.protobuf.carservices.ErrorResponse> errorResponseKey = ProtoUtils.keyForProto(via.sep3.grpcserver.protobuf.carservices.ErrorResponse.getDefaultInstance());
-            via.sep3.grpcserver.protobuf.carservices.ErrorResponse errorResponse = ErrorResponse.newBuilder()
-                    .setMessage("Trip is not available")
-                    .setStatus(400)
-                    .build();
-            Metadata metadata = new Metadata();
-            metadata.put(errorResponseKey, errorResponse);
+           Metadata metadata =errorResponse("Trip is not available");
             responseObserver.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("Trip is not available anymore")
                     .asRuntimeException(metadata));
         }else {
@@ -102,13 +109,22 @@ public class SeatTicketService extends TicketServicesGrpc.TicketServicesImplBase
         }
     }
 
-    public synchronized LocationMessage buildLocationMessage(Location location){
+    private synchronized LocationMessage buildLocationMessage(Location location){
         return LocationMessage.newBuilder().setId(location.getId())
                 .setPostCode(location.getPostCode()).setCity(location.getCity())
                 .setStreetName(location.getStreetName()).setStreetNumber(location.getStreetNumber())
                 .setArrivalTime(location.getArrivalTime().toString()).build();
     }
-
+    private synchronized Metadata errorResponse(String message){
+        Metadata.Key<TicketErrorResponse> errorResponseKey = ProtoUtils.keyForProto(TicketErrorResponse.getDefaultInstance());
+        TicketErrorResponse errorResponse = TicketErrorResponse.newBuilder()
+                .setMessage(message)
+                .setStatus(400)
+                .build();
+        Metadata metadata = new Metadata();
+        metadata.put(errorResponseKey, errorResponse);
+        return metadata;
+    }
 
 }
 

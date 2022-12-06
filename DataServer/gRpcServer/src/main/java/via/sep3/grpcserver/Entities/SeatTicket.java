@@ -12,16 +12,16 @@ public class SeatTicket {
     private double seatPrice;
     @Column(nullable = false)
     private int totalSeats;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH})
     @JoinColumn(nullable=false, name = "passenger_id")
     private User passenger;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH})
     @JoinColumn(nullable=false)
     private Trip trip;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade ={CascadeType.DETACH} )
     @JoinColumn(nullable=false)
     private Location pickUpLocation;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(nullable=false)
     private Location dropLocation;
 

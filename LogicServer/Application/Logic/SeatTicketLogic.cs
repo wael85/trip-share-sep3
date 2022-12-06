@@ -28,4 +28,9 @@ public class SeatTicketLogic:ISeatTicketLogic
         
         return result;
     }
+
+    public async Task DeleteAsync(long id)
+    {
+        await _ticketService.DeleteAsync(id);
+    }
 }

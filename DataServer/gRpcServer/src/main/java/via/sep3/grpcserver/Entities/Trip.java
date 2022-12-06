@@ -17,10 +17,10 @@ public class Trip {
     @JoinColumn(nullable=false,name = "driver_id")
     private User driver;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "trip",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "trip",cascade = CascadeType.ALL)
     private Set<SeatTicket> tickets=new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "trip",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "trip",cascade = CascadeType.ALL)
     private Set<Location>stops=new HashSet<>();
 
     public Trip() {
