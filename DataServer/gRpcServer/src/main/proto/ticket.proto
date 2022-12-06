@@ -11,6 +11,7 @@ service TicketServices {
 
 message TicketEmptyMessage{
 
+
 }
 message TicketIdMessage{
   int64 id=1;
