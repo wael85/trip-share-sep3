@@ -27,6 +27,10 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "passenger",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<SeatTicket> tickets=new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "consumer",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Notification> receivedNotifications=new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "sender",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Notification> sentNotifications =new HashSet<>();
 
     public User() {
     }
