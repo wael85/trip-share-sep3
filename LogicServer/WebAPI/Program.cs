@@ -1,10 +1,15 @@
 
+using System.Text;
 using Application.GrpcInterfaces;
 using Application.Logic;
+using Application.LogicInterface;
 using Application.LogicInterfaces;
+using Domain.Auth;
 using Grpc.Net.Client;
 using gRPCClient.gRPC_Imp;
 using gRPCClient.GrpcInterfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +27,7 @@ builder.Services.AddScoped<IRegisterCarLogic, RegisterCarLogic>();
 builder.Services.AddScoped<ITripLogic,TripLogic>();
 builder.Services.AddScoped<ISeatTicketService, SeatTicketGrpcImp>();
 builder.Services.AddScoped<ISeatTicketLogic, SeatTicketLogic>();
+builder.Services.AddScoped<IAuthLogic, AuthLogic>();
 
 builder.Services.AddGrpc();
 
@@ -30,6 +36,23 @@ builder.Services.AddSingleton(new UserServices.UserServicesClient(GrpcChannel.Fo
 builder.Services.AddSingleton(new CarServices.CarServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 builder.Services.AddSingleton(new TripServices.TripServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 builder.Services.AddSingleton(new TicketServices.TicketServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
+AuthorizationPolicies.AddPolicies(builder.Services);
+
 var app = builder.Build();
 app.UseCors(x => x
     .AllowAnyMethod()
@@ -44,6 +67,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

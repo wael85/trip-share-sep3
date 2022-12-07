@@ -7,12 +7,11 @@ import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import via.sep3.grpcserver.Entities.Login;
 import via.sep3.grpcserver.Entities.User;
 import via.sep3.grpcserver.protobuf.carservices.ErrorResponse;
-import via.sep3.grpcserver.protobuf.userservices.GetUserRequest;
-import via.sep3.grpcserver.protobuf.userservices.RequestUserInfo;
-import via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo;
-import via.sep3.grpcserver.protobuf.userservices.UserServicesGrpc;
+import via.sep3.grpcserver.protobuf.userservices.*;
+import via.sep3.grpcserver.repositorys.LoginRepository;
 import via.sep3.grpcserver.repositorys.UserRepository;
 
 import java.util.Optional;
@@ -21,9 +20,11 @@ import java.util.Optional;
 @GRpcService
 public class UserServices extends UserServicesGrpc.UserServicesImplBase {
 
+    private final LoginRepository loginRepository;
     private final UserRepository userRepository ;
     @Autowired
-    public UserServices(UserRepository userRepository) {
+    public UserServices(LoginRepository loginRepository, UserRepository userRepository) {
+        this.loginRepository = loginRepository;
         this.userRepository = userRepository;
     }
     @Override
@@ -93,6 +94,45 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
             responseObserver.onNext(result);
             responseObserver.onCompleted();
         }
+    }
+
+    @Override
+    public void loginUser(LoginUserMessage request, StreamObserver<ResponseUserInfo> responseObserver) {
+        Optional<User> resultUser = userRepository.findByEmail(request.getEmail());
+        Optional<Login> login = loginRepository.getLoginByUserId(request.getEmail());
+        if (resultUser.isEmpty()){
+            Metadata metadata =errorResponse("Email not exist");
+            responseObserver.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("User not found")
+                    .asRuntimeException(metadata));
+        } else if (!login.get().getPassword().equals(request.getPassword())) {
+            Metadata metadata =errorResponse("Password not correct");
+            responseObserver.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("Password is not correct")
+                    .asRuntimeException(metadata));
+        }else {
+
+            var userInfo = ResponseUserInfo.newBuilder();
+            userInfo.setAddress(resultUser.get().getAddress())
+                    .setEmail(resultUser.get().getEmail())
+                    .setFirstName(resultUser.get().getFirstName())
+                    .setLastName(resultUser.get().getLastName())
+                    .setPhone(resultUser.get().getPhone())
+                    .setAddress(resultUser.get().getAddress())
+                    .setDriverLicense(resultUser.get().getDriveLicense() != null ? resultUser.get().getDriveLicense() : "");
+            ResponseUserInfo result = userInfo.build();
+            responseObserver.onNext(result);
+            responseObserver.onCompleted();
+        }
+
+    }
+    private Metadata errorResponse(String message){
+        Metadata.Key<ErrorResponse> errorResponseKey = ProtoUtils.keyForProto(ErrorResponse.getDefaultInstance());
+        ErrorResponse errorResponse = ErrorResponse.newBuilder()
+                .setMessage(message)
+                .setStatus(400)
+                .build();
+        Metadata metadata = new Metadata();
+        metadata.put(errorResponseKey, errorResponse);
+        return metadata;
     }
 }
 
