@@ -116,6 +116,7 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
                     .setFirstName(resultUser.get().getFirstName())
                     .setLastName(resultUser.get().getLastName())
                     .setPhone(resultUser.get().getPhone())
+                    .setAddress(resultUser.get().getAddress())
                     .setDriverLicense(resultUser.get().getDriveLicense() != null ? resultUser.get().getDriveLicense() : "");
             ResponseUserInfo result = userInfo.build();
             responseObserver.onNext(result);
