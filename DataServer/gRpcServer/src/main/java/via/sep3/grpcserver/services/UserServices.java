@@ -104,7 +104,7 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
             Metadata metadata =errorResponse("Email not exist");
             responseObserver.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("User not found")
                     .asRuntimeException(metadata));
-        } else if (!login.get().getPassword().equals(login.get().getPassword())) {
+        } else if (!login.get().getPassword().equals(request.getPassword())) {
             Metadata metadata =errorResponse("Password not correct");
             responseObserver.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("Password is not correct")
                     .asRuntimeException(metadata));
