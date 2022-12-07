@@ -1,6 +1,7 @@
 
 using Application.GrpcInterfaces;
 using Application.Logic;
+using Application.LogicInterface;
 using Application.LogicInterfaces;
 using Grpc.Net.Client;
 using gRPCClient.gRPC_Imp;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IRegisterCarLogic, RegisterCarLogic>();
 builder.Services.AddScoped<ITripLogic,TripLogic>();
 builder.Services.AddScoped<ISeatTicketService, SeatTicketGrpcImp>();
 builder.Services.AddScoped<ISeatTicketLogic, SeatTicketLogic>();
+builder.Services.AddScoped<IAuthLogic, AuthLogic>();
 
 builder.Services.AddGrpc();
 

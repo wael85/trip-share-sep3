@@ -6,6 +6,7 @@ option java_package = "via.sep3.grpcserver.protobuf.userservices";
 service UserServices {
   rpc createUser(RequestUserInfo) returns (ResponseUserInfo);
   rpc GetUserById(GetUserRequest) returns (ResponseUserInfo);
+  rpc AuthUser(GetUserRequest)returns(RequestUserInfo);
 }
 message GetUserRequest{
   string email=1;

@@ -31,16 +31,16 @@ public class UserGrpcImp : IUserService
             requestedInfo.DriveLicense = user.DriveLicense;
         }
        
-            ResponseUserInfo replay = await client.createUserAsync(requestedInfo);
-            var dto = new ReturnedUserDTO()
-            {
-                Email = replay.Email,
-                FirstName = replay.FirstName,
-                LastName = replay.LastName,
-                Phone = replay.Phone,
-                Address = replay.Address
-            };
-            return await Task.FromResult(dto);
+        ResponseUserInfo replay = await client.createUserAsync(requestedInfo);
+        var dto = new ReturnedUserDTO()
+        {
+            Email = replay.Email,
+            FirstName = replay.FirstName,
+            LastName = replay.LastName,
+            Phone = replay.Phone,
+            Address = replay.Address
+        };
+        return await Task.FromResult(dto);
       
 
     }
@@ -65,5 +65,27 @@ public class UserGrpcImp : IUserService
             DriveLicense = response.DriverLicense
         };
 
+    }
+
+    public async Task<User?> ValidateUserAsync(UserLoginDto userLoginDto)
+    {
+        GetUserRequest request = new GetUserRequest
+        {
+            Email = userLoginDto.Username
+        };
+
+        var replay = await client.AuthUserAsync(request);
+
+        User user = new User
+        {
+            Email = replay.Email,
+            Password = replay.Password,
+            FirstName = replay.FirstName,
+            LastName = replay.LastName,
+            Phone = replay.Phone,
+            Address = replay.Address,
+            DriveLicense = replay.DriveLicense
+        };
+        return user;
     }
 }
