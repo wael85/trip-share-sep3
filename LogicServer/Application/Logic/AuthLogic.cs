@@ -17,19 +17,10 @@ public class AuthLogic:IAuthLogic
         this.service = service;
     }
 
-    public async Task<User> ValidateUserAsync(UserLoginDto userLoginDto)
+    public async Task<ReturnedUserDTO> ValidateUserAsync(UserLoginDto userLoginDto)
     {
-        User? check = await service.ValidateUserAsync(userLoginDto);
-        if (check==null)
-        {
-            throw new Exception("User not found");
-        }
-
-        if (!check.Password.Equals(userLoginDto.Password))
-        {
-            throw new Exception("Password not correct");
-        }
-
-        return check;
+        ReturnedUserDTO user = await service.ValidateUserAsync(userLoginDto);
+        
+        return user;
     }
 }

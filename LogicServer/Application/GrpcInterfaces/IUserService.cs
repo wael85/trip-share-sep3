@@ -7,5 +7,5 @@ public interface IUserService
 {
     Task<ReturnedUserDTO> CreateAsync(User user);
     Task<ReturnedUserDTO> GetUserById(string email);
-    Task<User?> ValidateUserAsync(UserLoginDto userLoginDto);
+    Task<ReturnedUserDTO> ValidateUserAsync(UserLoginDto userLoginDto);
 }

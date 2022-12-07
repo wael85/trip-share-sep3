@@ -67,25 +67,25 @@ public class UserGrpcImp : IUserService
 
     }
 
-    public async Task<User?> ValidateUserAsync(UserLoginDto userLoginDto)
+    public async Task<ReturnedUserDTO> ValidateUserAsync(UserLoginDto userLoginDto)
     {
-        GetUserRequest request = new GetUserRequest
+        LoginUserMessage request = new LoginUserMessage
         {
-            Email = userLoginDto.Username
+            Email = userLoginDto.Username,
+            Password = userLoginDto.Password
         };
 
-        var replay = await client.AuthUserAsync(request);
-
-        User user = new User
+        ResponseUserInfo replay = await client.LoginUserAsync(request);
+        ReturnedUserDTO user = new ReturnedUserDTO
         {
             Email = replay.Email,
-            Password = replay.Password,
             FirstName = replay.FirstName,
             LastName = replay.LastName,
             Phone = replay.Phone,
             Address = replay.Address,
-            DriveLicense = replay.DriveLicense
+            DriveLicense = replay.DriverLicense
         };
         return user;
     }
+    
 }

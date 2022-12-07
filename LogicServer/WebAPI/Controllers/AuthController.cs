@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Application.LogicInterface;
 using Domain.DTOs;
-using Domain.Model;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -28,9 +27,10 @@ public class AuthController : ControllerBase
     {
         try
         {
-            User user = await authLogic.ValidateUserAsync(userLoginDto);
+            ReturnedUserDTO user = await authLogic.ValidateUserAsync(userLoginDto);
+
             string token = GenerateJwt(user);
-    
+            
             return Ok(token);
         }
         catch (Exception e)
@@ -41,7 +41,7 @@ public class AuthController : ControllerBase
     }
     
     
-    private string GenerateJwt(User user)
+    private string GenerateJwt(ReturnedUserDTO user)
     {
         List<Claim> claims = GenerateClaims(user);
     
@@ -63,7 +63,7 @@ public class AuthController : ControllerBase
         return serializedToken;
     }
     
-    private List<Claim> GenerateClaims(User user)
+    private List<Claim> GenerateClaims(ReturnedUserDTO user)
     {
         var claims = new[]
         {
