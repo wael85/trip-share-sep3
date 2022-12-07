@@ -62,7 +62,6 @@ public class AuthController : ControllerBase
         string serializedToken = new JwtSecurityTokenHandler().WriteToken(token);
         return serializedToken;
     }
-    
     private List<Claim> GenerateClaims(ReturnedUserDTO user)
     {
         var claims = new[]
