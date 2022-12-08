@@ -21,5 +21,6 @@ builder.Services.AddScoped<ISeatTicketClient, HttpSeatTicketClient>();
 builder.Services.AddScoped<IAuthService, JwtAuthService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();
+
 AuthorizationPolicies.AddPolicies(builder.Services);
 await builder.Build().RunAsync();

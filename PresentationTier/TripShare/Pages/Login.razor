@@ -1,51 +1,56 @@
 @page "/Login"
 @using HttpClients.ClientInterface
+@using Radzen
+@using Radzen.Blazor
 @inject IAuthService authService
 @inject NavigationManager navMgr
+@inject NotificationService _notification
+
 <AuthorizeView>
     <NotAuthorized>
-<section class="vh-100">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                <form style="width: 23rem;">
+         <RadzenNotification/>
+        <section class="vh-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+                        <form style="width: 23rem;">
 
-                    <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Login</h3>
+                            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Login</h3>
 
-                    <div class="form-outline mb-4">
-                        <input type="email" id="form1" class="form-control form-control-lg" @bind="userName"/>
-                        <label class="form-label" for="form1">Email</label>
+                            <div class="form-outline mb-4">
+                                <input type="email" id="form1" class="form-control form-control-lg" @bind="userName"/>
+                                <label class="form-label" for="form1">Email</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="password" id="form2" class="form-control form-control-lg" @bind="password"/>
+                                <label class="form-label" for="form2">Password</label>
+                            </div>
+
+                            <div class="pt-1 mb-4">
+                                <button class="btn btn-success btn-lg btn-block" type="button" @onclick="LoginAsync">Login</button>
+                            </div>
+                            <p>Don't have an account? <a href="UserSignUp" class="link-info">Register here</a></p>
+                        </form>
+
                     </div>
 
-                    <div class="form-outline mb-4">
-                        <input type="password" id="form2" class="form-control form-control-lg" @bind="password"/>
-                        <label class="form-label" for="form2">Password</label>
-                    </div>
 
-                    <div class="pt-1 mb-4">
-                        <button class="btn btn-success btn-lg btn-block" type="button" @onclick="LoginAsync">Login</button>
-                    </div>
-                    <p>Don't have an account? <a href="UserSignUp" class="link-info">Register here</a></p>
-                </form>
-
+                </div>
             </div>
-
-
-        </div>
-    </div>
-</section>
-   </NotAuthorized>
+        </section>
+    </NotAuthorized>
 </AuthorizeView>
 
 @code {
 
     private string userName;
     private string password;
-    private string errorLabel;
+    
 
     private async Task LoginAsync()
     {
-        errorLabel = "";
+       
         try
         {
             await authService.LoginAsync(userName, password);
@@ -53,8 +58,9 @@
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            errorLabel = $"Error: {e.Message}";
+            Console.WriteLine(e.Message);
+            _notification.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
+
         }
     }
 

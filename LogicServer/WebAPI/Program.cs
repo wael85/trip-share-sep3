@@ -4,7 +4,6 @@ using Application.GrpcInterfaces;
 using Application.Logic;
 using Application.LogicInterface;
 using Application.LogicInterfaces;
-using Domain.Auth;
 using Grpc.Net.Client;
 using gRPCClient.gRPC_Imp;
 using gRPCClient.GrpcInterfaces;
@@ -54,7 +53,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-AuthorizationPolicies.AddPolicies(builder.Services);
 
 var app = builder.Build();
 app.UseCors(x => x
