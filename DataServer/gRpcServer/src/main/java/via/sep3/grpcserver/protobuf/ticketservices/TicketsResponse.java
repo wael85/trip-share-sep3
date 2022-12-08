@@ -4,18 +4,18 @@
 package via.sep3.grpcserver.protobuf.ticketservices;
 
 /**
- * Protobuf type {@code TicketsByTripResponse}
+ * Protobuf type {@code TicketsResponse}
  */
-public final class TicketsByTripResponse extends
+public final class TicketsResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:TicketsByTripResponse)
-    TicketsByTripResponseOrBuilder {
+    // @@protoc_insertion_point(message_implements:TicketsResponse)
+    TicketsResponseOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use TicketsByTripResponse.newBuilder() to construct.
-  private TicketsByTripResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use TicketsResponse.newBuilder() to construct.
+  private TicketsResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private TicketsByTripResponse() {
+  private TicketsResponse() {
     tickets_ = java.util.Collections.emptyList();
   }
 
@@ -23,7 +23,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new TicketsByTripResponse();
+    return new TicketsResponse();
   }
 
   @java.lang.Override
@@ -31,7 +31,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private TicketsByTripResponse(
+  private TicketsResponse(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -85,15 +85,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsByTripResponse_descriptor;
+    return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsResponse_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsByTripResponse_fieldAccessorTable
+    return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.class, via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.Builder.class);
+            via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse.class, via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse.Builder.class);
   }
 
   public static final int TICKETS_FIELD_NUMBER = 1;
@@ -176,10 +176,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse)) {
+    if (!(obj instanceof via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse)) {
       return super.equals(obj);
     }
-    via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse other = (via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse) obj;
+    via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse other = (via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse) obj;
 
     if (!getTicketsList()
         .equals(other.getTicketsList())) return false;
@@ -203,69 +203,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(byte[] data)
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(java.io.InputStream input)
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseDelimitedFrom(java.io.InputStream input)
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseDelimitedFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parseFrom(
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -278,7 +278,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse prototype) {
+  public static Builder newBuilder(via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -294,26 +294,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code TicketsByTripResponse}
+   * Protobuf type {@code TicketsResponse}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:TicketsByTripResponse)
-      via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponseOrBuilder {
+      // @@protoc_insertion_point(builder_implements:TicketsResponse)
+      via.sep3.grpcserver.protobuf.ticketservices.TicketsResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsByTripResponse_descriptor;
+      return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsByTripResponse_fieldAccessorTable
+      return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.class, via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.Builder.class);
+              via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse.class, via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse.Builder.class);
     }
 
-    // Construct using via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.newBuilder()
+    // Construct using via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -344,17 +344,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsByTripResponse_descriptor;
+      return via.sep3.grpcserver.protobuf.ticketservices.Ticket.internal_static_TicketsResponse_descriptor;
     }
 
     @java.lang.Override
-    public via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse getDefaultInstanceForType() {
-      return via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.getDefaultInstance();
+    public via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse getDefaultInstanceForType() {
+      return via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse.getDefaultInstance();
     }
 
     @java.lang.Override
-    public via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse build() {
-      via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse result = buildPartial();
+    public via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse build() {
+      via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -362,8 +362,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse buildPartial() {
-      via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse result = new via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse(this);
+    public via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse buildPartial() {
+      via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse result = new via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse(this);
       int from_bitField0_ = bitField0_;
       if (ticketsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
@@ -412,16 +412,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse) {
-        return mergeFrom((via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse)other);
+      if (other instanceof via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse) {
+        return mergeFrom((via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse other) {
-      if (other == via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse.getDefaultInstance()) return this;
+    public Builder mergeFrom(via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse other) {
+      if (other == via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse.getDefaultInstance()) return this;
       if (ticketsBuilder_ == null) {
         if (!other.tickets_.isEmpty()) {
           if (tickets_.isEmpty()) {
@@ -463,11 +463,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse parsedMessage = null;
+      via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse) e.getUnfinishedMessage();
+        parsedMessage = (via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -730,41 +730,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:TicketsByTripResponse)
+    // @@protoc_insertion_point(builder_scope:TicketsResponse)
   }
 
-  // @@protoc_insertion_point(class_scope:TicketsByTripResponse)
-  private static final via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:TicketsResponse)
+  private static final via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse();
+    DEFAULT_INSTANCE = new via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse();
   }
 
-  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse getDefaultInstance() {
+  public static via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<TicketsByTripResponse>
-      PARSER = new com.google.protobuf.AbstractParser<TicketsByTripResponse>() {
+  private static final com.google.protobuf.Parser<TicketsResponse>
+      PARSER = new com.google.protobuf.AbstractParser<TicketsResponse>() {
     @java.lang.Override
-    public TicketsByTripResponse parsePartialFrom(
+    public TicketsResponse parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new TicketsByTripResponse(input, extensionRegistry);
+      return new TicketsResponse(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<TicketsByTripResponse> parser() {
+  public static com.google.protobuf.Parser<TicketsResponse> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<TicketsByTripResponse> getParserForType() {
+  public com.google.protobuf.Parser<TicketsResponse> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public via.sep3.grpcserver.protobuf.ticketservices.TicketsByTripResponse getDefaultInstanceForType() {
+  public via.sep3.grpcserver.protobuf.ticketservices.TicketsResponse getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

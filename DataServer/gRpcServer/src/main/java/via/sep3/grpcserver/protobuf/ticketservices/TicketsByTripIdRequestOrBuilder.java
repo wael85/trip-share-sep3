@@ -3,8 +3,8 @@
 
 package via.sep3.grpcserver.protobuf.ticketservices;
 
-public interface TicketsByTripRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:TicketsByTripRequest)
+public interface TicketsByTripIdRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:TicketsByTripIdRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**

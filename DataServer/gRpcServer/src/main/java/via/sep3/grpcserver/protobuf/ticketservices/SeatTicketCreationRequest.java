@@ -4,10 +4,6 @@
 package via.sep3.grpcserver.protobuf.ticketservices;
 
 /**
- * <pre>
- *todo Check Location
- * </pre>
- *
  * Protobuf type {@code SeatTicketCreationRequest}
  */
 public final class SeatTicketCreationRequest extends
@@ -426,10 +422,6 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * <pre>
-   *todo Check Location
-   * </pre>
-   *
    * Protobuf type {@code SeatTicketCreationRequest}
    */
   public static final class Builder extends

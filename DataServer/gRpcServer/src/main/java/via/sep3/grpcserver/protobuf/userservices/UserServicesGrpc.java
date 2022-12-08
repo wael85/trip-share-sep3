@@ -76,6 +76,37 @@ public final class UserServicesGrpc {
     return getGetUserByIdMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.userservices.LoginUserMessage,
+      via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> getLoginUserMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "LoginUser",
+      requestType = via.sep3.grpcserver.protobuf.userservices.LoginUserMessage.class,
+      responseType = via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.userservices.LoginUserMessage,
+      via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> getLoginUserMethod() {
+    io.grpc.MethodDescriptor<via.sep3.grpcserver.protobuf.userservices.LoginUserMessage, via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> getLoginUserMethod;
+    if ((getLoginUserMethod = UserServicesGrpc.getLoginUserMethod) == null) {
+      synchronized (UserServicesGrpc.class) {
+        if ((getLoginUserMethod = UserServicesGrpc.getLoginUserMethod) == null) {
+          UserServicesGrpc.getLoginUserMethod = getLoginUserMethod =
+              io.grpc.MethodDescriptor.<via.sep3.grpcserver.protobuf.userservices.LoginUserMessage, via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "LoginUser"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.userservices.LoginUserMessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo.getDefaultInstance()))
+              .setSchemaDescriptor(new UserServicesMethodDescriptorSupplier("LoginUser"))
+              .build();
+        }
+      }
+    }
+    return getLoginUserMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -138,6 +169,13 @@ public final class UserServicesGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetUserByIdMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void loginUser(via.sep3.grpcserver.protobuf.userservices.LoginUserMessage request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getLoginUserMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -154,6 +192,13 @@ public final class UserServicesGrpc {
                 via.sep3.grpcserver.protobuf.userservices.GetUserRequest,
                 via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>(
                   this, METHODID_GET_USER_BY_ID)))
+          .addMethod(
+            getLoginUserMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                via.sep3.grpcserver.protobuf.userservices.LoginUserMessage,
+                via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>(
+                  this, METHODID_LOGIN_USER)))
           .build();
     }
   }
@@ -187,6 +232,14 @@ public final class UserServicesGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetUserByIdMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void loginUser(via.sep3.grpcserver.protobuf.userservices.LoginUserMessage request,
+        io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getLoginUserMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -215,6 +268,13 @@ public final class UserServicesGrpc {
     public via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo getUserById(via.sep3.grpcserver.protobuf.userservices.GetUserRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetUserByIdMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo loginUser(via.sep3.grpcserver.protobuf.userservices.LoginUserMessage request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getLoginUserMethod(), getCallOptions(), request);
     }
   }
 
@@ -247,10 +307,19 @@ public final class UserServicesGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetUserByIdMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo> loginUser(
+        via.sep3.grpcserver.protobuf.userservices.LoginUserMessage request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getLoginUserMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_CREATE_USER = 0;
   private static final int METHODID_GET_USER_BY_ID = 1;
+  private static final int METHODID_LOGIN_USER = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -275,6 +344,10 @@ public final class UserServicesGrpc {
           break;
         case METHODID_GET_USER_BY_ID:
           serviceImpl.getUserById((via.sep3.grpcserver.protobuf.userservices.GetUserRequest) request,
+              (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>) responseObserver);
+          break;
+        case METHODID_LOGIN_USER:
+          serviceImpl.loginUser((via.sep3.grpcserver.protobuf.userservices.LoginUserMessage) request,
               (io.grpc.stub.StreamObserver<via.sep3.grpcserver.protobuf.userservices.ResponseUserInfo>) responseObserver);
           break;
         default:
@@ -340,6 +413,7 @@ public final class UserServicesGrpc {
               .setSchemaDescriptor(new UserServicesFileDescriptorSupplier())
               .addMethod(getCreateUserMethod())
               .addMethod(getGetUserByIdMethod())
+              .addMethod(getLoginUserMethod())
               .build();
         }
       }
