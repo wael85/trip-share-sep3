@@ -1,0 +1,31 @@
+﻿@using HttpClients.ClientInterface
+@inject NavigationManager navMgr
+@inject IAuthService authService
+@namespace TripShare.Pages.Components
+
+<AuthorizeView>
+    <Authorized>
+        <img class="icon" src="icons/Logout.png" @onclick="Logout" style="width: 30px;cursor: pointer" alt=""/>Logout
+        
+    </Authorized>
+    <NotAuthorized>
+
+        <img class="icon" src="icons/Login.png" @onclick="Login" style="width: 30px;cursor: pointer" alt=""/>Login
+        
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    private void Login()
+    {
+        navMgr.NavigateTo("/Login");
+    }
+
+    private async Task Logout()
+    {
+        await authService.LogoutAsync();
+        navMgr.NavigateTo("/");
+    }
+
+}

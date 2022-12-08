@@ -70,9 +70,12 @@ public class AuthController : ControllerBase
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
             new Claim(ClaimTypes.Name, user.FirstName),
+            new Claim(ClaimTypes.Surname,user.LastName),
             new Claim(ClaimTypes.Email, user.Email),
+            new Claim("Address",user.Address),
+            new Claim("Phone",user.Phone),
             new Claim("DriveLicense",user.DriveLicense ?? string.Empty)
-            
+
         };
         return claims.ToList();
     }
