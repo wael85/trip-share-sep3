@@ -9,7 +9,9 @@
     <div class="form-check form-switch">
 
         <label class="form-label" for="flexSwitchCheckDefault">Do you want to be a Driver?</label>
-        <input class="form-check-input" style="float: right" type="checkbox" @bind-value="status" id="flexSwitchCheckDefault">
+        <input class="form-check-input" style="float: right" type="checkbox" @bind-value="status" 
+               @onclick="@(async (rgs) => 
+                         { DriveLicense = ""; PlateNumber = ""; msg = ""; infoCar = null; await ButtonStatus("hidden"); })" id="flexSwitchCheckDefault">
 
     </div>
 </div>
@@ -43,47 +45,34 @@
 @if (!String.IsNullOrEmpty(PlateNumber) && infoCar != null)
 {
     <div class="row" @onmouseover="(e) => { CarTypeChanged(CarType); ModelChanged(Model);ColorChanged(Color);SeatsChanged(Seats);}">
-        <div class="col-md-4 mb-4 d-flex align-items-center">
 
-            <div class="form-outline  w-75">
+            <div class="form-outline  col-md-4 mb-4">
                 <label class="form-label">Color</label>
                 <input type="text" @bind="Color"  @bind:event="oninput" @onchange="(e)=>ColorChanged(Color)"   class="form-control form-control-lg"/>
-
             </div>
-
-        </div>
-        <div class="col-md-4 mb-4 pb-2">
-
-            <div class="form-outline w-75">
-                <label class="form-label">Fuel Type</label>
-
-                <input type="text" disabled="@(infoCar != null && !String.IsNullOrEmpty(infoCar.FuelType))" @bind="CarType"
-                        @bind:event="oninput" @onchange="((e) =>CarTypeChanged (CarType))" class="form-control form-control-lg"/>
-
-            </div>
-        </div>
-        <div class="col-md-4 mb-4 d-flex align-items-center">
-
-            <div class="form-outline  w-75">
-                <label class="form-label">Model</label>
-                <input type="text" disabled="@(infoCar != null && !String.IsNullOrEmpty(infoCar.CarModel))" @bind="Model"
-                        @bind:event="oninput" @onchange="((e) => ModelChanged(Model))" class="form-control form-control-lg"/>
-
-            </div>
-
+        <div class="form-outline col-md-4 mb-4 pb-2">
+            <label class="form-label">Fuel Type</label>
+            <input type="text" disabled="@(infoCar != null && !String.IsNullOrEmpty(infoCar.FuelType))"
+                   @bind="CarType"@bind:event="oninput" @onchange="((e) =>CarTypeChanged (CarType))" class="form-control form-control-lg"/>
         </div>
         <div class="col-md-3 mb-4 pb-2">
             <label class="form-label">Seats count </label>
             <input type="number" min="2" max="7" disabled="@(infoCar is {SeatsCount: > 0 })" 
                    @bind:event="oninput" @onchange="(e)=>SeatsChanged(Seats)" @bind="Seats"/>
         </div>
-
+    </div>
+    <div class="row">
+         <div class="form-outline">
+             <label class="form-label">Model</label>
+             <input type="text" disabled="@(infoCar != null && !String.IsNullOrEmpty(infoCar.CarModel))" @bind="Model"
+                    @bind:event="oninput" @onchange="((e) => ModelChanged(Model))" class="form-control"/>
+         </div>
     </div>
 }
     <div>
         @if (!String.IsNullOrEmpty(msg))
         {
-            <p>@msg</p>
+            <p style="color: red">@msg</p>
         }
     </div>
     
@@ -105,6 +94,8 @@
     public EventCallback<string> OnCarTypeChange { get; set; }
     [Parameter]
     public EventCallback<int> OnSeatsChange { get; set; }
+    [Parameter]
+    public EventCallback<string> OnButtonStatusChange { get; set; }
     
     public string DriveLicense { get; set; }
 
@@ -127,17 +118,31 @@
 
     private async Task CheckCar()
     {
+        msg = "";
         
         if (!String.IsNullOrEmpty(PlateNumber))
         {
-            Car car = await client.Verify(PlateNumber);
-            Color = car.Color;
-            Model = car.CarModel;
-            CarType = car.FuelType;
-            Seats = car.SeatsCount ?? 0;
-            infoCar = car;
+            try
+            {
+                Car car = await client.Verify(PlateNumber);
+                Color = car.Color;
+                Model = car.CarModel;
+                CarType = car.FuelType;
+                Seats = car.SeatsCount ?? 0;
+                infoCar = car;
+            }
+            catch (Exception e)
+            {
+                msg = e.Message;
+            }
+            
         }
-  
+        else
+        {
+            msg = "We need your drive License number and plate number to submit your request.";
+        }
+       
+
     }
 
     protected async Task DriveLicenseChanged(ChangeEventArgs e)
@@ -164,6 +169,11 @@
     {
      
         await OnSeatsChange.InvokeAsync(i);
+    }
+    protected async Task ButtonStatus(string s)
+    {
+     
+        await OnButtonStatusChange.InvokeAsync(s);
     }
 
 
