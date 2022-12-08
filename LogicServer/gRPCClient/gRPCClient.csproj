@@ -26,6 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Include="obj\Debug\net6.0\Proto\Notification.cs" />
+      <Compile Include="obj\Debug\net6.0\Proto\NotificationGrpc.cs" />
       <Compile Include="obj\Debug\net6.0\Proto\Trip.cs" />
       <Compile Include="obj\Debug\net6.0\Proto\TripGrpc.cs" />
     </ItemGroup>
@@ -35,6 +37,8 @@
       <Protobuf Include="Proto\trip.proto" />
       <Protobuf Include="Proto\user.proto" />
       <None Remove="Proto\ticket.proto" />
+      <None Remove="Proto\notification.proto" />
+      <Protobuf Include="Proto\notification.proto" />
     </ItemGroup>
 
     <ItemGroup>

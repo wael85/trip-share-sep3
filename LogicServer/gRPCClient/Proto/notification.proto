@@ -1,0 +1,52 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "via.sep3.grpcserver.protobuf.notificationservices";
+
+service NotificationServices{
+  rpc createRequestNotification(RequestSeatNotification) returns (ResponseSeatNotification);
+  rpc getNotification(RequestGetMyNotifications ) returns (ResponseActiveNotifications);
+}
+message RequestSeatNotification{
+  string consumer_id =1;
+  string sender_id =2;
+  int32 requested_pickup_location_id = 3;
+  int32 requested_drop_location_id = 4;
+  double seat_price = 5;
+  int32 seat_count = 6;
+  string msg = 7;
+  bool consumed = 8;
+  int32 trip_id = 9;
+
+}
+
+message ResponseSeatNotification{
+  string response_msg = 1;
+  int32 response_code = 2;
+}
+
+message RequestGetMyNotifications{
+  string consumer_id =1;
+
+}
+message ResponseActiveNotifications{
+  repeated ReturnedNotification notifications = 1;
+}
+message ReturnedNotification{
+  string consumer_id =1;
+  string sender_id =2;
+  NotificationRequestLocation requested_pickup_location_id = 3;
+  NotificationRequestLocation requested_drop_location_id = 4;
+  double seat_price = 5;
+  int32 seat_count = 6;
+  string msg = 7;
+  int32 id = 8;
+  int32 trip_id = 9;
+}
+message NotificationRequestLocation {
+  int64 id = 1;
+  string post_code = 2;
+  string city = 3;
+  string street_name = 4;
+  string street_number = 5;
+  string arrival_time = 6;
+}
