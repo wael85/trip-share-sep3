@@ -2,6 +2,7 @@
 package via.sep3.grpcserver.services;
 
 
+import io.grpc.LoadBalancer;
 import io.grpc.Metadata;
 import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.StreamObserver;
@@ -22,6 +23,7 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
 
     private final LoginRepository loginRepository;
     private final UserRepository userRepository ;
+
     @Autowired
     public UserServices(LoginRepository loginRepository, UserRepository userRepository) {
         this.loginRepository = loginRepository;
@@ -52,6 +54,10 @@ public class UserServices extends UserServicesGrpc.UserServicesImplBase {
                         .asRuntimeException(metadata));
         }else {
             User resultUser = userRepository.save(u);
+            Login l = new Login();
+            l.setUser(resultUser);
+            l.setPassword(userInfo.getPassword());
+            loginRepository.save(l);
             String driveLicense = resultUser.getDriveLicense() == null? "":resultUser.getDriveLicense();
             ResponseUserInfo result = ResponseUserInfo.newBuilder()
                     .setAddress(resultUser.getAddress())
