@@ -12,8 +12,11 @@
 @inject ITripClient _tripClient;
 @inject ISeatTicketClient _SeatTicket;
 @inject NotificationService _servic
+
 @inject IAuthService auth
 @attribute [Authorize]
+@inject ICarClient _carClient;
+
 
         <RadzenNotification/>
         
@@ -108,11 +111,24 @@
                         </div>
                     </div>
 
-                </div>
 
-                <div class="col-md-6 ">
-                    <!--My trips or be a driver -->
-                    @if (string.IsNullOrEmpty(userInfoDto.DriveLicense))
+        <div class="col-md-6 ">
+            <!--My trips or be a driver -->
+            @if (string.IsNullOrEmpty(userInfoDto.DriveLicense))
+            {
+                <div class="container" style="margin: 10px">
+                    <DriverBox
+                        OnDriveLicenseChange="UpdateDriveLicense" OnColorChange="UpdateCarColor" OnModelChange="UpdateCarModel"
+                        OnSeatsChange="UpdateSeats" OnCarTypeChange="UpdateFuelType" OnPlateNumberChange="UpdatePlateNumber" OnButtonStatusChange="ShowSubmitButton">
+                    </DriverBox>
+                </div>
+                <button style="visibility: @showSubmitbutton" @onclick="UpdateDriver" class="btn border-primary">Submit</button>
+            }
+            else
+            {
+                <h5 style="margin: 5px">My Trips</h5>
+                <div class="card overflow-auto" style="height:400px">
+                    @if (!myTrips.Any())
                     {
                         <div class="container" style="margin: 10px">
                             <DriverBox
@@ -167,9 +183,8 @@
         </div>
 
 @code {
-
+    private string showSubmitbutton = "hidden";
     private UserInformationDto userInfoDto = new();
-
     private List<Trip> myTrips = new();
     private List<SeatTicket> myTickets = new();
     private string? DriveLicense = "";
@@ -220,15 +235,43 @@
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
         }
     }
+    private async Task UpdateDriver()
+    {
+        if (!String.IsNullOrEmpty(DriveLicense) & !String.IsNullOrEmpty(plateNumber))
+        {
+            try
+            {
+                string driverId = "wael@email.com";
+                BeADriverRequestDto dto = new BeADriverRequestDto(driverId, DriveLicense!, plateNumber, Color, CarModel, Seats, FuelType);
+                await _carClient.CreateAsync(dto);
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = $"You become a driver", Duration = 6000 });
+
+            }
+            catch (Exception e)
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
+            }
+        }
+        else
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"All car fields is required !!  ", Duration = 6000 });
+
+        }
+        
+
+        
+    }
 
     public void UpdateDriveLicense(string s)
     {
         DriveLicense = s;
+        ShowSubmitButton("");
     }
 
     public void UpdatePlateNumber(string s)
     {
         plateNumber = s;
+        ShowSubmitButton("");
     }
 
     public void UpdateCarColor(string s)
@@ -255,5 +298,26 @@
     {
         _servic.Notify(message);
     }
+
+    void ShowSubmitButton(string? value)
+    {
+        if (!String.IsNullOrEmpty(value))
+        {
+            showSubmitbutton = value;
+        }
+        else
+        {
+            if (!String.IsNullOrEmpty(DriveLicense) & !String.IsNullOrEmpty(plateNumber))
+            {
+                showSubmitbutton =  "visible";
+            }
+            else
+            {
+                showSubmitbutton = "hidden";
+            }
+        }
+
+    }
+    
 
 }
