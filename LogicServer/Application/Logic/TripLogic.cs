@@ -90,6 +90,11 @@ public class TripLogic : ITripLogic
         return trips2;
     }
 
+    public async Task<List<Trip>> GetUsersTripsByEmail(string email)
+    {
+        return await TripServices.GetTripsByDriverId(email);
+    }
+
     private static bool QueryLocations(Location original, string query)
     {
         return (query == "" || query.ToLower() == original.City.ToLower());
