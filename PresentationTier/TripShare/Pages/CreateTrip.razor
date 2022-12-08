@@ -9,8 +9,10 @@
 @inject NotificationService _servic
 @inject ITripClient _client;
 @inject NavigationManager navG;
+@attribute [Authorize]
 
-
+<AuthorizeView Policy="DriveLicense">
+    <Authorized>
 <h2 class="mb-3" style="color: #1a1e21">Create a new Trip: </h2>
 <RadzenNotification/>
 
@@ -144,7 +146,11 @@
     </div>
 </form>
 
-
+  </Authorized>
+    <NotAuthorized>
+        <h4>Update your profile to driver and create a trip.<a href="MyProfile" class="link-info">here</a></h4>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code {

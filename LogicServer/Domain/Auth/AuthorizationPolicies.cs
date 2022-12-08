@@ -9,12 +9,13 @@ public static class AuthorizationPolicies
     {
         services.AddAuthorizationCore(options =>
         {
-            options.AddPolicy("SecurityLevel2OrAbove", a =>
+
+            options.AddPolicy("DriveLicense", a =>
                 a.RequireAuthenticatedUser().RequireAssertion(context =>
                 {
-                    Claim? levelClaim = context.User.FindFirst(claim => claim.Type.Equals("SecurityLevel"));
-                    if (levelClaim == null) return false;
-                    return int.Parse(levelClaim.Value) >= 2;
+                    Claim? licenseClaim = context.User.FindFirst(claim => claim.Type.Equals("DriveLicense"));
+                    if (string.IsNullOrEmpty(licenseClaim?.Value)) return false;
+                    return true;
                 }));
         });
     }

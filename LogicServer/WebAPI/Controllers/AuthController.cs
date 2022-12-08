@@ -74,7 +74,7 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.Email, user.Email),
             new Claim("Address",user.Address),
             new Claim("Phone",user.Phone),
-            new Claim("DriveLicense",user.DriveLicense ?? string.Empty)
+            new Claim("DriveLicense",user.DriveLicense!)
 
         };
         return claims.ToList();
