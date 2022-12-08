@@ -75,9 +75,67 @@ public class TripGrpcImp : ITripServices
         return await Task.FromResult(reTrip);
     }
 
-    public Task<IEnumerable<Trip>> GetTripsByDriverId(List<string> driverId)
+    public async Task<List<Trip>> GetTripsByDriverId(string driverId)
     {
-        throw new NotImplementedException();
+        List<Trip> trips = new List<Trip>();
+        TripsByDriverIDRequest request = new TripsByDriverIDRequest()
+        {
+            UserId = driverId
+        };
+        
+        var response=  client.getTripsByUserID(request);
+        foreach (TripResponse var in response.Trips)
+        {
+            
+
+            Trip trip = new Trip();
+            trip.Driver = await UserService.GetUserById(var.DriverId);
+            trip.Stops = new List<Location>();
+            trip.Tickets = new List<SeatTicket>();
+            trip.Passengers = new List<ReturnedUserDTO>();
+            trip.Driver.Email = var.DriverId;
+            trip.Id = var.Id;
+            trip.AvailableSeats = var.AvailableSeats;
+            trip.FullPrice = var.FullPrice;
+            
+            
+            foreach (var stop in var.Stops)
+            {
+                Location location = new Location();
+                location.City = stop.City;
+                location.Id = stop.Id;
+                location.ArrivalTime = DateTime.Parse(stop.ArrivalTime);
+                location.PostCode = stop.PostCode;
+                location.StreetName = stop.StreetName;
+                location.StreetNumber = stop.StreetNumber;
+                trip.Stops.Add(location);
+            }
+            
+            
+            foreach (var ticket in var.Tickets)
+            {
+                SeatTicket tic = new SeatTicket();
+                tic.Id = ticket.Id;
+                tic.Passenger.Email = ticket.PassengerId;
+                tic.DropLocation.Id = ticket.DropoffId;
+                tic.SeatAmount = ticket.TotalSeats;
+                tic.SeatPrice = ticket.SeatPrice;
+                tic.PickUpLocation.Id = ticket.PickupId;
+                ReturnedUserDTO pass = await UserService.GetUserById(tic.Passenger.Email);
+                trip.Passengers.Add(pass);
+                trip.Tickets.Add(tic); 
+            }
+          
+          
+          
+            trips.Add(trip);
+          
+
+
+        }
+
+        return trips;
+
     }
 
     public async Task<List<Trip>> GetAllTripsAsync()
