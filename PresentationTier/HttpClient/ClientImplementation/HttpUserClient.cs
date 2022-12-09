@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Domain.DTOs;
@@ -36,7 +37,8 @@ public class UserClientImp : IUserClient
     public async Task<UserInformationDto> GetByIdAsync(string id)
     {
         
-        
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",JwtAuthService.Jwt);
+
         var response = await client.GetAsync($"/users/{id}");
         
         var content =  await response.Content.ReadAsStringAsync();

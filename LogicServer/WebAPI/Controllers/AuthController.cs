@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Application.LogicInterface;
 using Domain.DTOs;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,25 +20,24 @@ public class AuthController : ControllerBase
         this.config = config;
         this.authLogic = authLogic;
     }
-    
-    [HttpPost, Route("login")]
-    public async Task<ActionResult> Login([FromBody] UserLoginDto userLoginDto)
-    {
-        try
+  
+     private List<Claim> GenerateClaims(ReturnedUserDTO user)
         {
-            ReturnedUserDTO user = await authLogic.ValidateUserAsync(userLoginDto);
-
-            string token = GenerateJwt(user);
-            
-            return Ok(token);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return StatusCode(500, e.Message);
-        }
-    }
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, config["Jwt:Subject"]),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.Surname,user.LastName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("Address",user.Address),
+                new Claim("Phone",user.Phone),
+                new Claim("DriveLicense",user.DriveLicense!)
     
+            };
+            return claims.ToList();
+        }
     
     private string GenerateJwt(ReturnedUserDTO user)
     {
@@ -62,21 +60,22 @@ public class AuthController : ControllerBase
         string serializedToken = new JwtSecurityTokenHandler().WriteToken(token);
         return serializedToken;
     }
-    private List<Claim> GenerateClaims(ReturnedUserDTO user)
+     
+    [HttpPost, Route("login")]
+    public async Task<ActionResult> Login([FromBody] UserLoginDto userLoginDto)
     {
-        var claims = new[]
+        try
         {
-            new Claim(JwtRegisteredClaimNames.Sub, config["Jwt:Subject"]),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-            new Claim(ClaimTypes.Name, user.FirstName),
-            new Claim(ClaimTypes.Surname,user.LastName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim("Address",user.Address),
-            new Claim("Phone",user.Phone),
-            new Claim("DriveLicense",user.DriveLicense!)
+            ReturnedUserDTO user = await authLogic.ValidateUserAsync(userLoginDto);
 
-        };
-        return claims.ToList();
+            string token = GenerateJwt(user);
+            
+            return Ok(token);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return StatusCode(500, e.Message);
+        }
     }
 }

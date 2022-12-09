@@ -1,12 +1,16 @@
+
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
+
 public class SeatTicketsController : ControllerBase
 {
     private readonly ISeatTicketLogic _seatTicketLogic;
