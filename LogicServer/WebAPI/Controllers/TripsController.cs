@@ -69,7 +69,6 @@ public class TripsController : ControllerBase
         {
             List<Trip> trips = await logic.GetUsersTripsByEmail(email);
             return Ok(trips);
-
         }
         catch (Exception e)
         {

@@ -24,6 +24,9 @@
       <Protobuf Include="Proto\ticket.proto" />
       <Protobuf Include="Proto\trip.proto" />
       <Protobuf Include="Proto\user.proto" />
+      <Protobuf Include="Proto\rating.proto" />
+      <None Remove="Proto\notification.proto" />
+      <Protobuf Include="Proto\notification.proto" />
     </ItemGroup>
     
 </Project>
