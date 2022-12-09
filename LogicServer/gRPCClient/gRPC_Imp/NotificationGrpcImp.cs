@@ -1,6 +1,8 @@
+using System.Reflection;
 using Application.GrpcInterfaces;
 using Domain.DTOs;
 using Domain.Model;
+using Google.Protobuf.WellKnownTypes;
 
 namespace gRPCClient.gRPC_Imp;
 
@@ -19,7 +21,7 @@ public class NotificationGrpcImp : INotificationGrpcService
         // returned 200 on success
         RequestSeatNotification request = new RequestSeatNotification
         {
-            Consumed = false,
+            Consumed = n.Consumed,
             ConsumerId = n.Consumer,
             SenderId = n.Sender,
             Msg = n.Msg,
@@ -29,6 +31,11 @@ public class NotificationGrpcImp : INotificationGrpcService
             RequestedDropLocationId = n.RequestedDropUpLocation,
             RequestedPickupLocationId = n.RequestedPickUpLocation
         };
+        if (n.GetType().GetTypeInfo().GetDeclaredProperty("Id") != null)
+        {
+            request.NotificationId = n.Id;
+        }         
+       
         ResponseSeatNotification res =  client.createRequestNotification(request);
         return await Task.FromResult(res.ResponseCode);
     }

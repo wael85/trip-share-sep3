@@ -13,6 +13,7 @@ import via.sep3.grpcserver.repositorys.UserRepository;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.OptionalInt;
 
 @GRpcService
 public class NotificationService extends NotificationServicesGrpc.NotificationServicesImplBase {
@@ -34,7 +35,13 @@ public class NotificationService extends NotificationServicesGrpc.NotificationSe
 
     @Override
     public void createRequestNotification(RequestSeatNotification request , StreamObserver<ResponseSeatNotification> respons){
-        Notification n = new Notification();
+      Notification n;
+       if(OptionalInt.of(request.getNotificationId()).isPresent()){
+           n   = notificationRepository.getReferenceById(request.getNotificationId());
+           n.setId(request.getNotificationId());
+       }else {
+            n = new Notification();
+       }
         n.setMsg(request.getMsg());
         n.setSeatPrice(request.getSeatPrice());
         n.setConsumer(userRepository.findByEmail(request.getConsumerId()).get());
@@ -88,3 +95,4 @@ public class NotificationService extends NotificationServicesGrpc.NotificationSe
 
     }
 }
+

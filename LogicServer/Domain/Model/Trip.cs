@@ -26,4 +26,4 @@ public class Trip
     }
     
 
-}//Todo:remove this method to other class
+}

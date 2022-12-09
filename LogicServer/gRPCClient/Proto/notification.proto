@@ -16,6 +16,7 @@ message RequestSeatNotification{
   string msg = 7;
   bool consumed = 8;
   int32 trip_id = 9;
+  optional int32 notification_id = 10;
 
 }
 

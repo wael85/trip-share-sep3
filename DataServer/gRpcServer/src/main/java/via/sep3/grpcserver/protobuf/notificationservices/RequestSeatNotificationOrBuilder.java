@@ -78,4 +78,15 @@ public interface RequestSeatNotificationOrBuilder extends
    * @return The tripId.
    */
   int getTripId();
+
+  /**
+   * <code>optional int32 notification_id = 10;</code>
+   * @return Whether the notificationId field is set.
+   */
+  boolean hasNotificationId();
+  /**
+   * <code>optional int32 notification_id = 10;</code>
+   * @return The notificationId.
+   */
+  int getNotificationId();
 }
