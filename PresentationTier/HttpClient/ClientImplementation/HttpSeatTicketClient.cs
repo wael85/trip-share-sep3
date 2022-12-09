@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Domain.DTOs;
@@ -17,6 +18,8 @@ public class HttpSeatTicketClient:ISeatTicketClient
 
     public async Task<IEnumerable<SeatTicket>> GetTicketsByUserIdAsync(string id)
     {
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",JwtAuthService.Jwt);
+
         var response = await client.GetAsync($"/seatTickets/{id}");
         var result = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
@@ -32,6 +35,8 @@ public class HttpSeatTicketClient:ISeatTicketClient
 
     public async Task CancelTicketAsync(long id)
     {
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",JwtAuthService.Jwt);
+
         HttpResponseMessage response =await client.DeleteAsync($"/seatTickets/{id}");
         if (!response.IsSuccessStatusCode)
         {
@@ -43,6 +48,8 @@ public class HttpSeatTicketClient:ISeatTicketClient
 
     public async Task<SeatTicket> ReserveTicketAsync(CreateSeatTicketDto seatTicketDto)
     {
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",JwtAuthService.Jwt);
+
         var response = await client.PostAsJsonAsync($"/seatTickets", seatTicketDto);
         string content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
