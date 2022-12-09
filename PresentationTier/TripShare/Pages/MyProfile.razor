@@ -4,7 +4,7 @@
 @using Radzen
 @using TripShare.Pages.Components
 @using System.Collections.Immutable
-@using System.Diagnostics
+@using Components
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
 @inject IUserClient _userClient;
@@ -111,7 +111,7 @@
             else
             {
                 <div class="container" style="height:400px">
-                     <h5 class="m-3" style="margin: 5px">My Trips</h5>
+                    <h5 class="m-3" style="margin: 5px">My Trips</h5>
                     @if (!myTrips.Any())
                     {
                         <p>There is no available trips ..</p>
@@ -149,9 +149,10 @@
         </div>
     </div>
 </div>
+<!--Notification section-->
 <div class="container-fluid">
     <div class="row m-3">
-        <button class="btn btn-info col-3" @onclick="getUserNotifications">Get My Notification</button>
+        <button class="btn btn-info col-3" @onclick="GetUserNotifications">Get My Notification</button>
     </div>
     <div class="row">
         @if (!myNotifications.Any())
@@ -162,60 +163,100 @@
         {
             <div class="container-fluid justify-content-center flex-row">
                 @foreach (var not in myNotifications)
-                    {
-                        <div class="card m-5  border border-2 " style="display: inline-block; width: 300px; height: 400px; overflow: auto;" >
+                {
+                    <div class="card m-5  border border-2 " style="display: inline-block; width: 250px; height: 300px; overflow: auto;">
+                        <!--Card Head-->
+                        @if (not.Msg.Equals("request-seat"))
+                        {
+                            <h5 class="card-header">
+                                Request seat from @not.RequestedPickUpLocation.City to @not.RequestedDropUpLocation.City
+                                notification: @not.Id
+                            </h5>
+                        }
+                        else if (not.Msg.Equals("Rejected"))
+                        {
+                            <h5 class="card-header">
+                                Rejection Trip number: @not.RequestedTripId
+                            </h5>
+                        }
+                        else if (not.Msg.Equals("Accepted"))
+                        {
+                            <h5 class="card-header">
+                                Welcome on Trip number: @not.RequestedTripId
+                            </h5>
+
+                        }
+                        <!--Card body-->
+                        <div class="card-body">
                             @if (not.Msg.Equals("request-seat"))
                             {
-                                <h5 class="card-header">
-                                    Request seat from @not.RequestedPickUpLocation.City to @not.RequestedDropUpLocation.City
+                                <h5 class="card-title">
+                                    Requested by:<br/> @not.Sender
                                 </h5>
+
                             }
-                            else if(not.Msg.Equals("reject-request"))
+                            else if (not.Msg.Equals("Rejected"))
                             {
-                                <h5 class="card-header"></h5>
+                                <h5 class="card-title"> @not.Sender Rejected your request</h5>
                             }
-                                                
-                            <div class="card-body">
-                                @if (not.Msg.Equals("request-seat"))
-                                {
-                                    <h5 class="card-title">
-                                        Requestet  @not.Sender
-                                    </h5>
-                                                                
-                                }
-                                else if(not.Msg.Equals("reject-request"))
-                                {
-                                                            
-                                    <h5 class="card-title"></h5>
-                                }
-                                @if (not.Msg.Equals("request-seat"))
-                                {
-                                    <h5 class="card-text">Seats count: @not.SeatCount ,<br/> Total price: @(not.SeatCount * not.SeatPrice)</h5>
+                            else if (not.Msg.Equals("Accepted"))
+                            {
+                                <h5 class="card-title">@not.Sender Accepted your request</h5>
+                            }
+                            <!-- -->
+                            @if (not.Msg.Equals("request-seat"))
+                            {
+                                <p class="card-text">Seats count: @not.SeatCount ,<br/> Total price: @(not.SeatCount * not.SeatPrice)</p>
 
-                                }
-                                else if (not.Msg.Equals("reject-request"))
-                                {
+                            }
+                            else if (not.Msg.Equals("Rejected"))
+                            {
+                                <p class="card-text">Please go to search trip and find another.</p>
 
-                                }
-                                @if (not.Msg.Equals("request-seat"))
-                                {
-                                    <button class="btn btn-secondary ">Reject</button>
+                            }
+                            else if (not.Msg.Equals("Accepted"))
+                            {
+                                <p class="card-text">Please Finish the proccess and pay for:
+                                    <br/>Seats count: @not.SeatCount ,
+                                    <br/> Total price: @(not.SeatCount * not.SeatPrice)</p>
 
-                                    <button class="btn btn-primary">Accept</button>
+                            }
+                            <!--Button group-->
+                            @if (not.Msg.Equals("request-seat"))
+                            {
+                                <button class="btn btn-secondary " @onclick="@((e) => { SendReplay(not, false); GetUserNotifications(); })">Reject</button>
 
-                                }
-                                else if(not.Msg.Equals("reject-request"))
-                                {
-                                                            
-                                    <button class="btn btn-secondary">Delete</button>
-                                }                                                            
-                            </div>
+                                <button class="btn btn-primary" @onclick="@((e) => { SendReplay(not, true); GetUserNotifications();})">Accept</button>
+
+                            }
+                            else if (not.Msg.Equals("Rejected"))
+                            {
+
+                                <button class="btn btn-danger" @onclick="@(((e) => { DeleteNotification(not); GetUserNotifications();}))">Delete</button>
+                            }
+                            else if (not.Msg.Equals("Accepted"))
+                            {
+                                <button class="btn btn-secondary " @onclick="@((e) => SendReplay(not, false))">Cancel</button>
+
+                                <button class="btn btn-primary" @onclick="@(() => ProcessToPayment(not))">Proccess to Payment</button>
+                            }
                         </div>
-                    }
-                </div>
+                    </div>
+                }
+            </div>
         }
     </div>
 </div>
+<Modal ShowModal="modal">
+    <div class="container">
+        <h3>Book Place on Trip: @selectedNotification.RequestedTripId</h3>
+        <h5>Seats Count: @selectedNotification.SeatCount</h5>
+        <h5>Total to pay: @(selectedNotification.SeatCount * selectedNotification.SeatPrice) </h5>
+        <button class="btn-secondary" @onclick="@((e)=> { selectedNotification = new Notification(); modal = false; })">Cancel</button>
+        <button class="btn-primary" @onclick="BookSeatTicket">Pay and Book</button>
+    
+    </div>
+</Modal>
 
 @code {
     private string showSubmitbutton = "hidden";
@@ -230,7 +271,9 @@
     private string CarModel = "";
     private string FuelType = "";
     private int Seats = 0;
-    private IEnumerable<Notification> myNotifications =new List<Notification>() ;
+    private List<Notification> myNotifications = new List<Notification>();
+    private bool modal = false;
+    private Notification selectedNotification;
 
 
     protected override async Task OnInitializedAsync()
@@ -238,17 +281,14 @@
         try
         {
             // todo: Change user to login user
-            userInfoDto = await _userClient.GetByIdAsync("syamend@email.com");
+          //  userInfoDto = await _userClient.GetByIdAsync("syamend@email.com");
 
-    // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
-    // myTrips = trips.ToList();
+          //  IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
+            //myTrips = trips.ToList();
 
             IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("wael@email.com");
             myTickets = tickets.ToList();
-          //  getUserNotifications();
-
-    //todo Add user id after log in
-    // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(email);
+    
         }
         catch (Exception e)
         {
@@ -354,15 +394,18 @@
 
     }
 
-   async void getUserNotifications()
+   async void GetUserNotifications()
     {
     //todo Add user id after log in
         try
         {
-            IEnumerable<Notification> returnedNotification = await _notificationClient.GetUserNotification("juan@email.com");
-            Console.WriteLine(returnedNotification.Last().Sender);
-            myNotifications = returnedNotification;
             
+            IEnumerable<Notification> returnedNotification = await _notificationClient.GetUserNotification("wael@email.com");
+            myNotifications.RemoveAll(x => true);
+            foreach (var notification in returnedNotification)
+            {
+                myNotifications.Add(notification);
+            }
 
         }
         catch (Exception e)
@@ -389,10 +432,26 @@
                 Msg = "Accepted"
 
             };
+            NotificationDto updatNotificationDto= new NotificationDto()
+            {
+                Id = n.Id,
+                Consumer = n.Consumer,
+                Sender = n.Sender,
+                SeatPrice = n.SeatPrice,
+                SeatCount = n.SeatCount,
+                Consumed = true,
+                RequestedTripId = n.RequestedTripId,
+                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                Msg = "Accepted"
+
+            };
+            
 
             try
             {
-                await _notificationClient.CreateRequestAsync(replay);
+                await _notificationClient.SaveRequestAsync(replay);
+                await _notificationClient.SaveRequestAsync(updatNotificationDto);
                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
 
             }
@@ -403,7 +462,109 @@
             }
             
         }
+        else
+        {
+            NotificationDto replay = new NotificationDto()
+            {
+                Consumer = n.Sender,
+                Sender = n.Consumer,
+                SeatPrice = n.SeatPrice,
+                SeatCount = n.SeatCount,
+                Consumed = false,
+                RequestedTripId = n.RequestedTripId,
+                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                Msg = "Rejected"
+
+            };
+            NotificationDto  updatNotificationDto= new NotificationDto()
+            {
+                Id = n.Id,
+                Consumer = n.Sender,
+                Sender = n.Consumer,
+                SeatPrice = n.SeatPrice,
+                SeatCount = n.SeatCount,
+                Consumed = true,
+                RequestedTripId = n.RequestedTripId,
+                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                Msg = "Rejected"
+
+            };
+
+            try
+            {
+                await _notificationClient.SaveRequestAsync(replay);
+                await _notificationClient.SaveRequestAsync(updatNotificationDto);
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
+
+            }
+            catch (Exception e)
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not send replay try again later !!  ", Duration = 6000 });
+
+            }
+        }
     }
 
+    async void DeleteNotification(Notification n)
+    {
+        NotificationDto updatNotificationDto = new NotificationDto()
+        {
+            Id = n.Id,
+            Consumer = n.Consumer,
+            Sender = n.Sender,
+            SeatPrice = n.SeatPrice,
+            SeatCount = n.SeatCount,
+            Consumed = true,
+            RequestedTripId = n.RequestedTripId,
+            RequestedDropUpLocation = (int)n.RequestedDropUpLocation.Id,
+            RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+            Msg = "Deleted"
+        };
+        try
+        {
+            await _notificationClient.SaveRequestAsync(updatNotificationDto);
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Notification Deleted", Duration = 6000 });
+
+        }
+        catch (Exception e)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not Delete this, try again later !!  ", Duration = 6000 });
+
+        }
+    }
+
+    void ProcessToPayment(Notification n)
+    {
+        selectedNotification = n;
+        modal = true;
+    }
+
+    async void BookSeatTicket()
+    {
+        try
+        {
+            CreateSeatTicketDto dto = new CreateSeatTicketDto
+            {
+                PassengerId = selectedNotification.Consumer,
+                SeatAmount = selectedNotification.SeatCount,
+                SeatPrice = selectedNotification.SeatPrice,
+                TripId = selectedNotification.RequestedTripId,
+                DropLocationId = selectedNotification.RequestedDropUpLocation.Id,
+                PickUpLocationId = selectedNotification.RequestedPickUpLocation.Id
+            };
+           var s = await _SeatTicket.ReserveTicketAsync(dto);
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = $"Booking ${s.Id} success... ", Duration = 6000 });
+        }
+        catch (Exception e)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not make this booking try again later !!  ", Duration = 6000 });
+
+        }
+
+        selectedNotification = null;
+        modal = false;
+    }
 
 }

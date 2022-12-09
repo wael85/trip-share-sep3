@@ -5,6 +5,6 @@ namespace HttpClient.ClientInterfaces;
 
 public interface INotificationClient
 {
-    Task <string> CreateRequestAsync(NotificationDto dto);
+    Task <string> SaveRequestAsync(NotificationDto dto);
     Task<IEnumerable<Notification>> GetUserNotification(string userId);
 }
