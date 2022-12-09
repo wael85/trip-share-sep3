@@ -16,7 +16,7 @@ public class HttpNotificationClient : INotificationClient
         this.client = client;
     }
 
-    public async Task<string> CreateRequestAsync(NotificationDto dto)
+    public async Task<string> SaveRequestAsync(NotificationDto dto)
     {
         var response = await client.PostAsJsonAsync("/notification",dto);
         var result = await response.Content.ReadAsStringAsync();
@@ -24,10 +24,7 @@ public class HttpNotificationClient : INotificationClient
         {
             throw new Exception("Can not send this request, Please Check your input");
         }
-        var reply =  JsonSerializer.Deserialize<IEnumerable<SeatTicket>>(result, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        })!;
+      
         return "Success!!";
     }
 
