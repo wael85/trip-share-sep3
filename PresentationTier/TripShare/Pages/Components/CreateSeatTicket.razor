@@ -3,13 +3,13 @@
 @using HttpClient.ClientInterfaces
 @using Radzen
 @inject NavigationManager nvgM;
-@inject ISeatTicketClient SeatTicketClient;
+@inject INotificationClient _notificationClient;
 
 @namespace TripShare.Pages.Components
 
 <div class="card">
     <div class="row card-header">
-        <h5 class="card-title col-10">Reserve Seat</h5>
+        <h5 class="card-title col-10">Request Seat</h5>
         <button type="button" class="btn-close col-2 w-5" @onclick="@ModalCancel">&times;</button>
     </div>
     <div class="card-body">
@@ -28,7 +28,7 @@
         <p class="card-text">Total Price : @SelectedTrip.FullPrice</p>
 
     </div>
-    <button class="btn btn-primary col-2 m-3 w-25" @onclick="@ReserveTicketAsync">Confirm</button>
+    <button class="btn btn-primary col-2 m-3 w-25" @onclick="@SendRequest">Confirm</button>
 </div>
 
 @code {
@@ -46,33 +46,33 @@
     {
         return CloseModal.InvokeAsync(false);
     }
+    
 
-    private async Task ReserveTicketAsync()
+    async void SendRequest()
     {
-        CreateSeatTicketDto ticket = new()
+        try
         {
-            SeatAmount = SelectedDetails.PassengerAmount,
-            SeatPrice = SelectedTrip.FullPrice,
-            TripId = SelectedTrip.Id,
-    //todo add User Logged Id
-            PassengerId = "syamend@email.com"
-        };
-        foreach (var l in SelectedTrip.Stops)
-        {
-            if (l.City.Equals(SelectedDetails.Pickup) )
-            {
-                ticket.PickUpLocationId = l.Id;
-            }
-            if (l.City.Equals(SelectedDetails.Dropoff))
-            {
-                ticket.DropLocationId = l.Id;
-            }
+            NotificationDto dto = new NotificationDto
+            {// todo replace sender
+                Consumer = "juan@email.com", 
+                Sender = "wael@email.com",
+                SeatCount = SelectedDetails.PassengerAmount,
+                Msg = "request-seat",
+                Consumed = false,
+                SeatPrice = SelectedTrip.SubTripPrice(SelectedDetails.Pickup,SelectedDetails.Dropoff),
+                RequestedTripId =(int) SelectedTrip.Id,
+                RequestedDropUpLocation =(int) SelectedTrip.Stops.Single(l => l.getLocationByCity(SelectedDetails.Dropoff)).Id,
+                RequestedPickUpLocation = (int) SelectedTrip.Stops.Single(l => l.getLocationByCity(SelectedDetails.Pickup)).Id
+            };
+            await _notificationClient.SaveRequestAsync(dto);
+           
         }
-        await SeatTicketClient.ReserveTicketAsync(ticket);
-        
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
         await ModalCancel();
         nvgM.NavigateTo("/MyProfile");
     }
-
 
 }

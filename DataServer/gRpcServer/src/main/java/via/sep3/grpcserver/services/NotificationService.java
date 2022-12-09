@@ -35,13 +35,12 @@ public class NotificationService extends NotificationServicesGrpc.NotificationSe
 
     @Override
     public void createRequestNotification(RequestSeatNotification request , StreamObserver<ResponseSeatNotification> respons){
-      Notification n;
-       if(OptionalInt.of(request.getNotificationId()).isPresent()){
-           n   = notificationRepository.getReferenceById(request.getNotificationId());
-           n.setId(request.getNotificationId());
-       }else {
-            n = new Notification();
-       }
+        Notification existed  = notificationRepository.getById(request.getNotificationId()).get();
+        Notification n = new Notification();
+        if(existed != null){
+            n.setId(existed.getId());
+        }
+        n.setId(request.getNotificationId());
         n.setMsg(request.getMsg());
         n.setSeatPrice(request.getSeatPrice());
         n.setConsumer(userRepository.findByEmail(request.getConsumerId()).get());
@@ -50,6 +49,7 @@ public class NotificationService extends NotificationServicesGrpc.NotificationSe
         n.setRequestedDropLocation(locationRepository.findById((long) request.getRequestedDropLocationId()).get());
         n.setSeatCount(request.getSeatCount());
         n.setRequestedTrip(tripRepository.getReferenceById((long)request.getTripId()));
+        n.setConsumed(request.getConsumed());
         Notification returnN = notificationRepository.save(n);
         ResponseSeatNotification res = ResponseSeatNotification.newBuilder().setResponseCode(200)
                 .setResponseMsg("Success")

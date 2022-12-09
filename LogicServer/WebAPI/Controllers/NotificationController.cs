@@ -23,7 +23,6 @@ public class NotificationController : ControllerBase
         try
         {
             int n = await _notificationLogic.CreateNotificationAsync(notification);
-            Console.WriteLine(notification.Consumer);
             return Accepted(n);
         }
         catch (Exception e)

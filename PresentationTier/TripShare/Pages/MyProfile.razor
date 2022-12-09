@@ -6,6 +6,7 @@
 @using System.Collections.Immutable
 @using System.Diagnostics
 @using System.Security.Claims
+@using Components
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
 @using HttpClients.ClientInterface
@@ -19,99 +20,87 @@
 @inject ICarClient _carClient;
 @inject INotificationClient _notificationClient;
 
-        <RadzenNotification/>
-        
-        <div class="container">
-            <div class="row " style="margin: 10px">
-                <h3 class="col-md-9">My Profile</h3>
-                @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
-                {
-                    <p class="col-md-3">Driver</p>
-                }
+<RadzenNotification/>
+<div class="container-fluid h-auto">
+    <div class="row " style="margin: 10px">
+        <h3 class="col-md-9">My Profile</h3>
+        @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
+        {
+            <p class="col-md-3">Driver</p>
+        }
 
-            </div>
-            <hr style="margin: 5px"/>
-            <div class="row ">
-                <div class="col-md-6">
-                    <!--User details -->
-                    <div class="card" style="margin-top: 40px">
-                        <div class="card-body">
-                            <p >
-                                <strong>EMAIL: </strong> @userInfoDto.Email
-                            </p>
-                            <p>
-                                <strong>FULL NAME </strong>@userInfoDto.FirstName @userInfoDto.LastName
-                            </p>
-                            <p>
-                                <strong>PHONE: </strong>@userInfoDto.Phone
-                            </p>
-                            <p>
-                                <strong>ADDRESS: </strong>@userInfoDto.Address
-                            </p>
-                            @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
-                            {
-                                <p>
-                                    <strong>Driving License: </strong>@userInfoDto.DriveLicense
-                                </p>
-                                <p><strong>Car details: </strong> @userInfoDto.CarInfo?.CarModel, @userInfoDto.CarInfo?.Color, @userInfoDto.CarInfo?.FuelType, @userInfoDto.CarInfo?.SeatsCount seats, <br/> Plate Number:@userInfoDto.CarInfo?.PlateNumber</p>
-                            }
-                        </div>
-                    </div>
-
-                    <!--Tickets -->
-
-                    <h5 style="margin-top: 10px">Tickets</h5>
-                    @if (!myTickets.Any())
+    </div>
+    <hr style="margin: 5px"/>
+    <div class="row ">
+        <div class="col-md-6">
+            <!--User details -->
+            <div class="card" style="margin-top: 40px">
+                <div class="card-body">
+                    <p ><strong>EMAIL: </strong> @userInfoDto.Email</p>
+                    <p><strong>FULL NAME </strong>@userInfoDto.FirstName @userInfoDto.LastName</p>
+                    <p><strong>PHONE: </strong>@userInfoDto.Phone</p>
+                    <p><strong>ADDRESS: </strong>@userInfoDto.Address</p>
+                    @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
                     {
-                        <p>There is no available tickets ..</p>
+                        <p><strong>Driving License: </strong>@userInfoDto.DriveLicense</p>
+                        <p><strong>Car details: </strong> @userInfoDto.CarInfo?.CarModel, @userInfoDto.CarInfo?.Color, @userInfoDto.CarInfo?.FuelType, @userInfoDto.CarInfo?.SeatsCount seats, <br/> Plate Number:@userInfoDto.CarInfo?.PlateNumber</p>
                     }
-                    <div class="overflow-auto" style="height:300px; margin: 10px ">
-                        <div class="row m-3">
-                            @foreach (SeatTicket ticket in myTickets)
-                            {
-                                <div class="card col-3 ml-2 " style="width: 18rem;margin: 5px">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <small class="card-text col-9">
-                                                <strong>Price: </strong>@ticket.SeatPrice Kr
-                                            </small> <br>
-                                            @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now)
-                                            {
-                                                <small class="col-3" style="color: red">Done</small>
-                                            }
-                                            else
-                                            {
-                                                <small class="col-3" style="color: green">Active</small>
-                                            }
-                                        </div>
-                                        <small class="card-text">
-                                            <strong>Seats: </strong>@ticket.SeatAmount
-                                        </small> <br>
-                                        <small class="card-text">
-                                            <strong>Meet time: </strong>@ticket.PickUpLocation.ArrivalTime
-                                        </small> <br>
-                                        <small class="card-text">
-                                            <strong>From: </strong>@ticket.PickUpLocation.getAddress()
-                                        </small> <br>
-                                        <small class="card-text">
-                                            <strong>Arrival: </strong>@ticket.DropLocation.ArrivalTime
-                                        </small> <br>
-                                        <small class="card-text">
-                                            <strong>To: </strong>@ticket.DropLocation.getAddress()
-                                        </small> <br>
-                                        @if (ticket.PickUpLocation.ArrivalTime >= DateTime.Now)
-                                        {
-                                            <button style="width: 100px; margin: 5px" class="btn-danger" @onclick="(args) => { CancelTicketAsync(ticket.Id); myTickets.Remove(ticket);}">
-                                                <small>Cancel</small>
-                                            </button>
-                                        }
+                </div>
+            </div>
 
-                                    </div>
+            <!--Tickets -->
+
+            <h5 style="margin-top: 10px">Tickets</h5>
+            @if (!myTickets.Any())
+            {
+                <p>There is no available tickets ..</p>
+            }
+            <div class="overflow-auto" style="height:300px; margin: 10px ">
+                <div class="row m-3">
+                    @foreach (SeatTicket ticket in myTickets)
+                    {
+                        <div class="card col-3 ml-2 " style="width: 18rem;margin: 5px">
+                            <div class="card-body">
+                                <div class="row">
+                                    <small class="card-text col-9">
+                                        <strong>Price: </strong>@ticket.SeatPrice Kr
+                                    </small> <br>
+                                    @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now)
+                                    {
+                                        <small class="col-3" style="color: red">Done</small>
+                                    }
+                                    else
+                                    {
+                                        <small class="col-3" style="color: green">Active</small>
+                                    }
                                 </div>
-                            }
+                                <small class="card-text"><strong>Seats: </strong>@ticket.SeatAmount</small> <br>
+                                <small class="card-text">
+                                    <strong>Meet time: </strong>@ticket.PickUpLocation.ArrivalTime
+                                </small> <br>
+                                <small class="card-text">
+                                    <strong>From: </strong>@ticket.PickUpLocation.getAddress()
+                                </small> <br>
+                                <small class="card-text">
+                                    <strong>Arrival: </strong>@ticket.DropLocation.ArrivalTime
+                                </small> <br>
+                                <small class="card-text">
+                                    <strong>To: </strong>@ticket.DropLocation.getAddress()
+                                </small> <br>
+                                @if (ticket.PickUpLocation.ArrivalTime >= DateTime.Now)
+                                {
+                                    <button style="width: 100px; margin: 5px" class="btn-danger" @onclick="(args) => { CancelTicketAsync(ticket.Id); myTickets.Remove(ticket);}">
+                                        <small>Cancel</small>
+                                    </button>
+                                }
+                                
+                            </div>
                         </div>
-                    </div>
+                    }
+                </div>
+            </div>
 
+        </div>
 
         <div class="col-6">
             <!--My trips or be a driver -->
@@ -128,54 +117,34 @@
             else
             {
                 <div class="container" style="height:400px">
-                     <h5 class="m-3" style="margin: 5px">My Trips</h5>
+                    <h5 class="m-3" style="margin: 5px">My Trips</h5>
                     @if (!myTrips.Any())
                     {
-                        <div class="container" style="margin: 10px">
-                            <DriverBox
-                                OnDriveLicenseChange="UpdateDriveLicense" OnColorChange="UpdateCarColor" OnModelChange="UpdateCarModel"
-                                OnSeatsChange="UpdateSeats" OnCarTypeChange="UpdateFuelType" OnPlateNumberChange="UpdatePlateNumber">
-                            </DriverBox>
-                        </div>
+                        <p>There is no available trips ..</p>
                     }
-                    else
+                    @foreach (var tr in myTrips.ToImmutableList().Reverse())
                     {
-                        <h5 style="margin: 5px">My Trips</h5>
-                        <div class="card overflow-auto" style="height:400px">
-                            @if (!myTrips.Any())
-                            {
-                                <p>There is no available trips ..</p>
-                            }
-                            @foreach (var tr in myTrips.ToImmutableList().Reverse())
-                            {
-                                <div class="card" style="margin: 10px">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <small class="col-10 card-text text-muted">Trip Id: @tr.Id</small>
-                                            @if (tr.Stops.First().ArrivalTime <= DateTime.Now)
-                                            {
-                                                <p class="col-2" style="color: red">Done</p>
-                                            }
-                                            else
-                                            {
-                                                <p class="col-2" style="color: green">Active</p>
-                                            }
-                                        </div>
-                                        <hr/>
-                                        @foreach (var s in tr.Stops)
-                                        {
-                                            <small class="card-text text-muted">@s.ArrivalTime</small>
-                                            <p class="card-text">@s.getAddress()</p>
-                                        }
-                                    </div>
-
+                        <div class="card" style="margin: 10px">
+                            <div class="card-body">
+                                <div class="row">
+                                    <small class="col-10 card-text text-muted">Trip Id: @tr.Id</small>
+                                    @if (tr.Stops.First().ArrivalTime <= DateTime.Now)
+                                    {
+                                        <p class="col-2" style="color: red">Done</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="col-2" style="color: green">Active</p>
+                                    }
                                 </div>
-                            }
-                        </div>
-                        <!--todo seat request -->
-                        <h5 style="margin: 10px">Seats request</h5>
-                        <div class="overflow-auto" style="height:200px; margin: 10px ;">
-                            <p style="margin: 5px">Travel id: 1, username: juan</p>
+                                <hr/>
+                                @foreach (var s in tr.Stops)
+                                {
+                                    <small class="card-text text-muted">@s.ArrivalTime</small>
+                                    <p class="card-text">@s.getAddress()</p>
+                                }
+                            </div>
+
                         </div>
                     }
                 </div>
@@ -186,9 +155,10 @@
         </div>
     </div>
 </div>
+<!--Notification section-->
 <div class="container-fluid">
     <div class="row m-3">
-        <button class="btn btn-info col-3" @onclick="getUserNotifications">Get My Notification</button>
+        <button class="btn btn-info col-3" @onclick="GetUserNotifications">Get My Notification</button>
     </div>
     <div class="row">
         @if (!myNotifications.Any())
@@ -199,62 +169,100 @@
         {
             <div class="container-fluid justify-content-center flex-row">
                 @foreach (var not in myNotifications)
-                    {
-                        <div class="card m-5  border border-2 " style="display: inline-block; width: 300px; height: 400px; overflow: auto;" >
+                {
+                    <div class="card m-5  border border-2 " style="display: inline-block; width: 250px; height: 300px; overflow: auto;">
+                        <!--Card Head-->
+                        @if (not.Msg.Equals("request-seat"))
+                        {
+                            <h5 class="card-header">
+                                Request seat from @not.RequestedPickUpLocation.City to @not.RequestedDropUpLocation.City
+                                notification: @not.Id
+                            </h5>
+                        }
+                        else if (not.Msg.Equals("Rejected"))
+                        {
+                            <h5 class="card-header">
+                                Rejection Trip number: @not.RequestedTripId
+                            </h5>
+                        }
+                        else if (not.Msg.Equals("Accepted"))
+                        {
+                            <h5 class="card-header">
+                                Welcome on Trip number: @not.RequestedTripId
+                            </h5>
+
+                        }
+                        <!--Card body-->
+                        <div class="card-body">
                             @if (not.Msg.Equals("request-seat"))
                             {
-                                <h5 class="card-header">
-                                    Request seat from @not.RequestedPickUpLocation.City to @not.RequestedDropUpLocation.City
+                                <h5 class="card-title">
+                                    Requested by:<br/> @not.Sender
                                 </h5>
+
                             }
-                            else if(not.Msg.Equals("reject-request"))
+                            else if (not.Msg.Equals("Rejected"))
                             {
-                                <h5 class="card-header"></h5>
+                                <h5 class="card-title"> @not.Sender Rejected your request</h5>
                             }
-                                                
-                            <div class="card-body">
-                                @if (not.Msg.Equals("request-seat"))
-                                {
-                                    <h5 class="card-title">
-                                        Requestet  @not.Sender
-                                    </h5>
-                                                                
-                                }
-                                else if(not.Msg.Equals("reject-request"))
-                                {
-                                                            
-                                    <h5 class="card-title"></h5>
-                                }
-                                @if (not.Msg.Equals("request-seat"))
-                                {
-                                    <h5 class="card-text">Seats count: @not.SeatCount ,<br/> Total price: @(not.SeatCount * not.SeatPrice)</h5>
+                            else if (not.Msg.Equals("Accepted"))
+                            {
+                                <h5 class="card-title">@not.Sender Accepted your request</h5>
+                            }
+                            <!-- -->
+                            @if (not.Msg.Equals("request-seat"))
+                            {
+                                <p class="card-text">Seats count: @not.SeatCount ,<br/> Total price: @(not.SeatCount * not.SeatPrice)</p>
 
-                                }
-                                else if (not.Msg.Equals("reject-request"))
-                                {
+                            }
+                            else if (not.Msg.Equals("Rejected"))
+                            {
+                                <p class="card-text">Please go to search trip and find another.</p>
 
-                                }
-                                @if (not.Msg.Equals("request-seat"))
-                                {
-                                    <button class="btn btn-secondary ">Reject</button>
+                            }
+                            else if (not.Msg.Equals("Accepted"))
+                            {
+                                <p class="card-text">Please Finish the proccess and pay for:
+                                    <br/>Seats count: @not.SeatCount ,
+                                    <br/> Total price: @(not.SeatCount * not.SeatPrice)</p>
 
-                                    <button class="btn btn-primary">Accept</button>
+                            }
+                            <!--Button group-->
+                            @if (not.Msg.Equals("request-seat"))
+                            {
+                                <button class="btn btn-secondary " @onclick="@((e) => { SendReplay(not, false); GetUserNotifications(); })">Reject</button>
 
-                                }
-                                else if(not.Msg.Equals("reject-request"))
-                                {
-                                                            
-                                    <button class="btn btn-secondary">Delete</button>
-                                }                                                            
-                            </div>
+                                <button class="btn btn-primary" @onclick="@((e) => { SendReplay(not, true); GetUserNotifications();})">Accept</button>
+
+                            }
+                            else if (not.Msg.Equals("Rejected"))
+                            {
+
+                                <button class="btn btn-danger" @onclick="@(((e) => { DeleteNotification(not); GetUserNotifications();}))">Delete</button>
+                            }
+                            else if (not.Msg.Equals("Accepted"))
+                            {
+                                <button class="btn btn-secondary " @onclick="@((e) => SendReplay(not, false))">Cancel</button>
+
+                                <button class="btn btn-primary" @onclick="@(() => ProcessToPayment(not))">Proccess to Payment</button>
+                            }
                         </div>
-                    }
-                </div>
+                    </div>
+                }
+            </div>
         }
     </div>
 </div>
-
-
+<Modal ShowModal="modal">
+    <div class="container">
+        <h3>Book Place on Trip: @selectedNotification.RequestedTripId</h3>
+        <h5>Seats Count: @selectedNotification.SeatCount</h5>
+        <h5>Total to pay: @(selectedNotification.SeatCount * selectedNotification.SeatPrice) </h5>
+        <button class="btn-secondary" @onclick="@((e)=> { selectedNotification = new Notification(); modal = false; })">Cancel</button>
+        <button class="btn-primary" @onclick="BookSeatTicket">Pay and Book</button>
+    
+    </div>
+</Modal>
 
 @code {
     private string showSubmitbutton = "hidden";
@@ -269,7 +277,9 @@
     private string CarModel = "";
     private string FuelType = "";
     private int Seats = 0;
-    private IEnumerable<Notification> myNotifications =new List<Notification>() ;
+    private List<Notification> myNotifications = new List<Notification>();
+    private bool modal = false;
+    private Notification selectedNotification;
 
 
     private string userEmail;
@@ -287,12 +297,8 @@
     // myTrips = trips.ToList();
 
             IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("wael@email.com");
-
             myTickets = tickets.ToList();
-          //  getUserNotifications();
-
-    //todo Add user id after log in
-    // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(userEmail);
+    
         }
         catch (Exception e)
         {
@@ -303,7 +309,7 @@
 
     private async Task CancelTicketAsync(long id)
     {
-        try
+    try
         {
             await _SeatTicket.CancelTicketAsync(id);
         }
@@ -398,15 +404,18 @@
 
     }
 
-   async void getUserNotifications()
+   async void GetUserNotifications()
     {
     //todo Add user id after log in
         try
         {
-            IEnumerable<Notification> returnedNotification = await _notificationClient.GetUserNotification("juan@email.com");
-            Console.WriteLine(returnedNotification.Last().Sender);
-            myNotifications = returnedNotification;
             
+            IEnumerable<Notification> returnedNotification = await _notificationClient.GetUserNotification("wael@email.com");
+            myNotifications.RemoveAll(x => true);
+            foreach (var notification in returnedNotification)
+            {
+                myNotifications.Add(notification);
+            }
 
         }
         catch (Exception e)
@@ -433,10 +442,26 @@
                 Msg = "Accepted"
 
             };
+            NotificationDto updatNotificationDto= new NotificationDto()
+            {
+                Id = n.Id,
+                Consumer = n.Consumer,
+                Sender = n.Sender,
+                SeatPrice = n.SeatPrice,
+                SeatCount = n.SeatCount,
+                Consumed = true,
+                RequestedTripId = n.RequestedTripId,
+                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                Msg = "Accepted"
+
+            };
+            
 
             try
             {
-                await _notificationClient.CreateRequestAsync(replay);
+                await _notificationClient.SaveRequestAsync(replay);
+                await _notificationClient.SaveRequestAsync(updatNotificationDto);
                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
 
             }
@@ -447,7 +472,109 @@
             }
             
         }
+        else
+        {
+            NotificationDto replay = new NotificationDto()
+            {
+                Consumer = n.Sender,
+                Sender = n.Consumer,
+                SeatPrice = n.SeatPrice,
+                SeatCount = n.SeatCount,
+                Consumed = false,
+                RequestedTripId = n.RequestedTripId,
+                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                Msg = "Rejected"
+
+            };
+            NotificationDto  updatNotificationDto= new NotificationDto()
+            {
+                Id = n.Id,
+                Consumer = n.Sender,
+                Sender = n.Consumer,
+                SeatPrice = n.SeatPrice,
+                SeatCount = n.SeatCount,
+                Consumed = true,
+                RequestedTripId = n.RequestedTripId,
+                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                Msg = "Rejected"
+
+            };
+
+            try
+            {
+                await _notificationClient.SaveRequestAsync(replay);
+                await _notificationClient.SaveRequestAsync(updatNotificationDto);
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
+
+            }
+            catch (Exception e)
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not send replay try again later !!  ", Duration = 6000 });
+
+            }
+        }
     }
 
+    async void DeleteNotification(Notification n)
+    {
+        NotificationDto updatNotificationDto = new NotificationDto()
+        {
+            Id = n.Id,
+            Consumer = n.Consumer,
+            Sender = n.Sender,
+            SeatPrice = n.SeatPrice,
+            SeatCount = n.SeatCount,
+            Consumed = true,
+            RequestedTripId = n.RequestedTripId,
+            RequestedDropUpLocation = (int)n.RequestedDropUpLocation.Id,
+            RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+            Msg = "Deleted"
+        };
+        try
+        {
+            await _notificationClient.SaveRequestAsync(updatNotificationDto);
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Notification Deleted", Duration = 6000 });
+
+        }
+        catch (Exception e)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not Delete this, try again later !!  ", Duration = 6000 });
+
+        }
+    }
+
+    void ProcessToPayment(Notification n)
+    {
+        selectedNotification = n;
+        modal = true;
+    }
+
+    async void BookSeatTicket()
+    {
+        try
+        {
+            CreateSeatTicketDto dto = new CreateSeatTicketDto
+            {
+                PassengerId = selectedNotification.Consumer,
+                SeatAmount = selectedNotification.SeatCount,
+                SeatPrice = selectedNotification.SeatPrice,
+                TripId = selectedNotification.RequestedTripId,
+                DropLocationId = selectedNotification.RequestedDropUpLocation.Id,
+                PickUpLocationId = selectedNotification.RequestedPickUpLocation.Id
+            };
+           var s = await _SeatTicket.ReserveTicketAsync(dto);
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = $"Booking ${s.Id} success... ", Duration = 6000 });
+        }
+        catch (Exception e)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not make this booking try again later !!  ", Duration = 6000 });
+
+        }
+
+        selectedNotification = null;
+        modal = false;
+    }
 
 }
