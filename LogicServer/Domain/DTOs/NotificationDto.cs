@@ -2,6 +2,7 @@ namespace Domain.DTOs;
 
 public class NotificationDto
 {
+    public int Id { get; set; }
     public String Consumer { get; set; }
     public String Sender { get; set; }
     public int  RequestedPickUpLocation{ get; set; }

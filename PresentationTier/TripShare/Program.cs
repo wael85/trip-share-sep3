@@ -18,6 +18,9 @@ builder.Services.AddScoped<IUserClient, UserClientImp>();
 builder.Services.AddScoped<ICarClient, HttpCarClient>();
 builder.Services.AddScoped<ITripClient, HttpTripClient>();
 builder.Services.AddScoped<ISeatTicketClient, HttpSeatTicketClient>();
+builder.Services.AddScoped<INotificationClient, HttpNotificationClient>();
+
+
 builder.Services.AddScoped<IAuthService, JwtAuthService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthProvider>();

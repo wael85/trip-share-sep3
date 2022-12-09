@@ -41,6 +41,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -99,6 +100,11 @@ private static final long serialVersionUID = 0L;
             tripId_ = input.readInt32();
             break;
           }
+          case 80: {
+            bitField0_ |= 0x00000001;
+            notificationId_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -133,6 +139,7 @@ private static final long serialVersionUID = 0L;
             via.sep3.grpcserver.protobuf.notificationservices.RequestSeatNotification.class, via.sep3.grpcserver.protobuf.notificationservices.RequestSeatNotification.Builder.class);
   }
 
+  private int bitField0_;
   public static final int CONSUMER_ID_FIELD_NUMBER = 1;
   private volatile java.lang.Object consumerId_;
   /**
@@ -313,6 +320,25 @@ private static final long serialVersionUID = 0L;
     return tripId_;
   }
 
+  public static final int NOTIFICATION_ID_FIELD_NUMBER = 10;
+  private int notificationId_;
+  /**
+   * <code>optional int32 notification_id = 10;</code>
+   * @return Whether the notificationId field is set.
+   */
+  @java.lang.Override
+  public boolean hasNotificationId() {
+    return ((bitField0_ & 0x00000001) != 0);
+  }
+  /**
+   * <code>optional int32 notification_id = 10;</code>
+   * @return The notificationId.
+   */
+  @java.lang.Override
+  public int getNotificationId() {
+    return notificationId_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -353,6 +379,9 @@ private static final long serialVersionUID = 0L;
     }
     if (tripId_ != 0) {
       output.writeInt32(9, tripId_);
+    }
+    if (((bitField0_ & 0x00000001) != 0)) {
+      output.writeInt32(10, notificationId_);
     }
     unknownFields.writeTo(output);
   }
@@ -396,6 +425,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(9, tripId_);
     }
+    if (((bitField0_ & 0x00000001) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(10, notificationId_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -430,6 +463,11 @@ private static final long serialVersionUID = 0L;
         != other.getConsumed()) return false;
     if (getTripId()
         != other.getTripId()) return false;
+    if (hasNotificationId() != other.hasNotificationId()) return false;
+    if (hasNotificationId()) {
+      if (getNotificationId()
+          != other.getNotificationId()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -461,6 +499,10 @@ private static final long serialVersionUID = 0L;
         getConsumed());
     hash = (37 * hash) + TRIP_ID_FIELD_NUMBER;
     hash = (53 * hash) + getTripId();
+    if (hasNotificationId()) {
+      hash = (37 * hash) + NOTIFICATION_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getNotificationId();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -612,6 +654,8 @@ private static final long serialVersionUID = 0L;
 
       tripId_ = 0;
 
+      notificationId_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -638,6 +682,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public via.sep3.grpcserver.protobuf.notificationservices.RequestSeatNotification buildPartial() {
       via.sep3.grpcserver.protobuf.notificationservices.RequestSeatNotification result = new via.sep3.grpcserver.protobuf.notificationservices.RequestSeatNotification(this);
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
       result.consumerId_ = consumerId_;
       result.senderId_ = senderId_;
       result.requestedPickupLocationId_ = requestedPickupLocationId_;
@@ -647,6 +693,11 @@ private static final long serialVersionUID = 0L;
       result.msg_ = msg_;
       result.consumed_ = consumed_;
       result.tripId_ = tripId_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.notificationId_ = notificationId_;
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
     }
@@ -725,6 +776,9 @@ private static final long serialVersionUID = 0L;
       if (other.getTripId() != 0) {
         setTripId(other.getTripId());
       }
+      if (other.hasNotificationId()) {
+        setNotificationId(other.getNotificationId());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -753,6 +807,7 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object consumerId_ = "";
     /**
@@ -1164,6 +1219,45 @@ private static final long serialVersionUID = 0L;
     public Builder clearTripId() {
       
       tripId_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int notificationId_ ;
+    /**
+     * <code>optional int32 notification_id = 10;</code>
+     * @return Whether the notificationId field is set.
+     */
+    @java.lang.Override
+    public boolean hasNotificationId() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional int32 notification_id = 10;</code>
+     * @return The notificationId.
+     */
+    @java.lang.Override
+    public int getNotificationId() {
+      return notificationId_;
+    }
+    /**
+     * <code>optional int32 notification_id = 10;</code>
+     * @param value The notificationId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNotificationId(int value) {
+      bitField0_ |= 0x00000001;
+      notificationId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional int32 notification_id = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearNotificationId() {
+      bitField0_ = (bitField0_ & ~0x00000001);
+      notificationId_ = 0;
       onChanged();
       return this;
     }

@@ -4,6 +4,7 @@
 @using Radzen
 @using TripShare.Pages.Components
 @using System.Collections.Immutable
+@using System.Diagnostics
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
 @inject IUserClient _userClient;
@@ -11,9 +12,10 @@
 @inject ISeatTicketClient _SeatTicket;
 @inject NotificationService _servic
 @inject ICarClient _carClient;
+@inject INotificationClient _notificationClient;
 
 <RadzenNotification/>
-<div class="container">
+<div class="container-fluid h-auto">
     <div class="row " style="margin: 10px">
         <h3 class="col-md-9">My Profile</h3>
         @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
@@ -94,7 +96,7 @@
 
         </div>
 
-        <div class="col-md-6 ">
+        <div class="col-6">
             <!--My trips or be a driver -->
             @if (string.IsNullOrEmpty(userInfoDto.DriveLicense))
             {
@@ -108,8 +110,8 @@
             }
             else
             {
-                <h5 style="margin: 5px">My Trips</h5>
-                <div class="card overflow-auto" style="height:400px">
+                <div class="container" style="height:400px">
+                     <h5 class="m-3" style="margin: 5px">My Trips</h5>
                     @if (!myTrips.Any())
                     {
                         <p>There is no available trips ..</p>
@@ -140,14 +142,78 @@
                         </div>
                     }
                 </div>
-                <!--todo seat request -->
-                <h5 style="margin: 10px">Seats request</h5>
-                <div class="overflow-auto" style="height:200px; margin: 10px ;">
-                    <p style="margin: 5px">Travel id: 1, username: juan</p>
-                </div>
             }
 
+            <!--todo seat request -->
+                
         </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row m-3">
+        <button class="btn btn-info col-3" @onclick="getUserNotifications">Get My Notification</button>
+    </div>
+    <div class="row">
+        @if (!myNotifications.Any())
+        {
+            <p>There is no notification to show Please click the button to update.</p>
+        }
+        else
+        {
+            <div class="container-fluid justify-content-center flex-row">
+                @foreach (var not in myNotifications)
+                    {
+                        <div class="card m-5  border border-2 " style="display: inline-block; width: 300px; height: 400px; overflow: auto;" >
+                            @if (not.Msg.Equals("request-seat"))
+                            {
+                                <h5 class="card-header">
+                                    Request seat from @not.RequestedPickUpLocation.City to @not.RequestedDropUpLocation.City
+                                </h5>
+                            }
+                            else if(not.Msg.Equals("reject-request"))
+                            {
+                                <h5 class="card-header"></h5>
+                            }
+                                                
+                            <div class="card-body">
+                                @if (not.Msg.Equals("request-seat"))
+                                {
+                                    <h5 class="card-title">
+                                        Requestet  @not.Sender
+                                    </h5>
+                                                                
+                                }
+                                else if(not.Msg.Equals("reject-request"))
+                                {
+                                                            
+                                    <h5 class="card-title"></h5>
+                                }
+                                @if (not.Msg.Equals("request-seat"))
+                                {
+                                    <h5 class="card-text">Seats count: @not.SeatCount ,<br/> Total price: @(not.SeatCount * not.SeatPrice)</h5>
+
+                                }
+                                else if (not.Msg.Equals("reject-request"))
+                                {
+
+                                }
+                                @if (not.Msg.Equals("request-seat"))
+                                {
+                                    <button class="btn btn-secondary ">Reject</button>
+
+                                    <button class="btn btn-primary">Accept</button>
+
+                                }
+                                else if(not.Msg.Equals("reject-request"))
+                                {
+                                                            
+                                    <button class="btn btn-secondary">Delete</button>
+                                }                                                            
+                            </div>
+                        </div>
+                    }
+                </div>
+        }
     </div>
 </div>
 
@@ -164,21 +230,22 @@
     private string CarModel = "";
     private string FuelType = "";
     private int Seats = 0;
-        <!--todo -->
-    //private List<RequestNotification> requestNotifications;
+    private IEnumerable<Notification> myNotifications =new List<Notification>() ;
 
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            // todo: Change user to login user
             userInfoDto = await _userClient.GetByIdAsync("syamend@email.com");
 
     // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
     // myTrips = trips.ToList();
 
-            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("syamend@email.com");
+            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("wael@email.com");
             myTickets = tickets.ToList();
+          //  getUserNotifications();
 
     //todo Add user id after log in
     // IEnumerable<RequestNotification> notifications = _tripClient.GetNotifications(email);
@@ -208,6 +275,7 @@
         {
             try
             {
+                //todo Add user id after log in
                 string driverId = "wael@email.com";
                 BeADriverRequestDto dto = new BeADriverRequestDto(driverId, DriveLicense!, plateNumber, Color, CarModel, Seats, FuelType);
                 await _carClient.CreateAsync(dto);
@@ -285,6 +353,57 @@
         }
 
     }
-    
+
+   async void getUserNotifications()
+    {
+    //todo Add user id after log in
+        try
+        {
+            IEnumerable<Notification> returnedNotification = await _notificationClient.GetUserNotification("juan@email.com");
+            Console.WriteLine(returnedNotification.Last().Sender);
+            myNotifications = returnedNotification;
+            
+
+        }
+        catch (Exception e)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"An Error happen will getting your notifications !!  ", Duration = 6000 });
+
+        }
+    }
+
+    async void SendReplay(Notification n,bool replayStatus )
+    {
+        if (replayStatus)
+        {
+            NotificationDto replay = new NotificationDto()
+            {
+                Consumer = n.Sender,
+                Sender = n.Consumer,
+                SeatPrice = n.SeatPrice,
+                SeatCount = n.SeatCount,
+                Consumed = false,
+                RequestedTripId = n.RequestedTripId,
+                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                Msg = "Accepted"
+
+            };
+
+            try
+            {
+                await _notificationClient.CreateRequestAsync(replay);
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
+
+            }
+            catch (Exception e)
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not send replay try again later !!  ", Duration = 6000 });
+
+            }
+            
+        }
+    }
+
 
 }
