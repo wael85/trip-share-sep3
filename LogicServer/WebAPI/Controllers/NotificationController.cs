@@ -1,11 +1,13 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 [ApiController]
 [Route("[Controller]")]
+[Authorize]
 public class NotificationController : ControllerBase
 {
     private readonly INotificationLogic _notificationLogic;

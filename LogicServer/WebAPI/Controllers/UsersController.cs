@@ -1,6 +1,7 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -33,7 +34,7 @@ public class UsersController :ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}"),Authorize]
     public async Task<ActionResult<UserInformationDto>> GetUserInfoAsync([FromRoute] string id)
     {
         try

@@ -7,7 +7,7 @@
 @using HttpClient.ClientInterfaces
 @inject NotificationService Service
 @inject ITripClient TripClient
-
+@attribute [Authorize]
 
 <div class="row align-content-middle">
     <RadzenNotification/>

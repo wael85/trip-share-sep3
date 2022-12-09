@@ -4,13 +4,19 @@
 @using Radzen
 @using TripShare.Pages.Components
 @using System.Collections.Immutable
+@using System.Diagnostics
+@using System.Security.Claims
 @using Components
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
+@using HttpClients.ClientInterface
 @inject IUserClient _userClient;
 @inject ITripClient _tripClient;
 @inject ISeatTicketClient _SeatTicket;
 @inject NotificationService _servic
+
+@inject IAuthService auth
+@attribute [Authorize]
 @inject ICarClient _carClient;
 @inject INotificationClient _notificationClient;
 
@@ -276,15 +282,19 @@
     private Notification selectedNotification;
 
 
+    private string userEmail;
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            // todo: Change user to login user
-          //  userInfoDto = await _userClient.GetByIdAsync("syamend@email.com");
 
-          //  IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync("juan");
-            //myTrips = trips.ToList();
+            userEmail = auth.GetAuthAsync().Result.Claims.First(claim => claim.Type.Equals(ClaimTypes.Email)).Value;
+            userInfoDto = await _userClient.GetByIdAsync(userEmail);
+
+
+    // IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync(userEmail);
+    // myTrips = trips.ToList();
 
             IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("wael@email.com");
             myTickets = tickets.ToList();

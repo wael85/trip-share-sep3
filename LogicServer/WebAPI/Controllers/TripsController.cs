@@ -1,12 +1,13 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 [ApiController]
 [Route("[Controller]")]
-
+[Authorize]
 public class TripsController : ControllerBase
 {
     private readonly ITripLogic logic;
@@ -54,6 +55,21 @@ public class TripsController : ControllerBase
             }
 
             return Ok(trips);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    [HttpGet("/profile")]
+    public async Task<ActionResult<List<Trip>>> GetUsersTripsByEmail([FromQuery] string email)
+    {
+        try
+        {
+            List<Trip> trips = await logic.GetUsersTripsByEmail(email);
+            return Ok(trips);
+
         }
         catch (Exception e)
         {
