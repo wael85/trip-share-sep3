@@ -13,14 +13,15 @@
 @inject IUserClient _userClient;
 @inject ITripClient _tripClient;
 @inject ISeatTicketClient _SeatTicket;
-@inject NotificationService _servic
+@inject NotificationService _servic;
 
-@inject IAuthService auth
+@inject IAuthService auth;
 @attribute [Authorize]
 @inject ICarClient _carClient;
 @inject INotificationClient _notificationClient;
 
 <RadzenNotification/>
+
 <div class="container-fluid h-auto">
     <div class="row " style="margin: 10px">
         <h3 class="col-md-9">My Profile</h3>
@@ -96,24 +97,20 @@
                                 
                             </div>
                         </div>
+
                     }
                 </div>
             </div>
 
+            <!--Tickets -->
         </div>
 
-        <div class="col-6">
-            <!--My trips or be a driver -->
-            @if (string.IsNullOrEmpty(userInfoDto.DriveLicense))
+            <h5 style="margin-top: 10px">Tickets</h5>
+            @if (!myTickets.Any())
             {
-                <div class="container" style="margin: 10px">
-                    <DriverBox
-                        OnDriveLicenseChange="UpdateDriveLicense" OnColorChange="UpdateCarColor" OnModelChange="UpdateCarModel"
-                        OnSeatsChange="UpdateSeats" OnCarTypeChange="UpdateFuelType" OnPlateNumberChange="UpdatePlateNumber" OnButtonStatusChange="ShowSubmitButton">
-                    </DriverBox>
-                </div>
-                <button style="visibility: @showSubmitbutton" @onclick="UpdateDriver" class="btn border-primary">Submit</button>
+                <p>There is no available tickets ..</p>
             }
+
             else
             {
                 <div class="container" style="height:400px">
@@ -150,8 +147,7 @@
                 </div>
             }
 
-            <!--todo seat request -->
-                
+            </div>
         </div>
     </div>
 </div>
@@ -170,12 +166,14 @@
             <div class="container-fluid justify-content-center flex-row">
                 @foreach (var not in myNotifications)
                 {
+
                     <div class="card m-5  border border-2 " style="display: inline-block; width: 250px; height: 300px; overflow: auto;">
                         <!--Card Head-->
                         @if (not.Msg.Equals("request-seat"))
                         {
                             <h5 class="card-header">
                                 Request seat from @not.RequestedPickUpLocation.City to @not.RequestedDropUpLocation.City
+
                                 notification: @not.Id
                             </h5>
                         }
@@ -197,10 +195,12 @@
                             @if (not.Msg.Equals("request-seat"))
                             {
                                 <h5 class="card-title">
+
                                     Requested by:<br/> @not.Sender
                                 </h5>
 
                             }
+
                             else if (not.Msg.Equals("Rejected"))
                             {
                                 <h5 class="card-title"> @not.Sender Rejected your request</h5>
@@ -253,6 +253,7 @@
         }
     </div>
 </div>
+
 <Modal ShowModal="modal">
     <div class="container">
         <h3>Book Place on Trip: @selectedNotification.RequestedTripId</h3>
@@ -288,7 +289,6 @@
     {
         try
         {
-
             userEmail = auth.GetAuthAsync().Result.Claims.First(claim => claim.Type.Equals(ClaimTypes.Email)).Value;
             userInfoDto = await _userClient.GetByIdAsync(userEmail);
 
@@ -298,7 +298,7 @@
 
             IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync("wael@email.com");
             myTickets = tickets.ToList();
-    
+
         }
         catch (Exception e)
         {
@@ -319,18 +319,18 @@
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
         }
     }
+
     private async Task UpdateDriver()
     {
         if (!String.IsNullOrEmpty(DriveLicense) & !String.IsNullOrEmpty(plateNumber))
         {
             try
             {
-                //todo Add user id after log in
+    //todo Add user id after log in
                 string driverId = "wael@email.com";
                 BeADriverRequestDto dto = new BeADriverRequestDto(driverId, DriveLicense!, plateNumber, Color, CarModel, Seats, FuelType);
                 await _carClient.CreateAsync(dto);
                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = $"You become a driver", Duration = 6000 });
-
             }
             catch (Exception e)
             {
@@ -340,11 +340,7 @@
         else
         {
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"All car fields is required !!  ", Duration = 6000 });
-
         }
-        
-
-        
     }
 
     public void UpdateDriveLicense(string s)
@@ -394,21 +390,22 @@
         {
             if (!String.IsNullOrEmpty(DriveLicense) & !String.IsNullOrEmpty(plateNumber))
             {
-                showSubmitbutton =  "visible";
+                showSubmitbutton = "visible";
             }
             else
             {
                 showSubmitbutton = "hidden";
             }
         }
-
     }
+
 
    async void GetUserNotifications()
     {
     //todo Add user id after log in
         try
         {
+
             
             IEnumerable<Notification> returnedNotification = await _notificationClient.GetUserNotification("wael@email.com");
             myNotifications.RemoveAll(x => true);
@@ -421,11 +418,10 @@
         catch (Exception e)
         {
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"An Error happen will getting your notifications !!  ", Duration = 6000 });
-
         }
     }
 
-    async void SendReplay(Notification n,bool replayStatus )
+    async void SendReplay(Notification n, bool replayStatus)
     {
         if (replayStatus)
         {
@@ -437,10 +433,9 @@
                 SeatCount = n.SeatCount,
                 Consumed = false,
                 RequestedTripId = n.RequestedTripId,
-                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                RequestedDropUpLocation = (int)n.RequestedDropUpLocation.Id,
                 RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
                 Msg = "Accepted"
-
             };
             NotificationDto updatNotificationDto= new NotificationDto()
             {
@@ -463,14 +458,11 @@
                 await _notificationClient.SaveRequestAsync(replay);
                 await _notificationClient.SaveRequestAsync(updatNotificationDto);
                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
-
             }
             catch (Exception e)
             {
                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not send replay try again later !!  ", Duration = 6000 });
-
             }
-            
         }
         else
         {

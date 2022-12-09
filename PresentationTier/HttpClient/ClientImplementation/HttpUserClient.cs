@@ -4,6 +4,7 @@ using System.Text.Json;
 using Domain.DTOs;
 using Domain.Model;
 using HttpClient.ClientInterfaces;
+using HttpClient.PasswordSecurity;
 using SysHttpClient = System.Net.Http.HttpClient; // Conflicts with the namespace otherwise.
 
 namespace HttpClient.ClientImplementation;
@@ -19,6 +20,9 @@ public class UserClientImp : IUserClient
     
     public async Task<ReturnedUserDTO> CreateAsync(User user)
     {
+        string encodedPassword = user.Password;
+        user.Password = PasswordEncrypt.EncodingPassword(encodedPassword);
+        
         var response = await client.PostAsJsonAsync("/users", user);
         var result = await response.Content.ReadAsStringAsync();
         

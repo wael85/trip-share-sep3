@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using Domain.DTOs;
+using HttpClient.PasswordSecurity;
 using HttpClients.ClientInterface;
 
 namespace HttpClient.ClientImplementation;
@@ -22,10 +23,12 @@ public class JwtAuthService : IAuthService
 
     public async Task LoginAsync(string username, string password)
     {
+        string encodedPassword = PasswordEncrypt.EncodingPassword(password);
+        
         UserLoginDto userLoginDto = new()
         {
             Username = username,
-            Password = password
+            Password = encodedPassword
         };
 
         string userAsJson = JsonSerializer.Serialize(userLoginDto);
