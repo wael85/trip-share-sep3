@@ -4,17 +4,21 @@ option java_package = "via.sep3.grpcserver.protobuf.ratingservices";
 
 service RatingServices {
   rpc CreateRating (RatingCreationRequest) returns (RatingResponse);
+  rpc GetRatingById (RatingIdRequest) returns (RatingResponse);
+  rpc GetAllRatings (GetAllRequest) returns (RatingResponseMultiple);
   rpc GetRatingsByWriterEmail (UserEmailRequest) returns (RatingResponseMultiple);
   rpc GetRatingsBySubjectEmail (UserEmailRequest) returns (RatingResponseMultiple);
-  rpc DeleteRating (RatingDeletionRequest) returns (RatingResponse);
+  rpc DeleteRating (RatingIdRequest) returns (RatingResponse);
 }
+
+message GetAllRequest {}
 
 message UserEmailRequest {
   string email = 1;
 }
 
-message RatingDeletionRequest {
-  int64 rating_id = 1;
+message RatingIdRequest {
+  int64 id = 1;
 }
 
 message RatingCreationRequest {

@@ -99,28 +99,6 @@ public class RatingService extends RatingServicesGrpc.RatingServicesImplBase {
     }
 
     @Override
-    public void deleteRating(RatingDeletionRequest request, StreamObserver<RatingResponse> responseObserver) {
-        Optional<Rating> rating = ratingRepository.findById(request.getRatingId());
-
-        if (rating.isEmpty()) {
-            Metadata.Key<ErrorResponse> errorResponseKey = ProtoUtils.keyForProto(ErrorResponse.getDefaultInstance());
-            ErrorResponse errorResponse = ErrorResponse.newBuilder()
-                    .setMessage("A rating with that  id does not exist")
-                    .setStatus(400)
-                    .build();
-            Metadata metadata = new Metadata();
-            metadata.put(errorResponseKey, errorResponse);
-            responseObserver.onError(io.grpc.Status.INVALID_ARGUMENT.withDescription("A rating with that  id does not exist")
-                    .asRuntimeException(metadata));
-            return;
-        }
-
-        ratingRepository.delete(rating.get());
-        responseObserver.onNext(ratingToRatingResponse(rating.get()));
-        responseObserver.onCompleted();
-    }
-
-    @Override
     public void getRatingsBySubjectEmail(UserEmailRequest request, StreamObserver<RatingResponseMultiple> responseObserver) {
         Optional<User> subject = userRepository.findByEmail(request.getEmail());
 
