@@ -62,4 +62,19 @@ public class TripsController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    [HttpGet("/profile")]
+    public async Task<ActionResult<List<Trip>>> GetUsersTripsByEmail([FromQuery] string email)
+    {
+        try
+        {
+            List<Trip> trips = await logic.GetUsersTripsByEmail(email);
+            return Ok(trips);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 }
