@@ -2,9 +2,12 @@
 @using Domain.DTOs
 @using HttpClient.ClientInterfaces
 @using Radzen
+@using System.Security.Claims
+@using HttpClients.ClientInterface
 @inject NavigationManager nvgM;
 @inject INotificationClient _notificationClient;
-
+@inject IAuthService auth;
+@inject IUserClient _userClient;
 @namespace TripShare.Pages.Components
 
 <div class="card">
@@ -25,7 +28,7 @@
                     <p class="card-text">Meet time @t.ArrivalTime</p>
                 }
             }
-        <p class="card-text">Total Price : @SelectedTrip.FullPrice</p>
+        <p class="card-text">Total Price : @((SelectedTrip.SubTripPrice(SelectedDetails.Pickup, SelectedDetails.Dropoff))* SelectedDetails.PassengerAmount)</p>
 
     </div>
     <button class="btn btn-primary col-2 m-3 w-25" @onclick="@SendRequest">Confirm</button>
@@ -40,13 +43,20 @@
     
     [Parameter]
     public EventCallback<bool> CloseModal { get; set; }
-    
+
+    string userEmail;
+    UserInformationDto userInfoDto;
 
     private Task ModalCancel()
     {
         return CloseModal.InvokeAsync(false);
     }
-    
+
+    protected  override async void OnInitialized()
+    {
+        userEmail = auth.GetAuthAsync().Result.Claims.First(claim => claim.Type.Equals(ClaimTypes.Email)).Value;
+        userInfoDto = await _userClient.GetByIdAsync(userEmail);
+    }
 
     async void SendRequest()
     {
@@ -54,8 +64,8 @@
         {
             NotificationDto dto = new NotificationDto
             {// todo replace sender
-                Consumer = "juan@email.com", 
-                Sender = "wael@email.com",
+                Consumer = SelectedTrip.Driver.Email, 
+                Sender = userEmail,
                 SeatCount = SelectedDetails.PassengerAmount,
                 Msg = "request-seat",
                 Consumed = false,

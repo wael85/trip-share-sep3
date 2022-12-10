@@ -47,7 +47,7 @@ public class HttpTripClient :  ITripClient
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",JwtAuthService.Jwt);
 
         var response = await client.GetAsync(
-            $"/Trips");
+            $"/trips");
         var result = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
         {
@@ -62,7 +62,9 @@ public class HttpTripClient :  ITripClient
 
     public async Task<List<Trip>> GetTripsByUserIdAsync(string id)
     {
-        var response = await client.GetAsync($"/trips/{id}");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",JwtAuthService.Jwt);
+
+        var response = await client.GetAsync($"/user-trips?email={id}");
         var content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
@@ -78,6 +80,8 @@ public class HttpTripClient :  ITripClient
 
     public async Task<List<Trip>> GetTripsAsync(TripSearchQuery searchQuery)
     {
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",JwtAuthService.Jwt);
+
         var response = await client.GetAsync(
             $"/Trips" + MakeSearchQuery(searchQuery));
         string result = await response.Content.ReadAsStringAsync();
@@ -94,6 +98,7 @@ public class HttpTripClient :  ITripClient
 
     private static string MakeSearchQuery(TripSearchQuery dto)
     {
+        
         var query = $"?PassengerAmount={dto.PassengerAmount}&TripDateTime={dto.TripDateTime.ToString(new DateTimeFormatInfo().SortableDateTimePattern)}";
 
         if (dto.Pickup != "" && dto.Dropoff != "")
