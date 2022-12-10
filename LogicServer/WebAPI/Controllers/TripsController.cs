@@ -62,7 +62,7 @@ public class TripsController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-    [HttpGet("/profile")]
+    [HttpGet("/user-trips")]
     public async Task<ActionResult<List<Trip>>> GetUsersTripsByEmail([FromQuery] string email)
     {
         try
