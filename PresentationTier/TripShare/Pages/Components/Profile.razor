@@ -2,6 +2,7 @@
 @using HttpClient.ClientInterfaces
 
 @inject IUserClient _userClient;
+@inject IRatingClient _ratingClient;
 @namespace Components
 
 
@@ -13,6 +14,7 @@
          <p> <strong>LASTNAME: </strong>@lastName</p>
          <p> <strong>PHONE: </strong>@phone</p>
          <p> <strong>ADDRESS: </strong>@address</p>
+         <p> <strong>RATING: </strong>@rating  / 5</p>
      </div>
     </div>
 
@@ -25,6 +27,7 @@
     private string lastName;
     private string phone;
     private string address;
+    private double rating;
     
         <!--todo this component is for check the profiles -->
     protected override async Task OnInitializedAsync()
@@ -35,8 +38,11 @@
         lastName = user.LastName;
         phone = user.Phone;
         address = user.Address;
-        
-        
+
+        var ratingDto = await _ratingClient.GetRatingMeanBySubject(Email);
+        rating = ratingDto.Rating;
+
+
     }
     
 }

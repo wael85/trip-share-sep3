@@ -30,6 +30,8 @@ builder.Services.AddScoped<ISeatTicketLogic, SeatTicketLogic>();
 builder.Services.AddScoped<IAuthLogic, AuthLogic>();
 builder.Services.AddScoped<INotificationGrpcService, NotificationGrpcImp>();
 builder.Services.AddScoped<INotificationLogic, NotificationLogic>();
+builder.Services.AddScoped<IRatingService, RatingGrpcImp>();
+builder.Services.AddScoped<IRatingLogic, RatingLogic>();
 
 builder.Services.AddGrpc();
 
@@ -39,6 +41,7 @@ builder.Services.AddSingleton(new CarServices.CarServicesClient(GrpcChannel.ForA
 builder.Services.AddSingleton(new TripServices.TripServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 builder.Services.AddSingleton(new TicketServices.TicketServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 builder.Services.AddSingleton(new NotificationServices.NotificationServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
+builder.Services.AddSingleton(new RatingServices.RatingServicesClient(GrpcChannel.ForAddress("http://localhost:8081")));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

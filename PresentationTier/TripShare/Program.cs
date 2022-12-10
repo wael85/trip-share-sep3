@@ -18,6 +18,7 @@ builder.Services.AddScoped<ICarClient, HttpCarClient>();
 builder.Services.AddScoped<ITripClient, HttpTripClient>();
 builder.Services.AddScoped<ISeatTicketClient, HttpSeatTicketClient>();
 builder.Services.AddScoped<INotificationClient, HttpNotificationClient>();
+builder.Services.AddScoped<IRatingClient, HttpRatingClient>();
 
 
 builder.Services.AddScoped<IAuthService, JwtAuthService>();

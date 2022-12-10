@@ -18,31 +18,15 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
     </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Proto\user.proto" />
-      <None Remove="Proto\car.proto" />
-        <None Remove="Proto\trip.proto" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="obj\Debug\net6.0\Proto\Notification.cs" />
-      <Compile Include="obj\Debug\net6.0\Proto\NotificationGrpc.cs" />
-      <Compile Include="obj\Debug\net6.0\Proto\Trip.cs" />
-      <Compile Include="obj\Debug\net6.0\Proto\TripGrpc.cs" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <Protobuf Include="Proto\car.proto" />
+      <Protobuf Include="Proto\ticket.proto" />
       <Protobuf Include="Proto\trip.proto" />
       <Protobuf Include="Proto\user.proto" />
-      <None Remove="Proto\ticket.proto" />
+      <Protobuf Include="Proto\rating.proto" />
       <None Remove="Proto\notification.proto" />
       <Protobuf Include="Proto\notification.proto" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Protobuf Include="Proto\ticket.proto" />
     </ItemGroup>
     
 </Project>

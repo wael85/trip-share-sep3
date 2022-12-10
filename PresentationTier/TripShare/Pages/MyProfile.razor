@@ -19,6 +19,7 @@
 @attribute [Authorize]
 @inject ICarClient _carClient;
 @inject INotificationClient _notificationClient;
+@inject IRatingClient _ratingClient;
 
 <RadzenNotification/>
 
@@ -41,6 +42,7 @@
                     <p><strong>FULL NAME </strong>@userInfoDto.FirstName @userInfoDto.LastName</p>
                     <p><strong>PHONE: </strong>@userInfoDto.Phone</p>
                     <p><strong>ADDRESS: </strong>@userInfoDto.Address</p>
+                    <p><strong>RATING: </strong>@ratingMeanDto.Rating / 5 from @ratingMeanDto.Count rating(s)</p>
                     @if (!string.IsNullOrEmpty(userInfoDto.DriveLicense))
                     {
                         <p><strong>Driving License: </strong>@userInfoDto.DriveLicense</p>
@@ -318,6 +320,7 @@
 @code {
     private string showSubmitbutton = "hidden";
     private UserInformationDto userInfoDto = new();
+    private RatingMeanDTO ratingMeanDto = new(0, 0);
     private List<Trip> myTrips = new();
     private List<SeatTicket> myTickets = new();
     private string? DriveLicense = "";
@@ -341,6 +344,7 @@
         {
             userEmail = auth.GetAuthAsync().Result.Claims.First(claim => claim.Type.Equals(ClaimTypes.Email)).Value;
             userInfoDto = await _userClient.GetByIdAsync(userEmail);
+            ratingMeanDto = await _ratingClient.GetRatingMeanBySubject(userEmail);
 
 
            IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync(userEmail);
