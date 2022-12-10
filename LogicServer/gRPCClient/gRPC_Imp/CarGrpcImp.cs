@@ -5,11 +5,11 @@ using Grpc.Core;
 
 namespace gRPCClient.gRPC_Imp;
 
-public class RegisterCarGrpcImp : IRegisterCarService
+public class CarGrpcImp : ICarService
 {
     private readonly CarServices.CarServicesClient _client;
 
-    public RegisterCarGrpcImp(CarServices.CarServicesClient client)
+    public CarGrpcImp(CarServices.CarServicesClient client)
     {
         _client = client;
     }

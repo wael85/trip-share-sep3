@@ -7,12 +7,12 @@ using Domain.Model;
 
 namespace Application.Logic;
 
-public class RegisterCarLogic:IRegisterCarLogic
+public class CarLogic:ICarLogic
 {
-    private readonly IRegisterCarService _service;
+    private readonly ICarService _service;
     
 
-    public RegisterCarLogic(IRegisterCarService service)
+    public CarLogic(ICarService service)
     {
         _service = service;
     }
@@ -28,7 +28,6 @@ public class RegisterCarLogic:IRegisterCarLogic
     {
         try
         {
-            Console.WriteLine(plateNumber);
             Car? car = await GetCarDetailsByPlateNumber(plateNumber);
             return await Task.FromResult(car);
         }

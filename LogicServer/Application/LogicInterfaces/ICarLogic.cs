@@ -3,7 +3,7 @@ using Domain.Model;
 
 namespace Application.LogicInterfaces;
 
-public interface IRegisterCarLogic
+public interface ICarLogic
 {
     Task<Car> RegisterAsync(BeADriverRequestDto dto);
 

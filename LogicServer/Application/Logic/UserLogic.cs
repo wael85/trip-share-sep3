@@ -10,9 +10,9 @@ namespace Application.Logic;
 public class UserLogic : IUserLogic
 {
     private readonly IUserService service;
-    private readonly IRegisterCarService _carService;
+    private readonly ICarService _carService;
 
-    public UserLogic(IUserService service, IRegisterCarService carLogic)
+    public UserLogic(IUserService service, ICarService carLogic)
     {
         this.service = service;
         _carService = carLogic;
