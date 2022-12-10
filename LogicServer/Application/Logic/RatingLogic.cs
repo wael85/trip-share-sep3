@@ -50,6 +50,10 @@ public class RatingLogic : IRatingLogic
         var ratings = await _service.GetFromSubjectAsync(subjectEmail);
         
         var ratingsSum = ratings.Sum(rating => rating.Value);
+        if (ratings.Count == 0)
+        {
+            return new RatingMeanDTO(ratingsSum /1, ratings.Count);
+        }
             
         return new RatingMeanDTO(ratingsSum / ratings.Count, ratings.Count);
     }

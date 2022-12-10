@@ -43,7 +43,7 @@
 </div>
 
 <div class="row justify-content-center">
-    <button type="button" @onclick="ResetSearch" class="btn btn-secondary col-2 m-3 w-30">Reset</button>
+    <button type="button" @onclick="ResetSearch" class="btn btn-secondary col-2 m-3 w-30">Reset </button>
     <div class="col-4"></div>
     <button type="button" @onclick="Search" class="btn btn-primary col-2 m-3 w-30">Search</button>
 </div>
@@ -137,7 +137,7 @@
         else
         {
             _trips= await TripClient.GetTripsAsync(_searchQuery.Clone());
-            await TripClient.GetTripsAsync(_searchQuery.Clone());
+            StateHasChanged();
             if (_trips.Any())
             {
                 Service.Notify(new NotificationMessage

@@ -92,7 +92,7 @@
                                 </small> <br>
                                 @if (ticket.PickUpLocation.ArrivalTime >= DateTime.Now)
                                 {
-                                    <button style="width: 100px; margin: 5px" class="btn-danger" @onclick="(args) => { CancelTicketAsync(ticket.Id); myTickets.Remove(ticket);}">
+                                    <button style="width: 100px; margin: 5px" class="btn-danger" @onclick="@(async (args) => { await CancelTicketAsync(ticket.Id); myTickets.Remove(ticket);})">
                                         <small>Cancel</small>
                                     </button>
                                 }
@@ -104,7 +104,6 @@
                 </div>
             </div>
 
-            <!--Tickets -->
         </div>
      <div class="col-6">
             <!--My trips or be a driver -->
@@ -117,8 +116,7 @@
                     </DriverBox>
                 </div>
                 <button style="visibility: @showSubmitbutton" @onclick="UpdateDriver" class="btn border-primary">Submit</button>
-            }
-            else
+            }else
             {
                 <div class="container" style="height:400px">
                     <h5 class="m-3" style="margin: 5px">My Trips</h5>
@@ -153,52 +151,7 @@
                     }
                 </div>
             }
-     
-        @*</div>
-            <h5 style="margin-top: 10px">Tickets</h5>
-            @if (!myTickets.Any())
-            {
-                <p>There is no available tickets ..</p>
-            }
-
-            else
-            {
-                <div class="container" style="height:400px">
-                    <h5 class="m-3" style="margin: 5px">My Trips</h5>
-                    @if (!myTrips.Any())
-                    {
-                        <p>There is no available trips ..</p>
-                    }
-                    @foreach (var tr in myTrips.ToImmutableList().Reverse())
-                    {
-                        <div class="card" style="margin: 10px">
-                            <div class="card-body">
-                                <div class="row">
-                                    <small class="col-10 card-text text-muted">Trip Id: @tr.Id</small>
-                                    @if (tr.Stops.First().ArrivalTime <= DateTime.Now)
-                                    {
-                                        <p class="col-2" style="color: red">Done</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="col-2" style="color: green">Active</p>
-                                    }
-                                </div>
-                                <hr/>
-                                @foreach (var s in tr.Stops)
-                                {
-                                    <small class="card-text text-muted">@s.ArrivalTime</small>
-                                    <p class="card-text">@s.getAddress()</p>
-                                }
-                            </div>
-
-                        </div>
-                    }
-                </div>
-            }
-
-            </div>
-        </div>*@
+            
 </div>
 </div>
 </div>
@@ -282,21 +235,21 @@
                             <!--Button group-->
                             @if (not.Msg.Equals("request-seat"))
                             {
-                                <button class="btn btn-secondary " @onclick="@((e) => { SendReplay(not, false); GetUserNotifications(); })">Reject</button>
+                                <button class="btn btn-secondary " @onclick="@((e) => { SendReplay(not, false);ConsumeNotification(not);GetUserNotifications(); })">Reject</button>
 
-                                <button class="btn btn-primary" @onclick="@((e) => { SendReplay(not, true); GetUserNotifications();})">Accept</button>
+                                <button class="btn btn-primary" @onclick="@((e) => { SendReplay(not, true);ConsumeNotification(not); GetUserNotifications();})">Accept</button>
 
                             }
                             else if (not.Msg.Equals("Rejected"))
                             {
 
-                                <button class="btn btn-danger" @onclick="@(((e) => { DeleteNotification(not); GetUserNotifications();}))">Delete</button>
+                                <button class="btn btn-danger" @onclick="@(((e) => { ConsumeNotification(not); GetUserNotifications();}))">Delete</button>
                             }
                             else if (not.Msg.Equals("Accepted"))
                             {
-                                <button class="btn btn-secondary " @onclick="@((e) => SendReplay(not, false))">Cancel</button>
+                                <button class="btn btn-secondary " @onclick="@((e) => { SendReplay(not, false); ConsumeNotification(not); GetUserNotifications();})">Cancel</button>
 
-                                <button class="btn btn-primary" @onclick="@(() => ProcessToPayment(not))">Proccess to Payment</button>
+                                <button class="btn btn-primary" @onclick="@(() => { ProcessToPayment(not); ConsumeNotification(not); GetUserNotifications();})">Proccess to Payment</button>
                             }
                         </div>
                     </div>
@@ -311,8 +264,8 @@
         <h3>Book Place on Trip: @selectedNotification.RequestedTripId</h3>
         <h5>Seats Count: @selectedNotification.SeatCount</h5>
         <h5>Total to pay: @(selectedNotification.SeatCount * selectedNotification.SeatPrice) </h5>
-        <button class="btn-secondary" @onclick="@((e)=> { selectedNotification = new Notification(); modal = false; })">Cancel</button>
-        <button class="btn-primary" @onclick="BookSeatTicket">Pay and Book</button>
+        <button class="btn-secondary" @onclick="@((e)=> { modal = false; })">Cancel</button>
+        <button class="btn-primary" @onclick="@((e) => { BookSeatTicket();ConsumeNotification(selectedNotification);GetUserNotifications(); })">Pay and Book</button>
     
     </div>
 </Modal>
@@ -338,6 +291,12 @@
 
     private string userEmail;
 
+    async void GetMyTicket()
+    {
+        IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync(userEmail);
+        myTickets = tickets.ToList();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -347,11 +306,13 @@
             ratingMeanDto = await _ratingClient.GetRatingMeanBySubject(userEmail);
 
 
-           IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync(userEmail);
+            IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync(userEmail);
             myTrips = trips.ToList();
-
-            IEnumerable<SeatTicket> tickets = await _SeatTicket.GetTicketsByUserIdAsync(userEmail);
-            myTickets = tickets.ToList();
+            GetMyTicket();
+           
+            StateHasChanged();
+            
+            GetUserNotifications();
 
         }
         catch (Exception e)
@@ -366,6 +327,8 @@
     try
         {
             await _SeatTicket.CancelTicketAsync(id);
+            GetMyTicket();
+            StateHasChanged();
         }
         catch (Exception e)
         {
@@ -373,6 +336,7 @@
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"{e.Message} ", Duration = 6000 });
         }
     }
+    
 
     private async Task UpdateDriver()
     {
@@ -455,17 +419,11 @@
 
    async void GetUserNotifications()
     {
-    //todo Add user id after log in
         try
         {
-
-            
-            IEnumerable<Notification> returnedNotification = await _notificationClient.GetUserNotification(userEmail);
-            myNotifications.RemoveAll(x => true);
-            foreach (var notification in returnedNotification)
-            {
-                myNotifications.Add(notification);
-            }
+           IEnumerable<Notification> myNots =await _notificationClient.GetUserNotification(userEmail);
+           myNotifications = myNots.ToList();
+            StateHasChanged();
 
         }
         catch (Exception e)
@@ -474,9 +432,29 @@
         }
     }
 
+    void ConsumeNotification(Notification n)
+    {
+        NotificationDto updatNotificationDto= new NotificationDto()
+        {
+            Id = n.Id,
+            Consumer = n.Consumer,
+            Sender = n.Sender,
+            SeatPrice = n.SeatPrice,
+            SeatCount = n.SeatCount,
+            Consumed = true,
+            RequestedTripId = n.RequestedTripId,
+            RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+            RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+            Msg = "Deleted"
+
+        };
+         _notificationClient.SaveRequestAsync(updatNotificationDto);
+        GetUserNotifications();
+
+    }
     async void SendReplay(Notification n, bool replayStatus)
     {
-        if (replayStatus)
+        if (replayStatus & !n.Consumed)
         {
             NotificationDto replay = new NotificationDto()
             {
@@ -490,26 +468,11 @@
                 RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
                 Msg = "Accepted"
             };
-            NotificationDto updatNotificationDto= new NotificationDto()
-            {
-                Id = n.Id,
-                Consumer = n.Consumer,
-                Sender = n.Sender,
-                SeatPrice = n.SeatPrice,
-                SeatCount = n.SeatCount,
-                Consumed = true,
-                RequestedTripId = n.RequestedTripId,
-                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
-                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
-                Msg = "Accepted"
-
-            };
             
-
             try
             {
                 await _notificationClient.SaveRequestAsync(replay);
-                await _notificationClient.SaveRequestAsync(updatNotificationDto);
+                ConsumeNotification(n);
                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
             }
             catch (Exception e)
@@ -519,67 +482,48 @@
         }
         else
         {
-            NotificationDto replay = new NotificationDto()
+            if (!n.Consumed)
             {
-                Consumer = n.Sender,
-                Sender = n.Consumer,
-                SeatPrice = n.SeatPrice,
-                SeatCount = n.SeatCount,
-                Consumed = false,
-                RequestedTripId = n.RequestedTripId,
-                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
-                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
-                Msg = "Rejected"
+                NotificationDto replay = new NotificationDto()
+                {
+                    Consumer = n.Sender,
+                    Sender = n.Consumer,
+                    SeatPrice = n.SeatPrice,
+                    SeatCount = n.SeatCount,
+                    Consumed = false,
+                    RequestedTripId = n.RequestedTripId,
+                    RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
+                    RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
+                    Msg = "Rejected"
 
-            };
-            NotificationDto  updatNotificationDto= new NotificationDto()
-            {
-                Id = n.Id,
-                Consumer = n.Sender,
-                Sender = n.Consumer,
-                SeatPrice = n.SeatPrice,
-                SeatCount = n.SeatCount,
-                Consumed = true,
-                RequestedTripId = n.RequestedTripId,
-                RequestedDropUpLocation =(int) n.RequestedDropUpLocation.Id,
-                RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
-                Msg = "Rejected"
+                };
 
-            };
+                try
+                {
+                
+                    await _notificationClient.SaveRequestAsync(replay);
+                    ConsumeNotification(n);
+                    ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
 
-            try
-            {
-                await _notificationClient.SaveRequestAsync(replay);
-                await _notificationClient.SaveRequestAsync(updatNotificationDto);
-                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Replay is sent... ", Duration = 6000 });
+                }
+                catch (Exception e)
+                {
+                    ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not send replay try again later !!  ", Duration = 6000 });
 
+                }
             }
-            catch (Exception e)
-            {
-                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not send replay try again later !!  ", Duration = 6000 });
-
-            }
+           
         }
+        GetUserNotifications();
+
     }
 
-    async void DeleteNotification(Notification n)
+   /*  void DeleteNotification(Notification n)
     {
-        NotificationDto updatNotificationDto = new NotificationDto()
+         try
         {
-            Id = n.Id,
-            Consumer = n.Consumer,
-            Sender = n.Sender,
-            SeatPrice = n.SeatPrice,
-            SeatCount = n.SeatCount,
-            Consumed = true,
-            RequestedTripId = n.RequestedTripId,
-            RequestedDropUpLocation = (int)n.RequestedDropUpLocation.Id,
-            RequestedPickUpLocation = (int)n.RequestedPickUpLocation.Id,
-            Msg = "Deleted"
-        };
-        try
-        {
-            await _notificationClient.SaveRequestAsync(updatNotificationDto);
+            
+            GetUserNotifications();
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Notification Deleted", Duration = 6000 });
 
         }
@@ -588,38 +532,55 @@
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not Delete this, try again later !!  ", Duration = 6000 });
 
         }
-    }
+    }*/
 
     void ProcessToPayment(Notification n)
     {
-        selectedNotification = n;
-        modal = true;
+        if (!n.Consumed)
+        {
+            selectedNotification = n;
+            modal = true;
+        }
+
     }
 
-    async void BookSeatTicket()
+   async void BookSeatTicket()
     {
-        try
-        {
-            CreateSeatTicketDto dto = new CreateSeatTicketDto
-            {
-                PassengerId = selectedNotification.Consumer,
-                SeatAmount = selectedNotification.SeatCount,
-                SeatPrice = selectedNotification.SeatPrice,
-                TripId = selectedNotification.RequestedTripId,
-                DropLocationId = selectedNotification.RequestedDropUpLocation.Id,
-                PickUpLocationId = selectedNotification.RequestedPickUpLocation.Id
-            };
-           var s = await _SeatTicket.ReserveTicketAsync(dto);
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = $"Booking ${s.Id} success... ", Duration = 6000 });
-        }
-        catch (Exception e)
-        {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not make this booking try again later !!  ", Duration = 6000 });
+         if (!selectedNotification.Consumed & !String.IsNullOrEmpty(selectedNotification.Consumer)
+             & !String.IsNullOrEmpty(selectedNotification.Sender) &
+             !String.IsNullOrEmpty(selectedNotification.RequestedDropUpLocation.City)
+             & !String.IsNullOrEmpty(selectedNotification.RequestedPickUpLocation.City)
+         )
+         {
+             try
+             {
+                 CreateSeatTicketDto dto = new CreateSeatTicketDto
+                 {
+                     PassengerId = selectedNotification.Consumer,
+                     SeatAmount = selectedNotification.SeatCount,
+                     SeatPrice = selectedNotification.SeatPrice,
+                     TripId = selectedNotification.RequestedTripId,
+                     DropLocationId = selectedNotification.RequestedDropUpLocation.Id,
+                     PickUpLocationId = selectedNotification.RequestedPickUpLocation.Id
+                 };
+                 var s = await _SeatTicket.ReserveTicketAsync(dto);
+                 GetMyTicket();
+                 ConsumeNotification(selectedNotification);
+                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = $"Booking ${s.Id} success... ", Duration = 6000 });
+             }
+             catch (Exception e)
+             {
+                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not make this booking try again later !!  ", Duration = 6000 });
 
-        }
+             }
+         }
+         else
+         {
+             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not make this booking try again later !!  ", Duration = 6000 });
 
-        selectedNotification = null;
-        modal = false;
+         }
+        GetUserNotifications();
+       modal = false;
     }
 
 }
