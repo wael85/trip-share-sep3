@@ -22,7 +22,6 @@ public class TripsController : ControllerBase
     {
         try
         {
-            Console.WriteLine("at calling the end point");
             Trip retuTrip = await logic.CreateAsync(dto);
             return Created($"/trips/{retuTrip.Id}",retuTrip);
 
@@ -47,7 +46,6 @@ public class TripsController : ControllerBase
             }
             else
             {
-                Console.WriteLine(query.MaxPrice + " " + query.PassengerAmount);
                 if (!(query.MaxPrice > 0) || query.PassengerAmount < 1)
                     return BadRequest();
                 

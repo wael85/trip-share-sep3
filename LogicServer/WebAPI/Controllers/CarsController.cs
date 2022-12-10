@@ -9,9 +9,9 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class CarsController : ControllerBase
 {
-    private readonly IRegisterCarLogic _carLogic;
+    private readonly ICarLogic _carLogic;
 
-    public CarsController(IRegisterCarLogic carLogic)
+    public CarsController(ICarLogic carLogic)
     {
         _carLogic = carLogic;
     }
