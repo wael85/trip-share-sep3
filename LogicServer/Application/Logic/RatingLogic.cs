@@ -16,6 +16,12 @@ public class RatingLogic : IRatingLogic
     
     public async Task<Rating> CreateAsync(RatingCreationDTO dto)
     {
+        if (dto.Value > 5)
+            dto.Value = 5;
+        
+        if (dto.Value < 0)
+            dto.Value = 5;
+        
         return await _service.CreateAsync(dto);
     }
 
@@ -37,5 +43,14 @@ public class RatingLogic : IRatingLogic
     public async Task<List<Rating>> GetFromSubjectAsync(string subjectEmail)
     {
         return await _service.GetFromSubjectAsync(subjectEmail);
+    }
+
+    public async Task<RatingMeanDTO> GetMeanFromSubjectAsync(string subjectEmail)
+    {
+        var ratings = await _service.GetFromSubjectAsync(subjectEmail);
+        
+        var ratingsSum = ratings.Sum(rating => rating.Value);
+            
+        return new RatingMeanDTO(ratingsSum / ratings.Count, ratings.Count);
     }
 }

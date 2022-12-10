@@ -4,12 +4,12 @@ namespace Domain.DTOs;
 
 public class RatingCreationDTO
 {
-    public User Writer { get; set; }
-    public User Subject { get; set; }
+    public UserInformationDto Writer { get; set; }
+    public UserInformationDto Subject { get; set; }
     public int Value { get; set; }
     public string Comment { get; set; }
     
-    public RatingCreationDTO (User writer, User subject, int value, string comment)
+    public RatingCreationDTO (UserInformationDto writer, UserInformationDto subject, int value, string comment)
     {
         this.Writer = writer;
         this.Subject = subject;

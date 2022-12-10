@@ -77,4 +77,24 @@ public class RatingsController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    
+    [HttpGet("Mean")]
+    public async Task<ActionResult<RatingMeanDTO>> GetAsync([FromQuery] string? subjectEmail)
+    {
+        try
+        {
+            Console.Out.WriteLine("TETETTETE");
+            
+            if (subjectEmail == null)
+                return BadRequest();
+
+            var mean = await _logic.GetMeanFromSubjectAsync(subjectEmail);
+            return Ok(mean);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 }

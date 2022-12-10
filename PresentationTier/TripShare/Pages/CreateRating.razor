@@ -1,0 +1,77 @@
+@page "/CreateRating"
+@using System.Security.Claims
+@using Domain.DTOs
+@using HttpClient.ClientInterfaces
+@using HttpClients.ClientInterface
+@using Radzen
+
+@inject IAuthService auth;
+@attribute [Authorize]
+@inject IRatingClient RatingClient;
+@inject IUserClient UserClient;
+@inject NotificationService _notificationService;
+
+<div class="border border-light border-2 container mt-5">
+    <RadzenNotification/>
+    <h3>Create Rating</h3>
+
+    <div class="col-md-2">
+        <label for="validationDefault05" class="form-label">Subject Email</label>
+        <input type="text" @bind="subjectEmail" class="form-control" id="validationDefault05" required>
+    </div>
+    <div class="col-md-1">
+        <label for="validationDefault06" class="form-label">Rating</label>
+        <input type="number" @bind="rating" max="5" min="0" class="form-control" id="validationDefault06" required>
+    </div>
+    <div class="col-md-3">
+        <label for="validationDefault07" class="form-label">Comment</label>
+        <input type="text" @bind="comment" class="form-control" id="validationDefault07" required>
+    </div>
+    <button class="btn-outline-secondary m-4" @onclick="Create">Create</button>
+    <label @bind="result_text"></label>
+</div>
+
+@code {
+    private string userEmail;
+    
+    [Parameter]
+    public string subjectEmail { set; get; }
+    
+    private int rating;
+    private string comment;
+
+    private string result_text;
+
+    protected override Task OnInitializedAsync()
+    {
+        userEmail = auth.GetAuthAsync().Result.Claims.First(claim => claim.Type.Equals(ClaimTypes.Email)).Value;
+        
+        return base.OnInitializedAsync();
+    }
+
+    protected async Task Create()
+    {
+        var writer = await UserClient.GetByIdAsync(userEmail);
+        var subject = await UserClient.GetByIdAsync(subjectEmail);
+        
+        var result = RatingClient.CreateRating(new RatingCreationDTO(writer, subject, rating, comment));
+        if (result == null)
+        {
+            _notificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error, 
+                Summary = "Rating", 
+                Detail = "No such subject", 
+                Duration =7000
+            });
+        }
+        
+        _notificationService.Notify(new NotificationMessage
+        {
+            Severity = NotificationSeverity.Success, 
+            Summary = "Rating", 
+            Detail = "Success", 
+            Duration =7000
+        });
+    }
+}

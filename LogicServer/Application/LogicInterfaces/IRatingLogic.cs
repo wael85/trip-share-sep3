@@ -10,4 +10,5 @@ public interface IRatingLogic
     public Task<List<Rating>> GetAllAsync();
     public Task<List<Rating>> GetFromWriterAsync(string writerEmail);
     public Task<List<Rating>> GetFromSubjectAsync(string subjectEmail);
+    public Task<RatingMeanDTO> GetMeanFromSubjectAsync(string subjectEmail);
 }
