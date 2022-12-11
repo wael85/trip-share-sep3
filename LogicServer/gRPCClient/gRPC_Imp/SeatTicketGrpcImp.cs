@@ -42,7 +42,8 @@ public class SeatTicketGrpcImp:ISeatTicketService
                SeatPrice = l.SeatPrice,
                SeatAmount = l.TotalSeats,
                PickUpLocation = pick,
-               DropLocation = drop
+               DropLocation = drop,
+               TripId = l.TripId
             };
             tickets.Add(st);
         }

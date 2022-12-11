@@ -66,7 +66,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <small class="card-text col-9">
-                                        <strong>Price: </strong>@(ticket.SeatPrice * ticket.SeatAmount) Kr
+                                        <strong>Price:@ticket.TripId </strong>@(ticket.SeatPrice * ticket.SeatAmount) Kr
                                     </small> <br>
                                     @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now)
                                     {
@@ -130,7 +130,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <small class="col-10 card-text text-muted">Trip Id: @tr.Id</small>
-                                    @if (tr.Stops.First().ArrivalTime <= DateTime.Now)
+                                    @if (tr.Stops.Last().ArrivalTime <= DateTime.Now)
                                     {
                                         <p class="col-2" style="color: red">Done</p>
                                     }
@@ -195,6 +195,12 @@
                             </h5>
 
                         }
+                        else
+                        {
+                            <h5 class="card-header">
+                                Confirmation on Trip number: @not.RequestedTripId
+                            </h5>
+                        }
                         <!--Card body-->
                         <div class="card-body">
                             @if (not.Msg.Equals("request-seat"))
@@ -232,6 +238,10 @@
                                     <br/> Total price: @(not.SeatCount * not.SeatPrice)</p>
 
                             }
+                            else
+                            {
+                                <p class="card-text">Please Confirm if you completed this trip: @not.RequestedTripId </p>
+                            }
                             <!--Button group-->
                             @if (not.Msg.Equals("request-seat"))
                             {
@@ -250,6 +260,10 @@
                                 <button class="btn btn-secondary " @onclick="@((e) => { SendReplay(not, false); ConsumeNotification(not); GetUserNotifications();})">Cancel</button>
 
                                 <button class="btn btn-primary" @onclick="@(() => { ProcessToPayment(not); ConsumeNotification(not); GetUserNotifications();})">Proccess to Payment</button>
+                            }
+                            else
+                            {
+                                <button @onclick="@(() => { ConsumeNotification(not); GetUserNotifications();})">Confirme</button>
                             }
                         </div>
                     </div>
@@ -308,6 +322,10 @@
 
             IEnumerable<Trip> trips = await _tripClient.GetTripsByUserIdAsync(userEmail);
             myTrips = trips.ToList();
+            foreach (var myTrip in myTrips)
+            {
+                CreateEndTripNotification(myTrip);
+            }
             GetMyTicket();
            
             StateHasChanged();
@@ -344,7 +362,6 @@
         {
             try
             {
-    //todo Add user id after log in
                 BeADriverRequestDto dto = new BeADriverRequestDto(userEmail, DriveLicense!, plateNumber, Color, CarModel, Seats, FuelType);
                 await _carClient.CreateAsync(dto);
                 ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = $"You become a driver", Duration = 6000 });
@@ -517,22 +534,7 @@
         GetUserNotifications();
 
     }
-
-   /*  void DeleteNotification(Notification n)
-    {
-         try
-        {
-            
-            GetUserNotifications();
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Notification Deleted", Duration = 6000 });
-
-        }
-        catch (Exception e)
-        {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not Delete this, try again later !!  ", Duration = 6000 });
-
-        }
-    }*/
+    
 
     void ProcessToPayment(Notification n)
     {
@@ -583,4 +585,16 @@
        modal = false;
     }
 
+    async void CreateEndTripNotification(Trip trip)
+    {
+        NotificationDto replay = new NotificationDto()
+        {
+            Consumer = userEmail,
+            Consumed = false,
+            RequestedTripId =(int)trip.Id,
+            Msg = "Trip-Done"
+
+        };
+        await _notificationClient.SaveRequestAsync(replay);
+    } 
 }

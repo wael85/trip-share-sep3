@@ -83,8 +83,6 @@ public class RatingsController : ControllerBase
     {
         try
         {
-            Console.Out.WriteLine("TETETTETE");
-            
             if (subjectEmail == null)
                 return BadRequest();
 

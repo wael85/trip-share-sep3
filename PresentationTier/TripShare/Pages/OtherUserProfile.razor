@@ -1,0 +1,174 @@
+@page "/OtherUserProfile"
+
+@using Domain.Model
+@using HttpClient.ClientInterfaces
+@using Domain.DTOs
+@inject IUserClient userClient;
+@inject ITripClient tripClient;
+@inject ISeatTicketClient seatTicketClient;
+@inject IRatingClient ratingClient;
+@using Domain.Model
+@using Radzen.Blazor;
+@using Radzen
+@inject NotificationService _notificationService;
+@attribute [Authorize]
+
+
+<RadzenNotification/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="card" style="margin-top: 40px">
+            <div class="card-body">
+                @if (profileOwner != null)
+                {
+                    <p ><strong>EMAIL: </strong> @profileOwner.Email</p>
+                    <p><strong>FULL NAME </strong>@profileOwner.FirstName @profileOwner.LastName</p>
+                    <p><strong>PHONE: </strong>@profileOwner.Phone</p>
+                    <p><strong>ADDRESS: </strong>@profileOwner.Address</p>
+                    <p><strong>RATING: </strong>@ratingMeanDto.Rating / 5 from @ratingMeanDto.Count rating(s)</p>
+                    @if (!string.IsNullOrEmpty(profileOwner.DriveLicense))
+                    {
+                        <p><strong>Driving License: </strong>@profileOwner.DriveLicense</p>
+                        <p><strong>Car details: </strong> @profileOwner.CarInfo?.CarModel, @profileOwner.CarInfo?.Color, @profileOwner.CarInfo?.FuelType,
+                            @profileOwner.CarInfo?.SeatsCount seats, <br/> Plate Number:@profileOwner.CarInfo?.PlateNumber</p>
+                    }
+
+                }
+           
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        @if (sharedSameTrip)
+        {
+            <div class="border border-light border-2 container mt-5">
+        <RadzenNotification/>
+        <h3>Rating @profileOwner.FirstName @profileOwner.LastName</h3>
+
+        <div class="col-md-2">
+            <label for="validationDefault05" class="form-label">Subject Email</label>
+            <input type="text" @bind="SubjectEmail" class="form-control" id="validationDefault05" required>
+        </div>
+        <div class="col-md-1">
+            <label for="validationDefault06" class="form-label">Rating</label>
+            <input type="number" @bind="rating" max="5" min="0" class="form-control" id="validationDefault06" required>
+        </div>
+        <div class="col-md-3">
+            <label for="validationDefault07" class="form-label">Comment</label>
+            <input type="text" @bind="comment" class="form-control" id="validationDefault07" required>
+        </div>
+        <button class="btn-outline-secondary m-4" @onclick="Create">Create</button>
+        <label @bind="result_text"></label>
+    </div>
+        }
+    </div>
+</div>
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "writerEmail")]
+    public string WriterEmail { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "subjectEmail")]
+    public string SubjectEmail { get; set; }
+
+    UserInformationDto profileOwner;
+    UserInformationDto profileVisetor;
+    RatingMeanDTO ratingMeanDto = new(0, 0);
+    bool sharedSameTrip;
+    protected override async Task OnInitializedAsync()
+    {
+       profileOwner = await userClient.GetByIdAsync(SubjectEmail);
+        profileVisetor = await userClient.GetByIdAsync(WriterEmail);
+        ratingMeanDto = await ratingClient.GetRatingMeanBySubject(profileOwner.Email);
+        sharedSameTrip = await TheySharedTrip(profileOwner, profileVisetor);
+        StateHasChanged();
+    }
+
+    private async Task<bool> TheySharedTrip(UserInformationDto user1, UserInformationDto user2)
+    {
+        List<long> us1Trips = await GetUserTripsId(user1);
+        List<long> us2Trips = await GetUserTripsId(user2);
+        IEnumerable<long> common = us1Trips.Intersect(us2Trips);
+        foreach (var l in common)
+        {
+            Console.WriteLine("common  " + l);
+
+        }
+        if (common.Any())
+        {
+            return true;
+        }
+        return false;
+
+    }
+
+    private async Task<List<long>> GetUserTripsId(UserInformationDto user)
+    {
+        List<long> usTrips = new List<long>();
+
+        if (!String.IsNullOrEmpty(user.DriveLicense))
+        {
+            List<Trip> trips = await tripClient.GetTripsByUserIdAsync(user.Email);
+            foreach (var trip in trips)
+            {
+                Console.WriteLine(user.FirstName + " " + trip.Id);
+
+                //todo chang to 12 houres
+                if (trip.Stops.Last().ArrivalTime.AddMinutes(5) < DateTime.Now )
+                {
+                    usTrips.Add(trip.Id);
+                }
+            }
+        }
+        IEnumerable<SeatTicket> tickets = await seatTicketClient.GetTicketsByUserIdAsync(user.Email);
+            foreach (var seatTicket in tickets)
+            {          
+                Console.WriteLine(seatTicket.Passenger.FirstName + " " + seatTicket.TripId);
+
+                if (seatTicket.DropLocation.ArrivalTime.AddMinutes(5) < DateTime.Now)
+                {
+                    usTrips.Add(seatTicket.TripId);
+                }
+            }
+        
+        foreach (var usTrip in usTrips)
+        {
+            Console.WriteLine(user.FirstName + " " + usTrip);
+  
+        }
+        return usTrips;
+    }
+    
+    
+    // Rating
+    private int rating;
+    private string comment;
+
+    private string result_text;
+    
+
+    protected async Task Create()
+    {
+
+        var result = ratingClient.CreateRating(new RatingCreationDTO(profileVisetor, profileOwner, rating, comment));
+        if (result == null)
+        {
+            _notificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error, 
+                Summary = "Rating", 
+                Detail = "No such subject", 
+                Duration =7000
+            });
+        }
+        
+        _notificationService.Notify(new NotificationMessage
+        {
+            Severity = NotificationSeverity.Success, 
+            Summary = "Rating", 
+            Detail = "Success", 
+            Duration =7000
+        });
+    }
+}
