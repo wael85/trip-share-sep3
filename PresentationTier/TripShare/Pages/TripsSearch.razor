@@ -5,10 +5,12 @@
 @using Domain.DTOs
 @using TripShare.Pages.Components
 @using HttpClient.ClientInterfaces
+@using System.Security.Claims
 @inject NotificationService Service
 @inject ITripClient TripClient
+@inject NavigationManager _Navigation
 @attribute [Authorize]
-
+<AuthorizeView>
 <div class="row align-content-middle">
     <RadzenNotification/>
     <RadzenCard>
@@ -59,25 +61,30 @@
         {
             @foreach (var t in _trips)
             {
-                <div class="card list-group-item col-4 m-3 border-2" style="width: 18rem; height: 400px;">
+                <div class="card list-group-item col-4 m-3 border-2" style="width: 18rem; height: 400px; overflow: auto;">
                     <div class="card-body h-60">
                         <h5 class="card-title">Trip To @t.Stops[^1].City</h5>
                         <p class="card-text">Hello I am @t.Driver.FirstName and I will be happy if you join meon my trip to @t.Stops[^1].City </p>
+                        <p>If you want to know more, visit my profile
+                        
+                            <a @onclick="@((e) => _Navigation.NavigateTo( $"/OtherUserProfile?writerEmail={context.User.Claims.First(claim => claim.Type.Equals(ClaimTypes.Email)).Value}&subjectEmail={t.Driver.Email}"))"
+                               style="color: #0a53be;">@t.Driver.Email</a>
+                            </p>
                     </div>
-                <ul class="list-group list-group-flush  overflow-scroll" style="height: 200px">
-                    <li class="list-group-item">
-                        Your Search ticket price:
-                        "@t.SubTripPrice(_searchQuery.Dropoff,_searchQuery.Pickup)"
-                    </li>
-                    <li class="list-group-item">
-                        Start from: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime
-                    </li>
-                    @for (int i = 1; i < t.Stops.Count - 1; i++)
-                    {
-                        <li class="list-group-item">Stop @i : @t.Stops[i].getAddress(), at:@t.Stops[i].ArrivalTime</li>
-                    }
-                    <li class="list-group-item">Last destination: @t.Stops[^1].getAddress(), at:@t.Stops[^1].ArrivalTime</li>
-                </ul>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Your Search ticket price:
+                            "@t.SubTripPrice(_searchQuery.Dropoff,_searchQuery.Pickup)"
+                        </li>
+                        <li class="list-group-item">
+                            Start from: @t.Stops[0].getAddress() , at:@t.Stops[0].ArrivalTime
+                        </li>
+                        @for (int i = 1; i < t.Stops.Count - 1; i++)
+                        {
+                            <li class="list-group-item">Stop @i : @t.Stops[i].getAddress(), at:@t.Stops[i].ArrivalTime</li>
+                        }
+                        <li class="list-group-item">Last destination: @t.Stops[^1].getAddress(), at:@t.Stops[^1].ArrivalTime</li>
+                    </ul>
                     <div class="card-body">
                         <a style="cursor:pointer;"  @onclick="@(() => { SowPopUp = true;_reserveSeat = t;})" class="card-link" >Go TO Book</a>
                     </div>
@@ -86,6 +93,7 @@
         }
     </div>
 </div>
+</AuthorizeView>
 <Modal ShowModal="@SowPopUp">
     <CreateSeatTicket CloseModal="@CloseModal" SelectedTrip ="@_reserveSeat" SelectedDetails="@_searchQuery" ></CreateSeatTicket>
 </Modal>

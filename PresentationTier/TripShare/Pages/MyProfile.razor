@@ -66,7 +66,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <small class="card-text col-9">
-                                        <strong>Price: </strong>@(ticket.SeatPrice * ticket.SeatAmount) Kr
+                                        <strong>Price:@ticket.TripId </strong>@(ticket.SeatPrice * ticket.SeatAmount) Kr
                                     </small> <br>
                                     @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now)
                                     {
@@ -517,22 +517,7 @@
         GetUserNotifications();
 
     }
-
-   /*  void DeleteNotification(Notification n)
-    {
-         try
-        {
-            
-            GetUserNotifications();
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Notification Deleted", Duration = 6000 });
-
-        }
-        catch (Exception e)
-        {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = $"can not Delete this, try again later !!  ", Duration = 6000 });
-
-        }
-    }*/
+    
 
     void ProcessToPayment(Notification n)
     {

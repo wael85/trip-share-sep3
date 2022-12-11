@@ -1,0 +1,61 @@
+@page "/SearchUser"
+@using System.Security.Claims
+@using Domain.DTOs
+@using HttpClient.ClientInterfaces
+@using HttpClients.ClientInterface
+@using Radzen
+@using System.Diagnostics
+@inject NavigationManager _Navigation;
+@inject IAuthService auth;
+@attribute [Authorize]
+@inject IRatingClient RatingClient;
+@inject IUserClient UserClient;
+@inject NotificationService _notificationService;
+
+<AuthorizeView>
+    <div class="row m-5 justify-content-center">
+            <div class="col-md-6 m-5">
+                <label for="validationDefault05" class="form-label">Subject Email</label>
+                <input type="text" @bind="searchUser" class="form-control" id="validationDefault05" required>
+            </div>
+    </div>
+    <div class="row m-5 justify-content-center" > <button class="btn-outline-primary" @onclick="GetUserInfo">Search</button></div>
+    <div class="row m-5 justify-content-center" >
+        @if (findedUserInformationDto == null)
+        {
+            <h3>there is no matched user....</h3>
+        }
+        else
+        {
+            <div class="card" style="margin-top: 40px">
+                <div class="card-body">
+                    <p ><strong>EMAIL: </strong>
+
+                        <a @onclick="@((e) => _Navigation.NavigateTo($"/OtherUserProfile?writerEmail={context.User.Claims.First(claim => claim.Type.Equals(ClaimTypes.Email)).Value}&subjectEmail={findedUserInformationDto.Email}"))"
+                           style="color: #0a53be;">@findedUserInformationDto.Email</a>
+                    </p>
+                    <p><strong>FULL NAME </strong>@findedUserInformationDto.FirstName @findedUserInformationDto.LastName</p>
+                </div>
+            </div>
+
+        }
+    </div>
+</AuthorizeView>
+@code {
+    private string searchUser;
+    private UserInformationDto findedUserInformationDto;
+    public async void GetUserInfo()
+    {
+        try
+        {
+            findedUserInformationDto = null;
+            findedUserInformationDto = await UserClient.GetByIdAsync(searchUser);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+}
