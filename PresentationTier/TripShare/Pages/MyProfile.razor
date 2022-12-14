@@ -68,11 +68,11 @@
                                     <small class="card-text col-9">
                                         <strong>Price:</strong>@(ticket.SeatPrice * ticket.SeatAmount) Kr
                                     </small> <br>
-                                    @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now)
+                                    @if (ticket.PickUpLocation.ArrivalTime <= DateTime.Now & ticket.PickUpLocation.ArrivalTime.AddHours(12) <= DateTime.Now)
                                     {
                                         <small class="col-3" style="color: red">Done</small>
                                     }
-                                    else
+                                    else if(ticket.PickUpLocation.ArrivalTime >= DateTime.Now)
                                     {
                                         <small class="col-3" style="color: green">Active</small>
                                     }
@@ -324,7 +324,11 @@
             myTrips = trips.ToList();
             foreach (var myTrip in myTrips)
             {
-                CreateEndTripNotification(myTrip);
+                if (myTrip.Stops.Last().ArrivalTime.AddHours(12) > DateTime.Now )
+                {
+                    CreateEndTripNotification(myTrip);
+                }
+               
             }
             GetMyTicket();
            

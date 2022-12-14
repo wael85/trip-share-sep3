@@ -80,7 +80,6 @@ public class NotificationGrpcImp : INotificationGrpcService
                 SeatCount = n.SeatCount
 
             };
-            Console.WriteLine(notification.Sender);
             notifications.Add(notification);
         }
 
