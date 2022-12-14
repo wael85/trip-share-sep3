@@ -114,8 +114,8 @@
             {
                 Console.WriteLine(user.FirstName + " " + trip.Id);
 
-                //todo chang to 12 houres
-                if (trip.Stops.Last().ArrivalTime.AddMinutes(5) < DateTime.Now )
+                
+                if (trip.Stops.Last().ArrivalTime.AddHours(12) < DateTime.Now )
                 {
                     usTrips.Add(trip.Id);
                 }
@@ -126,7 +126,7 @@
             {          
                 Console.WriteLine(seatTicket.Passenger.FirstName + " " + seatTicket.TripId);
 
-                if (seatTicket.DropLocation.ArrivalTime.AddMinutes(5) < DateTime.Now)
+                if (seatTicket.DropLocation.ArrivalTime.AddHours(12) < DateTime.Now)
                 {
                     usTrips.Add(seatTicket.TripId);
                 }
